@@ -4,7 +4,6 @@ body {
 	font-family: 'Source Serif 4', serif;
 	font-size: 14px;
 	font-weight: 400;
-	line-height: 21px;
 	margin: 0 auto;
 	color: #393939;
 	background-color: #fafbfd;
@@ -30,6 +29,7 @@ h3 {
 
 p {
 	text-align: justify;
+	line-height: 21px;
 }
 
 section {
@@ -171,4 +171,38 @@ hr.page-separator::before {
     position: absolute;          /* Positioning */
     left: 50%;                   /* Center horizontally */
     transform: translateX(-50%);/* Shift back to center */
+}
+
+.chapter_index h4 {}
+
+.chapter_page_container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space out elements */
+    background-image: linear-gradient(to right, #000 10%, rgba(255, 255, 255, 0) 0%);
+    background-position: 0 14px;
+    background-size: 10px 1px;
+    background-repeat: repeat-x;
+    width: 100%;
+    height:25px;
+}
+
+.chapter-name {
+    background: #fff;
+    padding-right: 5px;
+}
+
+.page-number {
+    background: #fff;
+    padding-left: 5px;
+}
+
+.sm-pg-num {
+    font-size: 80%;
+    margin-right: 10px;
+    color: lightgrey;
+}
+
+.pg-nums {
+    padding-bottom: 5px;
 }
