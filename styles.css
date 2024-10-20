@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;800&display=swap');
+
+body {
+	font-family: 'Source Serif 4', serif;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+	margin: 0 auto;
+	color: #393939;
+	background-color: #fafbfd;
+}
+
+/* Apply these styles when the screen width is larger than 768px (typically tablets and desktops) */
+@media (min-width: 768px) {
+	body {
+		font-size: initial;
+		line-height: 28.5px;
+	}
+}
+
+h1 {
+	font-weight: 800;
+	font-size: 30px;
+	text-align: center;
+}
+
+h3 {
+	text-align: center;
+}
+
+p {
+	text-align: justify;
+}
+
+section {
+	max-width: 1000px;
+	margin: 5px auto;
+	background-color: #ffffff;
+	border: 1px solid #ccc;
+	padding-top: 20px;
+}
+
+.page-content {
+	padding: 0 15px;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+header {
+    padding-top: 5px;
+    padding-right: 35px;
+    padding-left: 35px;
+    padding-bottom: 5px;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: box-shadow 0.3s ease;
+}
+
+blockquote {
+    border-left: 2px solid lightgrey;
+    padding-left: 10px;
+    margin: 0 20px;
+}
+
+@media (max-width: 768px) {
+    blockquote {
+        margin: 0 10px;
+    }
+}
+
+header.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex; /* Use flexbox for links */
+    justify-content: space-between; /* Space out the links */
+    max-width: 1000px; /* Limit max width */
+    width: 100%; /* Full width of the header */
+}
+
+a {
+    color: grey;
+	text-decoration: none;
+}
+
+a:hover {
+    color: #393939
+}
+
+h1 a {
+    color: #393939;
+}
+
+@media (min-width: 768px) {
+	nav a {
+        text-size: small;
+    }
+}
+
+.link:nth-child(2) {
+    margin: auto; /* Center the second link */
+}
+
+.chapter-title {
+	text-align: center;
+	flex-grow: 1;
+	margin: 0 20px;
+	/* Optional, to give some spacing */
+}
+
+.extra-text {
+	text-align: right;
+}
+
+span a {
+    color: inherit;
+    text-decoration: none;
+    cursor: text; /* Prevent hand cursor on hover */
+}
+
+.highlight {
+	background-color: #e8d1ff;
+}
+
+ol {
+    text-align: justify;
+}
+
+ol li {
+    padding-bottom: 5px;
+}
+
+ul.page_columns {
+	column-count: 13; /* Number of columns */
+	column-gap: 10px; /* Space between columns */
+	padding: 0; /* Remove default padding */
+	list-style: none; /* Remove default bullet points */
+}
+
+ul.chapter_columns {
+	column-count: 5; /* Number of columns */
+	column-gap: 10px; /* Space between columns */
+	padding: 0; /* Remove default padding */
+	list-style: none; /* Remove default bullet points */
+}
+
+@media (max-width: 768px) {
+	ul.page_columns {
+        column-count: 9; /* Number of columns */
+    }
+
+    ul.chapter_columns {
+        column-count: 3; /* Number of columns */
+    }
+}
+
+hr.page-separator {
+    border: none;                /* Remove default border */
+    text-align: center;          /* Center align text */
+    height: 1em;                /* Set height to fit text */
+    line-height: 1em;           /* Align text vertically */
+    font-size: 1em;           /* Adjust font size */
+    position: relative;          /* Enable positioning of pseudo-element */
+}
+
+hr.page-separator::before {
+    content: '✦✧✦';              /* Content to display */
+    position: absolute;          /* Positioning */
+    left: 50%;                   /* Center horizontally */
+    transform: translateX(-50%);/* Shift back to center */
+}
