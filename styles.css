@@ -10,6 +10,8 @@ body {
 	background-color: #fafbfd;
 }
 
+
+
 /* Apply these styles when the screen width is larger than 768px (typically tablets and desktops) */
 @media (min-width: 768px) {
 	body {
