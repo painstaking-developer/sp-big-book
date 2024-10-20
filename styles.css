@@ -173,9 +173,7 @@ hr.page-separator::before {
     transform: translateX(-50%);/* Shift back to center */
 }
 
-.chapter_index h4 {}
-
-.chapter_page_container {
+.index_chapter_section {
     display: flex;
     align-items: center; /* Center items vertically */
     justify-content: space-between; /* Space out elements */
@@ -190,6 +188,10 @@ hr.page-separator::before {
 .chapter-name {
     background: #fff;
     padding-right: 5px;
+}
+
+.chapter-name a {
+    color: #393939;
 }
 
 .page-number {
