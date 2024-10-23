@@ -27,9 +27,24 @@ h3 {
 	text-align: center;
 }
 
-p {
+a h1,
+a h2,
+a h3,
+a h4,
+a h5,
+a h6 {
+    color: #393939;
+}
+
+p, div.p {
 	text-align: justify;
 	line-height: 21px;
+	display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
 }
 
 section {
@@ -107,8 +122,6 @@ h1 a {
 .chapter-title {
 	text-align: center;
 	flex-grow: 1;
-	margin: 0 20px;
-	/* Optional, to give some spacing */
 }
 
 .extra-text {
