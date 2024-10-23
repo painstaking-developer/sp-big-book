@@ -11,13 +11,26 @@ function highlightParagraph() {
         const element = document.querySelector(hash);
         if (element) {
             element.classList.add('highlight');
-            // Scroll up slightly
-            const offset = 50; // Adjust this value as needed
-            const topPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({ top: topPosition });
+
+            // Check if the element is inside a block with the class "page content"
+            const pageContent = element.closest('.p');
+            if (pageContent) {
+                // Scroll to the middle of the browser window
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                const offset = window.innerHeight / 2 - element.clientHeight / 2; // Centering
+                const topPosition = elementPosition - offset;
+                window.scrollTo(0, topPosition); // No animation
+            } else {
+                // Original logic: Scroll with a fixed offset
+                const offset = 50; // Adjust as needed
+                const topPosition = element.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo(0, topPosition); // No animation
+            }
         }
     }
 }
+
+
 
 document.addEventListener("DOMContentLoaded", highlightParagraph);
 window.addEventListener("hashchange", highlightParagraph);
@@ -39,9 +52,16 @@ document.addEventListener('dblclick', function (event) {
     const targetElement = event.target;
 
     // Get the ID of the clicked element
-    const elementId = targetElement.id; // Get the current element ID
+    let elementId = targetElement.id; // Get the current element ID
 
-    // Only proceed if the element has an ID
+    // Check if the element does not have an ID, and get the parent ID if necessary
+    if (!elementId && targetElement.parentElement) {
+        elementId = targetElement.parentElement.id; // Get the parent element ID
+    }
+
+    console.log("elementId", elementId)
+
+    // Only proceed if we have an ID
     if (elementId) {
         // Get the current URL without the fragment identifier
         const currentUrl = window.location.href.split('#')[0];
