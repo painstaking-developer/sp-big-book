@@ -1,0 +1,15 @@
+<div id="note-form">
+    <div id="note-message" hx-swap="innerHTML"></div>
+    <textarea id="textarea"
+              name="body"
+              rows="5"
+              cols="40"
+              placeholder="Enter your note here"
+              oninput="updateNoteContent(event)"
+    ></textarea>
+    <small>This is an experimental feature under development.</small>
+    <br>
+    <button hx-trigger="click" onclick="saveNote()">
+        Submit
+    </button>
+</div>

@@ -3,6 +3,7 @@ function highlightParagraph() {
     const highlighted = document.querySelector('.highlight');
     if (highlighted) {
         highlighted.classList.remove('highlight');
+        notes.highlightRemoved(highlighted);
     }
 
     // Highlight the new paragraph
@@ -11,6 +12,7 @@ function highlightParagraph() {
         const element = document.querySelector(hash);
         if (element) {
             element.classList.add('highlight');
+            notes.highlightAdded(element);
 
             // Check if the element is inside a block with the class "page content"
             const pageContent = element.closest('.p');
@@ -29,8 +31,6 @@ function highlightParagraph() {
         }
     }
 }
-
-
 
 document.addEventListener("DOMContentLoaded", highlightParagraph);
 window.addEventListener("hashchange", highlightParagraph);
@@ -52,7 +52,7 @@ document.addEventListener('dblclick', function (event) {
     const targetElement = event.target;
 
     // Get the ID of the clicked element
-    let elementId = targetElement.id; // Get the current element ID
+    elementId = targetElement.id; // Get the current element ID
 
     // Check if the element does not have an ID, and get the parent ID if necessary
     if (!elementId && targetElement.parentElement) {
@@ -71,6 +71,7 @@ document.addEventListener('dblclick', function (event) {
 
         // Redirect to the constructed URL
         window.location.href = targetUrl;
+        notes.closeExistingNotes();
 
         // Copy the target URL (with the element ID) to the clipboard
         navigator.clipboard.writeText(targetUrl)
