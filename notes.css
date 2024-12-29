@@ -10,6 +10,7 @@
     padding: 16px;            /* Internal spacing */
     border-radius: 4px;       /* Rounded corners */
     margin-top: 8px;          /* Space above the div */
+    margin-bottom: 8px;
     font-family: Arial, sans-serif;
 }
 
@@ -43,8 +44,20 @@
     cursor: pointer;          /* Pointer cursor on hover */
 }
 
+.text-button {
+    background-color: transparent !important;
+    color: #393939 !important;
+}
+
 .note-features button:hover {
     background-color: #0056b3; /* Darker blue on hover */
+}
+
+.note-features button:disabled {
+    background-color: #A9A9A9; /* Gray background */
+    color: #F5F5F5;            /* Lighter gray text */
+    cursor: not-allowed;       /* Show not-allowed cursor */
+    opacity: 0.6;              /* Slightly faded appearance */
 }
 
 
