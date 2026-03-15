@@ -32,7 +32,65 @@ function highlightParagraph() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", highlightParagraph);
+function openSettingsPane() {
+    document.getElementById('settings-overlay').classList.add('active');
+    document.getElementById('settings-pane').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSettingsPane() {
+    document.getElementById('settings-overlay').classList.remove('active');
+    document.getElementById('settings-pane').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeSettingsPane();
+        notes.closePane();
+    }
+});
+
+function toggleDarkMode() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeToggle(newTheme);
+}
+
+function updateThemeToggle(theme) {
+    const track = document.getElementById('dark-mode-track');
+    const icon = document.getElementById('theme-icon');
+    if (track) {
+        if (theme === 'dark') track.classList.add('active');
+        else track.classList.remove('active');
+    }
+    if (icon) icon.innerHTML = theme === 'dark' ? '&#9790;&#65038;' : '&#9728;&#65038;';
+}
+
+let zoomLevel = parseInt(localStorage.getItem('zoom') || '100', 10);
+
+function adjustZoom(delta) {
+    zoomLevel = Math.max(50, Math.min(200, zoomLevel + delta));
+    localStorage.setItem('zoom', zoomLevel);
+    applyZoom();
+}
+
+function applyZoom() {
+    document.body.style.zoom = zoomLevel + '%';
+    document.querySelectorAll('.zoom-level-display').forEach(el => {
+        el.textContent = zoomLevel + '%';
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    highlightParagraph();
+    const theme = document.documentElement.getAttribute('data-theme') || 'light';
+    updateThemeToggle(theme);
+    applyZoom();
+});
 window.addEventListener("hashchange", highlightParagraph);
 
 window.addEventListener('scroll', function() {
@@ -48,6 +106,9 @@ window.addEventListener('scroll', function() {
 });
 
 document.addEventListener('dblclick', function (event) {
+    // Ignore double-clicks inside the settings pane
+    if (event.target.closest('#settings-pane')) return;
+
     // Get the element that was double-clicked
     const targetElement = event.target;
 
@@ -71,7 +132,7 @@ document.addEventListener('dblclick', function (event) {
 
         // Redirect to the constructed URL
         window.location.href = targetUrl;
-        notes.closeExistingNotes();
+        notes.closePane();
 
         // Copy the target URL (with the element ID) to the clipboard
         navigator.clipboard.writeText(targetUrl)
