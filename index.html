@@ -13885,13 +13885,15 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Built for a light, mobile-friendly reading experience.</p>
-                <p>Generated 2026-03-15 04:52:53.560584. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-15 08:59:37.230116. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>
 </article>
 <div class="fab-group">
-    <button class="fab-btn fab-btn-notes" onclick="notes.renderAllNotes()" aria-label="Notes">&#10000;</button>
+    <div id="hl-fab-colors" class="hl-fab-colors"></div>
+    <span id="fab-notes-label" class="fab-notes-label" onclick="handleFabNotesClick()"></span>
+    <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes">&#10000;</button>
     <div class="fab-divider"></div>
     <button class="fab-btn fab-btn-settings" onclick="openSettingsPane()" aria-label="Settings">&#9881;&#65038;</button>
 </div>

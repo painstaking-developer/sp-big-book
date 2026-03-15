@@ -1,5 +1,4 @@
 let highlightsData = {};
-let hlToolbar = null;
 
 const HL_COLORS = ['yellow', 'green', 'red', 'purple', 'blue'];
 
@@ -9,18 +8,18 @@ window.addEventListener('load', () => {
         highlightsData = JSON.parse(stored);
         restoreAllHighlights();
     }
-    createToolbar();
+    createFabHighlightButtons();
 });
 
-// ── Toolbar ──
+// ── FAB highlight buttons ──
 
-function createToolbar() {
-    hlToolbar = document.createElement('div');
-    hlToolbar.className = 'hl-toolbar';
+function createFabHighlightButtons() {
+    const container = document.getElementById('hl-fab-colors');
+    if (!container) return;
 
     HL_COLORS.forEach(color => {
         const btn = document.createElement('button');
-        btn.className = 'hl-color-btn hl-swatch-' + color;
+        btn.className = 'hl-fab-swatch hl-swatch-' + color;
         btn.title = color.charAt(0).toUpperCase() + color.slice(1);
         btn.addEventListener('mousedown', e => {
             e.preventDefault();
@@ -32,15 +31,11 @@ function createToolbar() {
             e.stopPropagation();
             applyHighlight(color);
         }, { passive: false });
-        hlToolbar.appendChild(btn);
+        container.appendChild(btn);
     });
 
-    const divider = document.createElement('div');
-    divider.className = 'hl-divider';
-    hlToolbar.appendChild(divider);
-
     const clearBtn = document.createElement('button');
-    clearBtn.className = 'hl-clear-btn';
+    clearBtn.className = 'hl-fab-clear';
     clearBtn.title = 'Clear highlight';
     clearBtn.innerHTML = '&#10005;';
     clearBtn.addEventListener('mousedown', e => {
@@ -53,15 +48,18 @@ function createToolbar() {
         e.stopPropagation();
         clearHighlightFromSelection();
     }, { passive: false });
-    hlToolbar.appendChild(clearBtn);
+    container.appendChild(clearBtn);
 
-    document.body.appendChild(hlToolbar);
+    // Trailing divider to separate colors from the notes button
+    const divider = document.createElement('div');
+    divider.className = 'hl-fab-divider';
+    container.appendChild(divider);
 }
 
-function showToolbar() {
+function showFabColors() {
     const sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.toString().trim()) {
-        hideToolbar();
+        hideFabColors();
         return;
     }
 
@@ -69,8 +67,8 @@ function showToolbar() {
     const container = range.commonAncestorContainer;
     const el = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
 
-    // Don't show inside settings, notes, or the toolbar itself
-    if (el.closest('#settings-pane') || el.closest('#notes-pane') || el.closest('.hl-toolbar')) {
+    // Don't show inside settings, notes, or fab-group itself
+    if (el.closest('#settings-pane') || el.closest('#notes-pane') || el.closest('.fab-group')) {
         return;
     }
 
@@ -79,38 +77,43 @@ function showToolbar() {
         return;
     }
 
-    const rect = range.getBoundingClientRect();
-
-    // Briefly show to measure, then position
-    hlToolbar.style.display = 'flex';
-    hlToolbar.style.left = '0px';
-    hlToolbar.style.top = '0px';
-    const tbWidth = hlToolbar.offsetWidth;
-
-    const left = Math.max(8, Math.min(
-        window.innerWidth - tbWidth - 8,
-        rect.left + rect.width / 2 - tbWidth / 2
-    ));
-    const top = rect.bottom + window.scrollY + 6;
-
-    hlToolbar.style.left = left + 'px';
-    hlToolbar.style.top = top + 'px';
+    const fabColors = document.getElementById('hl-fab-colors');
+    if (fabColors) {
+        fabColors.classList.add('active');
+        updateFabExpanded();
+    }
 }
 
-function hideToolbar() {
-    if (hlToolbar) hlToolbar.style.display = 'none';
+function hideFabColors() {
+    const fabColors = document.getElementById('hl-fab-colors');
+    if (fabColors) {
+        fabColors.classList.remove('active');
+        updateFabExpanded();
+    }
+}
+
+function updateFabExpanded() {
+    const fab = document.querySelector('.fab-group');
+    if (!fab) return;
+    const colorsActive = document.getElementById('hl-fab-colors')?.classList.contains('active');
+    const labelActive = document.getElementById('fab-notes-label')?.classList.contains('active');
+    if (colorsActive || labelActive) {
+        fab.classList.add('fab-expanded');
+    } else {
+        fab.classList.remove('fab-expanded');
+    }
 }
 
 // Show on mouseup (desktop)
 document.addEventListener('mouseup', e => {
-    if (e.target.closest('.hl-toolbar')) return;
-    setTimeout(showToolbar, 10);
+    if (e.target.closest('.fab-group')) return;
+    setTimeout(showFabColors, 10);
 });
 
-// Hide on mousedown outside toolbar
+// Hide on mousedown outside fab-group
 document.addEventListener('mousedown', e => {
-    if (e.target.closest('.hl-toolbar')) return;
-    hideToolbar();
+    if (e.target.closest('.fab-group')) return;
+    hideFabColors();
 });
 
 // Handle touch selection changes (mobile)
@@ -120,7 +123,7 @@ document.addEventListener('selectionchange', () => {
     hlSelTimeout = setTimeout(() => {
         const sel = window.getSelection();
         if (sel && !sel.isCollapsed && sel.toString().trim()) {
-            showToolbar();
+            showFabColors();
         }
     }, 400);
 });
@@ -208,7 +211,7 @@ function applyHighlight(color) {
     });
 
     sel.removeAllRanges();
-    hideToolbar();
+    hideFabColors();
 }
 
 function clearHighlightFromSelection() {
@@ -239,7 +242,7 @@ function clearHighlightFromSelection() {
     });
 
     sel.removeAllRanges();
-    hideToolbar();
+    hideFabColors();
 }
 
 // ── Persistence ──

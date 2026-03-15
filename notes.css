@@ -2,6 +2,30 @@
     cursor: pointer;
     text-decoration: none;
     color: inherit;
+    padding: 12px 8px;
+    margin: -12px -8px;
+    position: relative;
+}
+
+/* FAB notes label */
+.fab-notes-label {
+    display: inline-flex;
+    align-items: center;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.8em;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: max-width 0.3s ease, padding 0.3s ease, opacity 0.2s ease;
+    padding: 0;
+    opacity: 0;
+}
+
+.fab-notes-label.active {
+    max-width: 120px;
+    padding: 0 2px 0 12px;
+    opacity: 1;
 }
 
 /* Notes pane — pushes content aside like DevTools */

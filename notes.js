@@ -3,6 +3,7 @@ let currentNoteContent = '';
 let notesById = {};
 let syncDirHandle = null;
 let currentNoteElementId = '';
+let currentHighlightedId = null;
 
 // IndexedDB helpers for persisting the directory handle across sessions
 function openSyncDB() {
@@ -171,19 +172,22 @@ const notesModule = {
 
   highlightAdded(element) {
     if (!notesEnabled) return;
-    if (!notes.elementAlreadyHasToggleBtn(element)) {
-        notesModule.addEmojiAfterElement(element);
-    }
+    currentHighlightedId = element.id;
+    updateFabNotesLabel(element.id);
   },
 
   highlightRemoved(highlighted) {
     if (!notesEnabled) return;
-    notesModule.removeEmojiAfterElement();
+    currentHighlightedId = null;
+    updateFabNotesLabel(null);
   },
 
   openPane() {
     document.getElementById('notes-pane').classList.add('active');
     document.body.classList.add('notes-open');
+    const label = document.getElementById('fab-notes-label');
+    if (label) { label.classList.remove('active'); label.textContent = ''; }
+    if (typeof updateFabExpanded === 'function') updateFabExpanded();
   },
 
   closePane() {
@@ -191,6 +195,7 @@ const notesModule = {
     document.body.classList.remove('notes-open');
     currentNoteElementId = '';
     currentNoteContent = '';
+    if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
   },
 
   parseElementRef(elementId) {
@@ -545,6 +550,7 @@ const notesModule = {
     notesModule.placeNoteToggles();
     notesModule.syncFileForElement(elementId);
     notesModule.renderPane(elementId);
+    if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
   },
 
   deleteNote(elementId, noteIndex) {
@@ -563,6 +569,7 @@ const notesModule = {
         }
         localStorage.setItem('notesById', JSON.stringify(notesById));
         notesModule.syncFileForElement(elementId);
+        if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
     }
   },
 
@@ -847,5 +854,30 @@ function updateSyncButton() {
     syncCard.style.display = '';
     if (syncStatus) syncStatus.style.display = 'none';
   }
+}
+
+function updateFabNotesLabel(elementId) {
+    const label = document.getElementById('fab-notes-label');
+    if (!label) return;
+
+    if (!elementId) {
+        label.classList.remove('active');
+        label.textContent = '';
+        if (typeof updateFabExpanded === 'function') updateFabExpanded();
+        return;
+    }
+
+    const hasNotes = notesById[elementId] && notesById[elementId].length > 0;
+    label.textContent = hasNotes ? 'View notes' : 'Add note';
+    label.classList.add('active');
+    if (typeof updateFabExpanded === 'function') updateFabExpanded();
+}
+
+function handleFabNotesClick() {
+    if (currentHighlightedId) {
+        notesModule.renderPane(currentHighlightedId);
+    } else {
+        notesModule.renderAllNotes();
+    }
 }
 

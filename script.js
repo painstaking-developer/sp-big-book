@@ -1,3 +1,5 @@
+let isInitialLoad = true;
+
 function highlightParagraph() {
     // Remove existing highlights
     const highlighted = document.querySelector('.highlight');
@@ -14,19 +16,20 @@ function highlightParagraph() {
             element.classList.add('highlight');
             notes.highlightAdded(element);
 
-            // Check if the element is inside a block with the class "page content"
-            const pageContent = element.closest('.p');
-            if (pageContent) {
-                // Scroll to the middle of the browser window
-                const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-                const offset = window.innerHeight / 2 - element.clientHeight / 2; // Centering
-                const topPosition = elementPosition - offset;
-                window.scrollTo(0, topPosition); // No animation
-            } else {
-                // Original logic: Scroll with a fixed offset
-                const offset = 50; // Adjust as needed
-                const topPosition = element.getBoundingClientRect().top + window.scrollY - offset;
-                window.scrollTo(0, topPosition); // No animation
+            // Only scroll to center on initial page load (visiting via URL)
+            if (isInitialLoad) {
+                const pageContent = element.closest('.p');
+                if (pageContent) {
+                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                    const offset = window.innerHeight / 2 - element.clientHeight / 2;
+                    const topPosition = elementPosition - offset;
+                    window.scrollTo(0, topPosition);
+                } else {
+                    const offset = 50;
+                    const topPosition = element.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo(0, topPosition);
+                }
+                isInitialLoad = false;
             }
         }
     }
@@ -105,6 +108,22 @@ window.addEventListener('scroll', function() {
     });
 });
 
+// Click outside highlighted text clears the highlight without changing URL
+document.addEventListener('click', function(event) {
+    const highlighted = document.querySelector('.highlight');
+    if (!highlighted) return;
+
+    // Don't clear if clicking inside panes, fab, or notes toggles
+    if (event.target.closest('#settings-pane') || event.target.closest('#notes-pane') || event.target.closest('.fab-group')) return;
+    if (event.target.classList.contains('notes-toggle')) return;
+
+    // Don't clear if clicking on the highlighted element itself
+    if (highlighted.contains(event.target) || event.target === highlighted) return;
+
+    highlighted.classList.remove('highlight');
+    notes.highlightRemoved(highlighted);
+});
+
 document.addEventListener('dblclick', function (event) {
     // Ignore double-clicks inside the settings pane
     if (event.target.closest('#settings-pane')) return;
@@ -130,8 +149,9 @@ document.addEventListener('dblclick', function (event) {
         // Construct the target URL by appending the element ID as a fragment
         const targetUrl = `${currentUrl}#${elementId}`;
 
-        // Redirect to the constructed URL
-        window.location.href = targetUrl;
+        // Use pushState to update URL without native scroll-to-hash
+        history.pushState(null, '', '#' + elementId);
+        highlightParagraph();
         notes.closePane();
 
         // Copy the target URL (with the element ID) to the clipboard

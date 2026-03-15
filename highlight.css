@@ -1,52 +1,54 @@
-/* ── Highlight color tokens ── */
+/* ── Highlight color tokens (bright highlighter pack) ── */
 :root {
-    --hl-yellow: rgba(215, 205, 110, 0.4);
-    --hl-green: rgba(140, 195, 135, 0.35);
-    --hl-red: rgba(215, 150, 150, 0.35);
-    --hl-purple: rgba(185, 158, 215, 0.35);
-    --hl-blue: rgba(150, 178, 218, 0.35);
+    --hl-yellow: rgba(255, 240, 50, 0.45);
+    --hl-green: rgba(68, 232, 94, 0.35);
+    --hl-red: rgba(255, 110, 160, 0.32);
+    --hl-purple: rgba(190, 130, 255, 0.32);
+    --hl-blue: rgba(60, 200, 255, 0.32);
 
-    --hl-swatch-yellow: #c8bf78;
-    --hl-swatch-green: #8aab8a;
-    --hl-swatch-red: #c09090;
-    --hl-swatch-purple: #a898b8;
-    --hl-swatch-blue: #90a8c0;
+    --hl-swatch-yellow: #FFE44D;
+    --hl-swatch-green: #44E85E;
+    --hl-swatch-red: #FF6EA0;
+    --hl-swatch-purple: #BE82FF;
+    --hl-swatch-blue: #3CC8FF;
 }
 
 [data-theme="dark"] {
-    --hl-yellow: rgba(180, 170, 80, 0.3);
-    --hl-green: rgba(110, 165, 110, 0.3);
-    --hl-red: rgba(185, 118, 118, 0.3);
-    --hl-purple: rgba(155, 128, 185, 0.3);
-    --hl-blue: rgba(118, 148, 188, 0.3);
+    --hl-yellow: rgba(230, 210, 40, 0.35);
+    --hl-green: rgba(55, 200, 75, 0.28);
+    --hl-red: rgba(230, 95, 140, 0.26);
+    --hl-purple: rgba(165, 110, 230, 0.26);
+    --hl-blue: rgba(50, 175, 230, 0.26);
 
-    --hl-swatch-yellow: #a89f60;
-    --hl-swatch-green: #6a8a6a;
-    --hl-swatch-red: #a07070;
-    --hl-swatch-purple: #887098;
-    --hl-swatch-blue: #7088a0;
+    --hl-swatch-yellow: #D4C030;
+    --hl-swatch-green: #37C84B;
+    --hl-swatch-red: #E05F8C;
+    --hl-swatch-purple: #A56EE6;
+    --hl-swatch-blue: #32AFE6;
 }
 
-/* ── Floating toolbar ── */
-.hl-toolbar {
-    position: absolute;
-    display: none;
+/* ── FAB color picker (slides into bottom menu) ── */
+.hl-fab-colors {
+    display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 6px 10px;
-    border-radius: 22px;
-    border: 1px solid var(--color-border-light);
-    background: var(--color-settings-card-bg);
-    box-shadow: 0 2px 8px var(--color-shadow);
-    z-index: 2500;
-    user-select: none;
-    -webkit-user-select: none;
+    gap: 6px;
+    max-width: 0;
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    transition: max-width 0.3s ease, padding 0.3s ease, opacity 0.2s ease;
 }
 
-/* ── Color swatch buttons ── */
-.hl-color-btn {
-    width: 22px;
-    height: 22px;
+.hl-fab-colors.active {
+    max-width: 250px;
+    padding: 0 4px 0 10px;
+    opacity: 1;
+}
+
+/* ── Color swatch buttons (inside FAB) ── */
+.hl-fab-swatch {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid transparent;
     cursor: pointer;
@@ -55,7 +57,7 @@
     flex-shrink: 0;
 }
 
-.hl-color-btn:hover {
+.hl-fab-swatch:hover {
     transform: scale(1.15);
     border-color: var(--color-text-muted);
 }
@@ -66,19 +68,10 @@
 .hl-swatch-purple { background: var(--hl-swatch-purple); }
 .hl-swatch-blue   { background: var(--hl-swatch-blue); }
 
-/* ── Divider ── */
-.hl-divider {
-    width: 1px;
-    height: 18px;
-    background: var(--color-border-light);
-    flex-shrink: 0;
-    margin: 0 2px;
-}
-
-/* ── Clear button ── */
-.hl-clear-btn {
-    width: 22px;
-    height: 22px;
+/* ── Clear button (inside FAB) ── */
+.hl-fab-clear {
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 1px solid var(--color-border-light);
     background: var(--color-settings-card-bg);
@@ -93,9 +86,17 @@
     flex-shrink: 0;
 }
 
-.hl-clear-btn:hover {
+.hl-fab-clear:hover {
     background: var(--color-settings-card-hover-bg);
     color: var(--color-notes-delete);
+}
+
+/* ── Divider inside FAB colors ── */
+.hl-fab-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--color-border-light);
+    flex-shrink: 0;
 }
 
 /* ── Highlight marks in text ── */

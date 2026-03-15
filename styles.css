@@ -357,7 +357,8 @@ hr.page-separator::before {
     overflow: hidden;
 }
 
-.fab-group:hover {
+.fab-group:hover,
+.fab-group.fab-expanded {
     opacity: 1;
     box-shadow: 0 4px 12px var(--color-shadow);
 }
