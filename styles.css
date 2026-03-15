@@ -703,6 +703,14 @@ hr.page-separator::before {
     padding-bottom: 30px;
 }
 
+.about-heading {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--color-text);
+}
+
 .about-intro {
     text-align: center;
     color: var(--color-text-muted);

@@ -1,0 +1,16 @@
+{
+  "name": "Alcoholics Anonymous",
+  "short_name": "Alcoholics Anonymous",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "image.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

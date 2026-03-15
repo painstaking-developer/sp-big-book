@@ -14,8 +14,15 @@
     <meta twitter="title" content="Alcoholics Anonymous">
     <meta twitter="description" content="Explore the text of 'Alcoholics Anonymous' with features for easy navigation and sharing.">
     <meta twitter="image" content="https://tinyurl.com/big-book-aa/image.jpg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Alcoholics Anonymous">
+    <link rel="apple-touch-icon" href="image.jpg">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="notes.css">
+    <link rel="stylesheet" href="highlight.css">
     <script>
         (function() {
             var saved = localStorage.getItem('theme');
@@ -25,6 +32,7 @@
         })();
     </script>
     <script src="notes.js" defer></script>
+    <script src="highlight.js" defer></script>
     <script src="script.js" defer></script>
     <title>Alcoholics Anonymous</title>
 </head>
@@ -572,9 +580,13 @@
                         <a href="#pg420" class="sm-pg-num">420</a>
                     </div>
                 </div>
-                <div style="text-align: center; padding-top: 20px;">
-                    <a href="#about" class="feature-action" style="display: inline-block;">How to use this site</a>
-                </div>
+                <a href="#about" class="settings-card" style="margin-top: 24px; margin-bottom: 24px; text-decoration: none;">
+                    <div class="settings-card-icon">&#9758;</div>
+                    <div class="settings-card-body">
+                        <div class="settings-card-title">How to use this site</div>
+                        <div class="settings-card-subtitle">Notes, sharing, dark mode, and more</div>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
@@ -13813,14 +13825,9 @@ I remember this, I can see I’ve never had it so good. </span>
 </article>
 <hr class="page-separator">
 <article>
-    <section>
-        <header>
-            <nav>
-                <p id="about" class="chapter-title page-link">Guide</p>
-                <a href="#index" class="page-link">Index</a>
-            </nav>
-        </header>
+    <section id="about">
         <div class="page-content about-page">
+            <h1 class="about-heading">Guide</h1>
             <p class="about-intro">A few tools to help you read, share, and reflect on 'Alcoholics Anonymous'.</p>
             <div class="feature-card">
                 <div class="feature-icon">&#8801;</div>
@@ -13878,7 +13885,7 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Built for a light, mobile-friendly reading experience.</p>
-                <p>Generated 2026-03-15 04:34:02.759882. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-15 04:52:53.560584. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>
@@ -13888,5 +13895,10 @@ I remember this, I can see I’ve never had it so good. </span>
     <div class="fab-divider"></div>
     <button class="fab-btn fab-btn-settings" onclick="openSettingsPane()" aria-label="Settings">&#9881;&#65038;</button>
 </div>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+</script>
 </body>
 </html>

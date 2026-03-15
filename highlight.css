@@ -1,0 +1,111 @@
+/* ── Highlight color tokens ── */
+:root {
+    --hl-yellow: rgba(215, 205, 110, 0.4);
+    --hl-green: rgba(140, 195, 135, 0.35);
+    --hl-red: rgba(215, 150, 150, 0.35);
+    --hl-purple: rgba(185, 158, 215, 0.35);
+    --hl-blue: rgba(150, 178, 218, 0.35);
+
+    --hl-swatch-yellow: #c8bf78;
+    --hl-swatch-green: #8aab8a;
+    --hl-swatch-red: #c09090;
+    --hl-swatch-purple: #a898b8;
+    --hl-swatch-blue: #90a8c0;
+}
+
+[data-theme="dark"] {
+    --hl-yellow: rgba(180, 170, 80, 0.3);
+    --hl-green: rgba(110, 165, 110, 0.3);
+    --hl-red: rgba(185, 118, 118, 0.3);
+    --hl-purple: rgba(155, 128, 185, 0.3);
+    --hl-blue: rgba(118, 148, 188, 0.3);
+
+    --hl-swatch-yellow: #a89f60;
+    --hl-swatch-green: #6a8a6a;
+    --hl-swatch-red: #a07070;
+    --hl-swatch-purple: #887098;
+    --hl-swatch-blue: #7088a0;
+}
+
+/* ── Floating toolbar ── */
+.hl-toolbar {
+    position: absolute;
+    display: none;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    border-radius: 22px;
+    border: 1px solid var(--color-border-light);
+    background: var(--color-settings-card-bg);
+    box-shadow: 0 2px 8px var(--color-shadow);
+    z-index: 2500;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ── Color swatch buttons ── */
+.hl-color-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.hl-color-btn:hover {
+    transform: scale(1.15);
+    border-color: var(--color-text-muted);
+}
+
+.hl-swatch-yellow { background: var(--hl-swatch-yellow); }
+.hl-swatch-green  { background: var(--hl-swatch-green); }
+.hl-swatch-red    { background: var(--hl-swatch-red); }
+.hl-swatch-purple { background: var(--hl-swatch-purple); }
+.hl-swatch-blue   { background: var(--hl-swatch-blue); }
+
+/* ── Divider ── */
+.hl-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--color-border-light);
+    flex-shrink: 0;
+    margin: 0 2px;
+}
+
+/* ── Clear button ── */
+.hl-clear-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border-light);
+    background: var(--color-settings-card-bg);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7em;
+    transition: background-color 0.15s, color 0.15s;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.hl-clear-btn:hover {
+    background: var(--color-settings-card-hover-bg);
+    color: var(--color-notes-delete);
+}
+
+/* ── Highlight marks in text ── */
+mark.hl-mark {
+    padding: 0;
+    border-radius: 2px;
+}
+
+mark.hl-yellow { background: var(--hl-yellow); color: inherit; }
+mark.hl-green  { background: var(--hl-green);  color: inherit; }
+mark.hl-red    { background: var(--hl-red);    color: inherit; }
+mark.hl-purple { background: var(--hl-purple); color: inherit; }
+mark.hl-blue   { background: var(--hl-blue);   color: inherit; }
