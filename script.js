@@ -79,6 +79,22 @@ function setFont(font) {
     updateFontToggle(font);
 }
 
+function setMenuPosition(position) {
+    localStorage.setItem('menuPosition', position);
+    if (position === 'bottom-right') {
+        document.documentElement.removeAttribute('data-menu-position');
+    } else {
+        document.documentElement.setAttribute('data-menu-position', position);
+    }
+    updateMenuPositionToggle(position);
+}
+
+function updateMenuPositionToggle(position) {
+    document.querySelectorAll('.settings-position-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.position === position);
+    });
+}
+
 function updateFontToggle(font) {
     document.querySelectorAll('.settings-font-option').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.font === font);
@@ -106,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function() {
     updateThemeToggle(theme);
     const font = document.documentElement.getAttribute('data-font') || 'serif';
     updateFontToggle(font);
+    const menuPosition = localStorage.getItem('menuPosition') || 'bottom-right';
+    updateMenuPositionToggle(menuPosition);
     applyZoom();
 });
 window.addEventListener("hashchange", highlightParagraph);

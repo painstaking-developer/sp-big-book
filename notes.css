@@ -28,6 +28,12 @@
     opacity: 1;
 }
 
+/* Left-positioned menu: swap label padding for reversed layout */
+[data-menu-position="bottom-left"] .fab-notes-label.active,
+[data-menu-position="top-left"] .fab-notes-label.active {
+    padding: 0 12px 0 2px;
+}
+
 /* Notes pane — pushes content aside like DevTools */
 .notes-pane {
     display: none;
@@ -56,6 +62,13 @@
     body.notes-open .fab-group {
         right: 444px;
         transition: right 0.2s ease;
+    }
+
+    /* Left-positioned menu: don't shift when notes pane opens */
+    [data-menu-position="bottom-left"] body.notes-open .fab-group,
+    [data-menu-position="top-left"] body.notes-open .fab-group {
+        right: auto;
+        transition: none;
     }
 }
 

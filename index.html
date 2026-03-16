@@ -34,6 +34,10 @@
             if (font === 'sans-serif') {
                 document.documentElement.setAttribute('data-font', 'sans-serif');
             }
+            var menuPos = localStorage.getItem('menuPosition');
+            if (menuPos && menuPos !== 'bottom-right') {
+                document.documentElement.setAttribute('data-menu-position', menuPos);
+            }
         })();
     </script>
     <script src="notes.js" defer></script>
@@ -80,6 +84,14 @@
             <div class="settings-font-switch">
                 <button class="settings-font-option settings-font-option-serif active" data-font="serif" onclick="setFont('serif')">Serif</button>
                 <button class="settings-font-option settings-font-option-sans" data-font="sans-serif" onclick="setFont('sans-serif')">Sans Serif</button>
+            </div>
+            <div class="settings-section-label" style="margin-top: 20px;">Menu Position</div>
+            <p class="settings-description">Choose which corner to place the floating menu.</p>
+            <div class="settings-position-picker">
+                <button class="settings-position-btn" data-position="top-left" onclick="setMenuPosition('top-left')"><span class="settings-position-dot"></span></button>
+                <button class="settings-position-btn" data-position="top-right" onclick="setMenuPosition('top-right')"><span class="settings-position-dot"></span></button>
+                <button class="settings-position-btn" data-position="bottom-left" onclick="setMenuPosition('bottom-left')"><span class="settings-position-dot"></span></button>
+                <button class="settings-position-btn active" data-position="bottom-right" onclick="setMenuPosition('bottom-right')"><span class="settings-position-dot"></span></button>
             </div>
         </div>
         <div class="settings-section">
@@ -13880,7 +13892,7 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Everything is stored in your browser. No account needed, nothing leaves your device.</p>
-                <p>Generated 2026-03-15 22:15:22.264058. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-16 13:47:03.242576. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>

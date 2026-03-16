@@ -99,6 +99,12 @@
     flex-shrink: 0;
 }
 
+/* Left-positioned menu: hide trailing divider (it ends up at wrong edge) */
+[data-menu-position="bottom-left"] .hl-fab-divider,
+[data-menu-position="top-left"] .hl-fab-divider {
+    display: none;
+}
+
 /* ── Highlight marks in text ── */
 mark.hl-mark {
     padding: 0;
