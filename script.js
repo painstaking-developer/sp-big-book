@@ -73,6 +73,18 @@ function updateThemeToggle(theme) {
     if (icon) icon.innerHTML = theme === 'dark' ? '&#9790;&#65038;' : '&#9728;&#65038;';
 }
 
+function setFont(font) {
+    document.documentElement.setAttribute('data-font', font);
+    localStorage.setItem('font', font);
+    updateFontToggle(font);
+}
+
+function updateFontToggle(font) {
+    document.querySelectorAll('.settings-font-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.font === font);
+    });
+}
+
 let zoomLevel = parseInt(localStorage.getItem('zoom') || '100', 10);
 
 function adjustZoom(delta) {
@@ -92,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function() {
     highlightParagraph();
     const theme = document.documentElement.getAttribute('data-theme') || 'light';
     updateThemeToggle(theme);
+    const font = document.documentElement.getAttribute('data-font') || 'serif';
+    updateFontToggle(font);
     applyZoom();
 });
 window.addEventListener("hashchange", highlightParagraph);

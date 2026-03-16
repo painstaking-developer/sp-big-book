@@ -19,6 +19,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Alcoholics Anonymous">
+    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="apple-touch-icon" href="image.jpg">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="notes.css">
@@ -28,6 +29,10 @@
             var saved = localStorage.getItem('theme');
             if (saved === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            var font = localStorage.getItem('font');
+            if (font === 'sans-serif') {
+                document.documentElement.setAttribute('data-font', 'sans-serif');
             }
         })();
     </script>
@@ -71,6 +76,10 @@
                     <div class="settings-card-subtitle">Switch between light and dark themes</div>
                 </div>
                 <div class="theme-toggle-track" id="dark-mode-track"></div>
+            </div>
+            <div class="settings-font-switch">
+                <button class="settings-font-option settings-font-option-serif active" data-font="serif" onclick="setFont('serif')">Serif</button>
+                <button class="settings-font-option settings-font-option-sans" data-font="sans-serif" onclick="setFont('sans-serif')">Sans Serif</button>
             </div>
         </div>
         <div class="settings-section">
@@ -3840,7 +3849,7 @@ making a normal drinker out of an alcoholic. </span>
                 <span id="pg31-p2-s2">By every form of
 self-deception and experimentation, they will try to prove themselves exceptions to the rule, therefore nonalcoholic. </span>
                 <span id="pg31-p2-s3">If
-anyone who is showing inability to control his drinking can do the right- about-face and drink like a gentleman, our
+anyone who is showing inability to control his drinking can do the right-about-face and drink like a gentleman, our
 hats are off to him. </span>
                 <span id="pg31-p2-s4">Heaven knows, we have tried hard enough and long enough to drink like other people! </span>
                 </p>
@@ -5084,7 +5093,7 @@ the power of God. </span>
             </div>
             <div id="pg52-p5" class="p">
                 <p>                
-                <span id="pg52-p5-s1">The Wright brothers' almost childish faith that they could build a machine which would fly was the main- spring of their
+                <span id="pg52-p5-s1">The Wright brothers' almost childish faith that they could build a machine which would fly was the mainspring of their
 accomplishment. </span>
                 <span id="pg52-p5-s2">Without that, nothing could have happened. </span>
                 <span id="pg52-p5-s3">We agnostics and atheists were sticking to the idea that
@@ -12120,8 +12129,7 @@ great panacea for all human ills. </span>
 shipped in from Boston or New York by express were
 looked upon with great distrust and disfavor by most
 of the good townspeople. </span>
-                <span id="pg171-p4-s6">The town was well sup-
-plied with churches and schools in which I pursued
+                <span id="pg171-p4-s6">The town was well supplied with churches and schools in which I pursued
 my early educational activities. </span>
                 </p>
             </div>
@@ -12161,8 +12169,7 @@ an important part in bringing on my alcoholism. </span>
             <div id="pg172-p3" class="p">
                 <p>                
                 <span id="pg172-p3-s1">From childhood through high school I was more or
-less forced to go to church, Sunday School, and eve-
-ning service, Monday night Christian Endeavor and
+less forced to go to church, Sunday School, and evening service, Monday night Christian Endeavor and
 sometimes to Wednesday evening prayer meeting. </span>
                 <span id="pg172-p3-s2">This had the effect of making me resolve that when I
 was free from parental domination, I would never
@@ -12183,15 +12190,13 @@ seemed to do it. </span>
 of fun without much grief, either physical or financial. </span>
                 <span id="pg172-p4-s4">I seemed to be able to snap back the next morning
 better than most of my fellow drinkers, who were
-cursed (or perhaps blessed) with a great deal of morn-
-ing-after nausea. </span>
+cursed (or perhaps blessed) with a great deal of morning-after nausea. </span>
                 <span id="pg172-p4-s5">Never once in my life have I had
 a headache, which fact leads me to believe that I was
 an alcoholic almost from the start. </span>
                 <span id="pg172-p4-s6">My whole life
 seemed to be centered around doing what I wanted
-to do, without regard for the rights, wishes, or privi-
-leges of anyone else; a state of mind which became
+to do, without regard for the rights, wishes, or privileges of anyone else; a state of mind which became
 more and more predominant as the years passed. </span>
                 <span id="pg172-p4-s7">I
 was graduated “summa cum laude” in the eyes of the
@@ -12201,7 +12206,7 @@ drinking fraternity but not in the eyes of the Dean. </span>
             <div id="pg172-p5" class="p">
                 <p>                
                 <span id="pg172-p5-s1">The next three years I spent in Boston, Chicago, and
-Montreal in the employ of a large manufacturing con- </span>
+Montreal in the employ of a large manufacturing concern, </span>
                 </p>
             </div>
         </div>
@@ -12266,8 +12271,7 @@ exams, all of which I passed creditably. </span>
                 <span id="pg173-p3-s5">But they were
 much disgusted and told me they would attempt to
 struggle along without my presence. </span>
-                <span id="pg173-p3-s6">After many pain-
-ful discussions, they finally gave me my credits and I </span>
+                <span id="pg173-p3-s6">After many painful discussions, they finally gave me my credits and I </span>
                 </p>
             </div>
         </div>
@@ -12305,13 +12309,11 @@ years. </span>
                 <p>                
                 <span id="pg174-p3-s1">Coming up to final exams I went on a particularly
 strenuous spree. </span>
-                <span id="pg174-p3-s2">When I went in to write the examina-
-tions, my hand trembled so I could not hold a pencil. </span>
+                <span id="pg174-p3-s2">When I went in to write the examinations, my hand trembled so I could not hold a pencil. </span>
                 <span id="pg174-p3-s3">I passed in at least three absolutely blank books. </span>
                 <span id="pg174-p3-s4">I
 was, of course, soon on the carpet and the upshot was
-that I had to go back for two more quarters and re-
-main absolutely dry, if I wished to graduate. </span>
+that I had to go back for two more quarters and remain absolutely dry, if I wished to graduate. </span>
                 <span id="pg174-p3-s5">This I
 did, and proved myself satisfactory to the faculty,
 both in deportment and scholastically. </span>
@@ -12333,8 +12335,7 @@ was kept so busy that I hardly left the hospital at all. </span>
 downtown. </span>
                 <span id="pg174-p5-s2">I had some money, all the time in the
 world, and considerable stomach trouble. </span>
-                <span id="pg174-p5-s3">I soon dis-
-covered that a couple of drinks would alleviate my
+                <span id="pg174-p5-s3">I soon discovered that a couple of drinks would alleviate my
 gastric distress, at least for a few hours at a time, so it
 was not at all difficult for me to return to my former
 excessive indulgence. </span>
@@ -12343,8 +12344,7 @@ excessive indulgence. </span>
             <div id="pg174-p6" class="p">
                 <p>                
                 <span id="pg174-p6-s1">By this time I was beginning to pay very dearly
-physically and, in hope of relief, voluntarily incar-
-cerated myself at least a dozen times in one of the </span>
+physically and, in hope of relief, voluntarily incarcerated myself at least a dozen times in one of the </span>
                 </p>
             </div>
         </div>
@@ -12363,8 +12363,7 @@ cerated myself at least a dozen times in one of the </span>
             <div id="pg175-p1" class="p">
                 <p>                
                 <span id="pg175-p1-s1">local sanitariums. </span>
-                <span id="pg175-p1-s2">I was between Scylla and Charyb-
-dis now, because if I did not drink my stomach
+                <span id="pg175-p1-s2">I was between Scylla and Charybdis now, because if I did not drink my stomach
 tortured me, and if I did my nerves did the same
 thing. </span>
                 <span id="pg175-p1-s3">After three years of this, I wound up in the
@@ -12394,14 +12393,12 @@ until the country went dry. </span>
                 <span id="pg175-p3-s1">With the passing of the Eighteenth Amendment I
 felt quite safe. </span>
                 <span id="pg175-p3-s2">I knew everyone would buy a few
-bottles, or cases, of liquor as their exchequers per-
-mitted, and that it would soon be gone. </span>
+bottles, or cases, of liquor as their exchequers permitted, and that it would soon be gone. </span>
                 <span id="pg175-p3-s3">Therefore it
 would make no great difference, even if I should do
 some drinking. </span>
                 <span id="pg175-p3-s4">At that time I was not aware of the
-almost unlimited supply the government made it pos-
-sible for us doctors to obtain, neither had I any
+almost unlimited supply the government made it possible for us doctors to obtain, neither had I any
 knowledge of the bootlegger who soon appeared on
 the horizon. </span>
                 <span id="pg175-p3-s5">I drank with moderation at first, but it
@@ -12437,8 +12434,7 @@ other was the fear of running out of liquor. </span>
                 <span id="pg176-p1-s1">a man of means, I knew that if I did not stay sober
 enough to earn money, I would run out of liquor. </span>
                 <span id="pg176-p1-s2">Most
-of the time, therefore, I did not take the morn-
-ing drink which I craved so badly, but instead would
+of the time, therefore, I did not take the morning drink which I craved so badly, but instead would
 fill up on large doses of sedatives to quiet the jitters,
 which distressed me terribly. </span>
                 <span id="pg176-p1-s3">Occasionally, I would
@@ -12469,8 +12465,7 @@ home and hide it in the coal bin, the clothes chute,
 over door jambs, over beams in the cellar, and in cracks
 in the cellar tile. </span>
                 <span id="pg176-p2-s2">I also made use of old trunks and
-chests, the old can container, and even the ash con-
-tainer. </span>
+chests, the old can container, and even the ash container. </span>
                 <span id="pg176-p2-s3">The water tank on the toilet I never used,
 because that looked too easy. </span>
                 <span id="pg176-p2-s4">I found out later that
@@ -12518,8 +12513,7 @@ sanitarium experiences. </span>
             </div>
             <div id="pg177-p3" class="p">
                 <p>                
-                <span id="pg177-p3-s1">During all this time we became more or less ostra-
-cized by our friends. </span>
+                <span id="pg177-p3-s1">During all this time we became more or less ostracized by our friends. </span>
                 <span id="pg177-p3-s2">We could not be invited out
 because I would surely get tight, and my wife dared
 not invite people in for the same reason. </span>
@@ -12528,11 +12522,9 @@ for sleeplessness demanded that I get drunk every
 night, but in order to get more liquor for the next
 night, I had to stay sober during the day, at least up
 to four o’clock. </span>
-                <span id="pg177-p3-s4">This routine went on with few inter-
-ruptions for seventeen years. </span>
+                <span id="pg177-p3-s4">This routine went on with few interruptions for seventeen years. </span>
                 <span id="pg177-p3-s5">It was really a horrible
-nightmare, this earning money, getting liquor, smug-
-gling it home, getting drunk, morning jitters, taking
+nightmare, this earning money, getting liquor, smuggling it home, getting drunk, morning jitters, taking
 large doses of sedatives to make it possible for me to
 earn more money, and so on ad nauseam. </span>
                 <span id="pg177-p3-s6">I used to
@@ -12618,8 +12610,7 @@ about it. </span>
                 <p>                
                 <span id="pg178-p3-s1">My wife became deeply interested, and it was her
 interest that sustained mine, though I at no time
-sensed that it might be an answer to my liquor prob-
-lem. </span>
+sensed that it might be an answer to my liquor problem. </span>
                 <span id="pg178-p3-s2">How my wife kept her faith and courage during
 all those years, I’ll never know, but she did. </span>
                 <span id="pg178-p3-s3">If she had
@@ -12650,8 +12641,7 @@ them, I cannot explain. </span>
             </div>
             <div id="pg179-p2" class="p">
                 <p>                
-                <span id="pg179-p2-s1">About this time a lady called up my wife one Satur-
-day afternoon saying she wanted me to come over that
+                <span id="pg179-p2-s1">About this time a lady called up my wife one Saturday afternoon saying she wanted me to come over that
 evening to meet a friend of hers who might help me. </span>
                 <span id="pg179-p2-s2">It was the day before Mother’s Day and I had come
 home plastered, carrying a big potted plant which I
@@ -12690,11 +12680,9 @@ out. </span>
                 <span id="pg179-p3-s10">I bought some more liquor on the way to the
 depot. </span>
                 <span id="pg179-p3-s11">I had to wait some time for the train. </span>
-                <span id="pg179-p3-s12">I remem-
-ber nothing from then on until I woke up at a friend’s
+                <span id="pg179-p3-s12">I remember nothing from then on until I woke up at a friend’s
 house, in a town near home. </span>
-                <span id="pg179-p3-s13">These good people noti-
-fied my wife, who sent my newly made friend over to
+                <span id="pg179-p3-s13">These good people notified my wife, who sent my newly made friend over to
 get me. </span>
                 <span id="pg179-p3-s14">He came and got me home and to bed, gave </span>
                 </p>
@@ -12733,8 +12721,7 @@ be remembered that I had read a great deal and talked
 to everyone who knew, or thought they knew anything
 about the subject of alcoholism. </span>
                 <span id="pg180-p3-s2">But this was a man
-who had experienced many years of frightful drink-
-ing, who had had most all the drunkard’s experiences
+who had experienced many years of frightful drinking, who had had most all the drunkard’s experiences
 known to man, but who had been cured by the very
 means I had been trying to employ, that is to say the
 spiritual approach. </span>
@@ -12755,11 +12742,9 @@ reading. </span>
                 <span id="pg180-p4-s1">It is a most wonderful blessing to be relieved of the
 terrible curse with which I was afflicted. </span>
                 <span id="pg180-p4-s2">My health is
-good and I have regained my self-respect and the re-
-spect of my colleagues. </span>
+good and I have regained my self-respect and the respect of my colleagues. </span>
                 <span id="pg180-p4-s3">My home life is ideal and my
-business is as good as can be expected in these un-
-certain times. </span>
+business is as good as can be expected in these uncertain times. </span>
                 </p>
             </div>
             <div id="pg180-p5" class="p">
@@ -12798,12 +12783,10 @@ for four reasons: </span>
             <div id="pg181-p2" class="p">
                 <p>                
                 <span id="pg181-p2-s1">Unlike most of our crowd, I did not get over my
-craving for liquor much during the first two and one-
-half years of abstinence. </span>
+craving for liquor much during the first two and one-half years of abstinence. </span>
                 <span id="pg181-p2-s2">It was almost always with
 me. </span>
-                <span id="pg181-p2-s3">But at no time have I been anywhere near yield-
-ing. </span>
+                <span id="pg181-p2-s3">But at no time have I been anywhere near yielding. </span>
                 <span id="pg181-p2-s4">I used to get terribly upset when I saw my friends
 drink and knew I could not, but I schooled myself to
 believe that though I once had the same privilege, I
@@ -12977,7 +12960,7 @@ had been studying going round in my head. </span>
                 <span id="pg408-p4-s3">I would
 be half asleep and half awake, and in the morning I
 would be both tired and stupid. </span>
-                <span id="pg408-p4-s4">Then I found the solu - </span>
+                <span id="pg408-p4-s4">Then I found the solution: </span>
                 </p>
             </div>
         </div>
@@ -13085,7 +13068,7 @@ tranquilizers to level off. </span>
                 <span id="pg410-p2-s4">The pep pills affected my
 hearing at times: I couldn’t listen fast enough to hear
 what I was saying. </span>
-                <span id="pg410-p2-s5">I’d think, I wonder why I’m say ing
+                <span id="pg410-p2-s5">I’d think, I wonder why I’m saying
 that again—I’ve already said it three times. </span>
                 <span id="pg410-p2-s6">Still, I
 couldn’t turn my mouth off. </span>
@@ -13102,8 +13085,7 @@ itching nose and would also have sudden uncontrollable
 urges to vomit. </span>
                 <span id="pg410-p3-s3">I never got much effect
 out of codeine and Percodan and the tranquilizers. </span>
-                <span id="pg410-p3-s4">However, for a period of time I was injecting Pento -
-thal intravenously to put myself to sleep. </span>
+                <span id="pg410-p3-s4">However, for a period of time I was injecting Pentothal intravenously to put myself to sleep. </span>
                 <span id="pg410-p3-s5">That’s the
 stuff used when the oral surgeon puts the needle in
 your vein and says, “Count to ten,” and before you get
@@ -13162,8 +13144,7 @@ my life took a tranquilizer, sedative, or pep pill because
 I was a pillhead. </span>
                 <span id="pg411-p2-s8">I always took it because I had
 the symptom that only that pill would relieve. </span>
-                <span id="pg411-p2-s9">There -
-fore, every pill was medically indicated at the time it
+                <span id="pg411-p2-s9">Therefore, every pill was medically indicated at the time it
 was taken. </span>
                 <span id="pg411-p2-s10">For me, pills don’t produce the desire to
 swallow a pill; they produce the symptoms that require
@@ -13392,7 +13373,7 @@ with him that night, and a strange thing began to happen. </span>
 me, now became quite interested; every day he
 would ask me all kinds of questions about the A.A.
 meetings. </span>
-                <span id="pg414-p3-s3">At first I wondered whether he was alco- </span>
+                <span id="pg414-p3-s3">At first I wondered whether he was alcoholic </span>
                 </p>
             </div>
         </div>
@@ -13638,11 +13619,10 @@ my actions. </span>
             </div>
             <div id="pg418-p2" class="p">
                 <p>                
-                <span id="pg418-p2-s1">Acceptance has been the answer to my marital pro b -
-lems. </span>
+                <span id="pg418-p2-s1">Acceptance has been the answer to my marital problems. </span>
                 <span id="pg418-p2-s2">It’s as though A.A. had given me a new pair of
 glasses. </span>
-                <span id="pg418-p2-s3">Max and I have been married now for thirtyfive
+                <span id="pg418-p2-s3">Max and I have been married now for thirty-five
 years. </span>
                 <span id="pg418-p2-s4">Prior to our marriage, when she was a shy,
 scrawny adolescent, I was able to see things in her
@@ -13767,8 +13747,7 @@ learned to love my wife and family first; the newcomer </span>
                 <p>                
                 <span id="pg420-p1-s1">to A.A., last. </span>
                 <span id="pg420-p1-s2">But it was the other way around. </span>
-                <span id="pg420-p1-s3">Eventu -
-ally I had to redo each of the Twelve Steps specifically
+                <span id="pg420-p1-s3">Eventually I had to redo each of the Twelve Steps specifically
 with Max in mind, from the First, saying, “I am powerless
 over alcohol, and my homelife is unmanageable
 by me,” to the Twelfth, in which I tried to think of her
@@ -13901,7 +13880,7 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Everything is stored in your browser. No account needed, nothing leaves your device.</p>
-                <p>Generated 2026-03-15 09:17:44.581132. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-15 22:15:22.264058. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>

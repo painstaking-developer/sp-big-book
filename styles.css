@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;800&family=Inter:wght@400;600;800&display=swap');
 
 /* ── Color tokens ── */
 :root {
@@ -116,6 +116,55 @@
 	--color-toggle-active: #3388ff;
 }
 
+/* ── Font override ── */
+[data-font="sans-serif"] body {
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Font segmented control ── */
+.settings-font-switch {
+	display: flex;
+	border: 1px solid var(--color-border-light);
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--color-settings-card-bg);
+}
+
+.settings-font-option {
+	flex: 1;
+	padding: 12px 0;
+	text-align: center;
+	cursor: pointer;
+	border: none;
+	background: transparent;
+	color: var(--color-text-muted);
+	font-size: 0.95em;
+	font-weight: 500;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.settings-font-option:first-child {
+	border-right: 1px solid var(--color-border-light);
+}
+
+.settings-font-option:hover {
+	background: var(--color-settings-card-hover-bg);
+}
+
+.settings-font-option.active {
+	background: var(--color-settings-card-active-bg);
+	color: var(--color-settings-title);
+	font-weight: 600;
+}
+
+.settings-font-option-serif {
+	font-family: 'Source Serif 4', serif;
+}
+
+.settings-font-option-sans {
+	font-family: 'Inter', sans-serif;
+}
+
 /* ── Base ── */
 
 body {
@@ -189,6 +238,8 @@ header {
     top: 0;
     z-index: 1000;
     transition: box-shadow 0.3s ease;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 blockquote {
@@ -874,4 +925,51 @@ hr.page-separator::before {
 .about-footer a {
     color: var(--color-text-muted);
     text-decoration: underline;
+}
+
+/* ── Print ── */
+@media print {
+    /* Hide non-book elements */
+    #notes-pane,
+    .settings-overlay,
+    .settings-pane,
+    .fab-group,
+    body > article:first-of-type,
+    article:has(#about),
+    hr.page-separator {
+        display: none !important;
+    }
+
+    /* Hide "Index" link in page headers */
+    nav a[href="#index"] {
+        display: none;
+    }
+
+    /* Remove sticky header */
+    header {
+        position: static;
+        box-shadow: none !important;
+    }
+
+    /* Clean backgrounds and borders */
+    body {
+        background: white;
+    }
+
+    section {
+        border: none;
+        border-top: 1px solid #ccc;
+        margin: 0 auto;
+        background: white;
+    }
+
+    /* Links print as regular text color */
+    a {
+        color: var(--color-text);
+    }
+
+    /* Remove selection highlight */
+    .highlight {
+        background-color: transparent;
+    }
 }

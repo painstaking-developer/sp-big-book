@@ -6,10 +6,35 @@ window.addEventListener('load', () => {
     const stored = localStorage.getItem('highlightsData');
     if (stored) {
         highlightsData = JSON.parse(stored);
+        migrateHighlightsData();
         restoreAllHighlights();
     }
     createFabHighlightButtons();
 });
+
+// ── Migration: add start/end offsets to old text-only entries ──
+
+function migrateHighlightsData() {
+    let changed = false;
+    for (const [elementId, hlList] of Object.entries(highlightsData)) {
+        const element = document.getElementById(elementId);
+        if (!element) continue;
+        const fullText = element.textContent;
+
+        hlList.forEach(hl => {
+            if (hl.start != null && hl.end != null) return;
+            const idx = fullText.indexOf(hl.text);
+            if (idx !== -1) {
+                hl.start = idx;
+                hl.end = idx + hl.text.length;
+                changed = true;
+            }
+        });
+    }
+    if (changed) {
+        localStorage.setItem('highlightsData', JSON.stringify(highlightsData));
+    }
+}
 
 // ── FAB highlight buttons ──
 
@@ -140,6 +165,23 @@ function findSentenceSpan(node) {
     return null;
 }
 
+// ── Offset helper ──
+
+function getTextOffset(element, node, offset) {
+    const r = document.createRange();
+    r.selectNodeContents(element);
+    r.setEnd(node, offset);
+    return r.toString().length;
+}
+
+function trimmedOffsets(fullText, start, end) {
+    const raw = fullText.substring(start, end);
+    const trimmed = raw.trim();
+    if (!trimmed) return null;
+    const leftTrim = raw.indexOf(trimmed);
+    return { start: start + leftTrim, end: start + leftTrim + trimmed.length, text: trimmed };
+}
+
 function collectHighlightsFromRange(range) {
     const result = [];
 
@@ -150,8 +192,10 @@ function collectHighlightsFromRange(range) {
 
     // Single span selection
     if (startSpan && startSpan === endSpan) {
-        const text = range.toString().trim();
-        if (text && startSpan.id) result.push({ elementId: startSpan.id, text });
+        const rawStart = getTextOffset(startSpan, range.startContainer, range.startOffset);
+        const rawEnd = getTextOffset(startSpan, range.endContainer, range.endOffset);
+        const trimmed = trimmedOffsets(startSpan.textContent, rawStart, rawEnd);
+        if (trimmed && startSpan.id) result.push({ elementId: startSpan.id, ...trimmed });
         return result;
     }
 
@@ -164,18 +208,20 @@ function collectHighlightsFromRange(range) {
         if (!/-s\d+$/.test(span.id)) return;
         if (!range.intersectsNode(span)) return;
 
-        const spanRange = document.createRange();
-        spanRange.selectNodeContents(span);
-
-        if (span.contains(range.startContainer)) {
-            spanRange.setStart(range.startContainer, range.startOffset);
+        let rawStart, rawEnd;
+        if (span === startSpan) {
+            rawStart = getTextOffset(span, range.startContainer, range.startOffset);
+            rawEnd = span.textContent.length;
+        } else if (span === endSpan) {
+            rawStart = 0;
+            rawEnd = getTextOffset(span, range.endContainer, range.endOffset);
+        } else {
+            rawStart = 0;
+            rawEnd = span.textContent.length;
         }
-        if (span.contains(range.endContainer)) {
-            spanRange.setEnd(range.endContainer, range.endOffset);
-        }
 
-        const text = spanRange.toString().trim();
-        if (text) result.push({ elementId: span.id, text });
+        const trimmed = trimmedOffsets(span.textContent, rawStart, rawEnd);
+        if (trimmed) result.push({ elementId: span.id, ...trimmed });
     });
 
     return result;
@@ -191,25 +237,42 @@ function applyHighlight(color) {
     const entries = collectHighlightsFromRange(range);
     if (entries.length === 0) return;
 
-    entries.forEach(({ elementId, text }) => {
+    entries.forEach(({ elementId, text, start, end }) => {
         if (!highlightsData[elementId]) highlightsData[elementId] = [];
 
-        // Remove existing entry for the same text (allows color change)
-        highlightsData[elementId] = highlightsData[elementId].filter(h => h.text !== text);
+        const el = document.getElementById(elementId);
+        const fullText = el ? el.textContent : '';
 
-        highlightsData[elementId].push({
-            text: text,
-            color: color,
+        // Split existing highlights around the new range
+        const newList = [];
+        highlightsData[elementId].forEach(h => {
+            const hStart = h.start != null ? h.start : 0;
+            const hEnd = h.end != null ? h.end : hStart + (h.text || '').length;
+
+            if (hEnd <= start || hStart >= end) {
+                // No overlap — keep as-is
+                newList.push(h);
+            } else {
+                // Keep non-overlapping fragments
+                if (hStart < start) {
+                    newList.push({ ...h, text: fullText.substring(hStart, start), start: hStart, end: start });
+                }
+                if (hEnd > end) {
+                    newList.push({ ...h, text: fullText.substring(end, hEnd), start: end, end: hEnd });
+                }
+            }
+        });
+
+        newList.push({
+            text, color, start, end,
             createdDate: new Date().toISOString().substring(0, 19).replace('T', ' ')
         });
+
+        highlightsData[elementId] = newList;
     });
 
     saveHighlights();
-
-    entries.forEach(({ elementId }) => {
-        restoreHighlightsForElement(elementId);
-    });
-
+    entries.forEach(({ elementId }) => restoreHighlightsForElement(elementId));
     sel.removeAllRanges();
     hideFabColors();
 }
@@ -222,25 +285,37 @@ function clearHighlightFromSelection() {
     const entries = collectHighlightsFromRange(range);
     if (entries.length === 0) return;
 
-    entries.forEach(({ elementId, text }) => {
+    entries.forEach(({ elementId, start, end }) => {
         if (!highlightsData[elementId]) return;
 
-        // Remove highlights whose text overlaps with the selected text
-        highlightsData[elementId] = highlightsData[elementId].filter(h => {
-            return !text.includes(h.text) && !h.text.includes(text);
+        const el = document.getElementById(elementId);
+        const fullText = el ? el.textContent : '';
+
+        const newList = [];
+        highlightsData[elementId].forEach(h => {
+            const hStart = h.start != null ? h.start : 0;
+            const hEnd = h.end != null ? h.end : hStart + (h.text || '').length;
+
+            if (hEnd <= start || hStart >= end) {
+                // No overlap — keep
+                newList.push(h);
+            } else {
+                // Keep non-overlapping fragments
+                if (hStart < start) {
+                    newList.push({ ...h, text: fullText.substring(hStart, start), start: hStart, end: start });
+                }
+                if (hEnd > end) {
+                    newList.push({ ...h, text: fullText.substring(end, hEnd), start: end, end: hEnd });
+                }
+            }
         });
 
-        if (highlightsData[elementId].length === 0) {
-            delete highlightsData[elementId];
-        }
+        highlightsData[elementId] = newList;
+        if (newList.length === 0) delete highlightsData[elementId];
     });
 
     saveHighlights();
-
-    entries.forEach(({ elementId }) => {
-        restoreHighlightsForElement(elementId);
-    });
-
+    entries.forEach(({ elementId }) => restoreHighlightsForElement(elementId));
     sel.removeAllRanges();
     hideFabColors();
 }
@@ -262,15 +337,46 @@ function restoreHighlightsForElement(elementId) {
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    // Strip existing highlight marks
     stripHighlightMarks(element);
 
     const highlights = highlightsData[elementId];
     if (!highlights || highlights.length === 0) return;
 
+    const fullText = element.textContent;
+
+    // Build character-level color map
+    const colorMap = new Array(fullText.length).fill(null);
     highlights.forEach(hl => {
-        wrapTextInElement(element, hl.text, hl.color);
+        let start = hl.start;
+        let end = hl.end;
+
+        // Fallback for entries without offsets
+        if (start == null || end == null) {
+            const idx = fullText.indexOf(hl.text);
+            if (idx === -1) return;
+            start = idx;
+            end = idx + hl.text.length;
+        }
+
+        for (let i = start; i < end && i < fullText.length; i++) {
+            colorMap[i] = hl.color;
+        }
     });
+
+    // Convert to runs of contiguous same-color
+    const runs = [];
+    let i = 0;
+    while (i < colorMap.length) {
+        if (colorMap[i] === null) { i++; continue; }
+        const color = colorMap[i];
+        const runStart = i;
+        while (i < colorMap.length && colorMap[i] === color) i++;
+        runs.push({ start: runStart, end: i, color });
+    }
+
+    if (runs.length === 0) return;
+
+    applyColorRuns(element, runs);
 }
 
 function stripHighlightMarks(element) {
@@ -285,54 +391,65 @@ function stripHighlightMarks(element) {
     element.normalize();
 }
 
-function wrapTextInElement(element, text, color) {
+function applyColorRuns(element, runs) {
+    // Collect text nodes with their character positions
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
     let node;
-    let fullText = '';
+    let pos = 0;
     const textNodes = [];
-
     while (node = walker.nextNode()) {
-        textNodes.push({ node: node, start: fullText.length });
-        fullText += node.nodeValue;
+        textNodes.push({ node, start: pos, end: pos + node.nodeValue.length });
+        pos += node.nodeValue.length;
     }
 
-    const index = fullText.indexOf(text);
-    if (index === -1) return;
-
-    const endIndex = index + text.length;
-
-    // Process in reverse to keep earlier node positions valid
-    for (let i = textNodes.length - 1; i >= 0; i--) {
-        const tn = textNodes[i];
-        const nodeStart = tn.start;
-        const nodeEnd = nodeStart + tn.node.nodeValue.length;
-
-        // Skip non-overlapping nodes
-        if (nodeEnd <= index || nodeStart >= endIndex) continue;
-
-        // Skip if already inside a highlight mark
-        if (tn.node.parentElement.classList.contains('hl-mark')) continue;
-
-        const hlStart = Math.max(0, index - nodeStart);
-        const hlEnd = Math.min(tn.node.nodeValue.length, endIndex - nodeStart);
-
+    // Process each text node in reverse (to keep earlier positions stable)
+    for (let t = textNodes.length - 1; t >= 0; t--) {
+        const tn = textNodes[t];
         const nodeText = tn.node.nodeValue;
-        const beforeText = nodeText.substring(0, hlStart);
-        const middleText = nodeText.substring(hlStart, hlEnd);
-        const afterText = nodeText.substring(hlEnd);
 
-        const mark = document.createElement('mark');
-        mark.className = 'hl-mark hl-' + color;
-        mark.textContent = middleText;
+        // Find runs overlapping this text node
+        const overlapping = [];
+        for (const run of runs) {
+            if (run.end <= tn.start || run.start >= tn.end) continue;
+            overlapping.push({
+                start: Math.max(0, run.start - tn.start),
+                end: Math.min(nodeText.length, run.end - tn.start),
+                color: run.color
+            });
+        }
 
+        if (overlapping.length === 0) continue;
+        overlapping.sort((a, b) => a.start - b.start);
+
+        // Build segments
+        const segments = [];
+        let cursor = 0;
+        for (const ov of overlapping) {
+            if (cursor < ov.start) {
+                segments.push({ text: nodeText.substring(cursor, ov.start), color: null });
+            }
+            segments.push({ text: nodeText.substring(ov.start, ov.end), color: ov.color });
+            cursor = ov.end;
+        }
+        if (cursor < nodeText.length) {
+            segments.push({ text: nodeText.substring(cursor), color: null });
+        }
+
+        // Replace text node with segments
         const parent = tn.node.parentNode;
         const nextSib = tn.node.nextSibling;
         parent.removeChild(tn.node);
 
-        // Insert before, mark, after — all before nextSib to maintain order
-        if (beforeText) parent.insertBefore(document.createTextNode(beforeText), nextSib);
-        parent.insertBefore(mark, nextSib);
-        if (afterText) parent.insertBefore(document.createTextNode(afterText), nextSib);
+        for (const seg of segments) {
+            if (seg.color) {
+                const mark = document.createElement('mark');
+                mark.className = 'hl-mark hl-' + seg.color;
+                mark.textContent = seg.text;
+                parent.insertBefore(mark, nextSib);
+            } else {
+                parent.insertBefore(document.createTextNode(seg.text), nextSib);
+            }
+        }
     }
 }
 
