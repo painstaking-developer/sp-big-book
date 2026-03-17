@@ -355,6 +355,44 @@ hr.page-separator::before {
     transform: translateX(-50%);/* Shift back to center */
 }
 
+.about-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1px;
+    margin: 10px auto 10px;
+    max-width: 360px;
+    background: var(--color-border-light);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.about-bar-btn {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    padding: 10px 12px;
+    background: var(--color-bg-surface);
+    color: var(--color-text-faint);
+    font-size: 0.78em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+}
+
+.about-bar-btn:hover {
+    color: var(--color-text);
+    background: var(--color-settings-card-hover-bg);
+}
+
+
+.about-bar-btn.disabled {
+    color: var(--color-text-light);
+    pointer-events: none;
+}
+
 .index_chapter_section {
     display: flex;
     align-items: center; /* Center items vertically */

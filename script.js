@@ -157,6 +157,10 @@ document.addEventListener('click', function(event) {
 });
 
 document.addEventListener('dblclick', function (event) {
+    // Prevent browser's default text selection on double-click
+    event.preventDefault();
+    window.getSelection().removeAllRanges();
+
     // Ignore double-clicks inside the settings pane
     if (event.target.closest('#settings-pane')) return;
 

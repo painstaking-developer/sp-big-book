@@ -134,6 +134,11 @@
         </script>
     </div>
 </div>
+<div class="about-bar">
+    <a href="#about" class="about-bar-btn">&#9758; Feature guide</a>
+    <a href="#" class="about-bar-btn disabled" id="install-btn" onclick="installPwa(event)">&#11015; Install app</a>
+    <a href="#" class="about-bar-btn" id="share-btn" onclick="shareSite(event)">&#8599; Share</a>
+</div>
 <article>
     <section>
         <header>
@@ -601,13 +606,6 @@
                         <a href="#pg420" class="sm-pg-num">420</a>
                     </div>
                 </div>
-                <a href="#about" class="settings-card" style="margin-top: 24px; margin-bottom: 24px; text-decoration: none;">
-                    <div class="settings-card-icon">&#9758;</div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">How to use this site</div>
-                        <div class="settings-card-subtitle">Notes, sharing, dark mode, and more</div>
-                    </div>
-                </a>
             </div>
         </div>
     </section>
@@ -13892,7 +13890,7 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Everything is stored in your browser. No account needed, nothing leaves your device.</p>
-                <p>Generated 2026-03-16 13:47:03.242576. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-16 23:19:32.487164. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>
@@ -13907,6 +13905,46 @@ I remember this, I can see I’ve never had it so good. </span>
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js');
+}
+var deferredInstallPrompt = null;
+var installBtn = document.getElementById('install-btn');
+var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+if (isStandalone) {
+    installBtn.innerHTML = '&#127758; View on the web';
+    installBtn.classList.remove('disabled');
+} else {
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        installBtn.classList.remove('disabled');
+    });
+    window.addEventListener('appinstalled', function() {
+        installBtn.classList.add('disabled');
+        deferredInstallPrompt = null;
+    });
+}
+function installPwa(e) {
+    e.preventDefault();
+    if (isStandalone) {
+        window.open(window.location.href, '_blank');
+        return;
+    }
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(function() { deferredInstallPrompt = null; });
+}
+function shareSite(e) {
+    e.preventDefault();
+    var url = window.location.origin + window.location.pathname;
+    if (navigator.share) {
+        navigator.share({ title: document.title, url: url });
+    } else {
+        navigator.clipboard.writeText(url);
+        var btn = document.getElementById('share-btn');
+        var orig = btn.innerHTML;
+        btn.innerHTML = '&#10003; Copied';
+        setTimeout(function() { btn.innerHTML = orig; }, 1500);
+    }
 }
 </script>
 </body>
