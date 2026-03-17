@@ -34,68 +34,6 @@
     padding: 0 12px 0 2px;
 }
 
-/* Notes pane — pushes content aside like DevTools */
-.notes-pane {
-    display: none;
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    background: var(--color-settings-bg);
-    z-index: 2001;
-    overflow-y: auto;
-    border-left: 1px solid var(--color-settings-border);
-    box-sizing: border-box;
-    width: 100%;
-}
-
-@media (min-width: 768px) {
-    .notes-pane {
-        max-width: 420px;
-    }
-
-    body.notes-open {
-        margin-right: 420px;
-        transition: margin-right 0.2s ease;
-    }
-
-    body.notes-open .fab-group {
-        right: 444px;
-        transition: right 0.2s ease;
-    }
-
-    /* Left-positioned menu: don't shift when notes pane opens */
-    [data-menu-position="bottom-left"] body.notes-open .fab-group,
-    [data-menu-position="top-left"] body.notes-open .fab-group {
-        right: auto;
-        transition: none;
-    }
-}
-
-.notes-pane.active {
-    display: block;
-}
-
-.notes-pane-header {
-    display: flex;
-    align-items: center;
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--color-settings-border);
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    background: var(--color-settings-bg);
-    z-index: 1;
-}
-
-.notes-pane-header h3 {
-    margin: 0;
-    flex-grow: 1;
-    text-align: left;
-    font-size: 1.1em;
-    font-weight: 600;
-    color: var(--color-settings-title);
-}
 
 .notes-pane-content {
     padding: 20px;

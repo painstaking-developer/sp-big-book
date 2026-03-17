@@ -46,22 +46,17 @@
     <title>Alcoholics Anonymous</title>
 </head>
 <body>
-<!-- Notes Pane -->
-<div id="notes-pane" class="notes-pane">
-    <div class="notes-pane-header">
-        <span class="settings-close" onclick="notes.closePane()">&times;</span>
-        <h3>Notes</h3>
+<!-- Side Pane -->
+<div id="side-pane" class="side-pane">
+    <div class="pane-header">
+        <button class="pane-tab" id="tab-notes" onclick="switchPaneTab('notes')">Notes</button>
+        <button class="pane-tab" id="tab-settings" onclick="switchPaneTab('settings')">Settings</button>
+        <span class="settings-close" onclick="closeSidePane()">&times;</span>
     </div>
-    <div id="notes-pane-content" class="notes-pane-content">
+    <div id="pane-notes-body" class="pane-body">
+        <div id="notes-pane-content" class="notes-pane-content"></div>
     </div>
-</div>
-<!-- Settings Pane -->
-<div id="settings-overlay" class="settings-overlay" onclick="closeSettingsPane()"></div>
-<div id="settings-pane" class="settings-pane">
-    <div class="settings-pane-header">
-        <span class="settings-close" onclick="closeSettingsPane()">&times;</span>
-        <h3>Settings</h3>
-    </div>
+    <div id="pane-settings-body" class="pane-body" style="display:none">
     <div class="settings-pane-content">
         <div class="settings-section">
             <div class="settings-section-label">Appearance</div>
@@ -133,10 +128,12 @@
             }
         </script>
     </div>
+    </div>
+    </div>
 </div>
 <div class="about-bar">
     <a href="#about" class="about-bar-btn">&#9758; Feature guide</a>
-    <a href="#" class="about-bar-btn disabled" id="install-btn" onclick="installPwa(event)">&#11015; Install app</a>
+    <a href="#" class="about-bar-btn disabled" id="install-btn" onclick="installPwa(event)" style="display:none">&#11015; Install app</a>
     <a href="#" class="about-bar-btn" id="share-btn" onclick="shareSite(event)">&#8599; Share</a>
 </div>
 <article>
@@ -13890,7 +13887,7 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Everything is stored in your browser. No account needed, nothing leaves your device.</p>
-                <p>Generated 2026-03-16 23:19:32.487164. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-16 23:50:12.033067. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>
@@ -13908,27 +13905,18 @@ if ('serviceWorker' in navigator) {
 }
 var deferredInstallPrompt = null;
 var installBtn = document.getElementById('install-btn');
-var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-if (isStandalone) {
-    installBtn.innerHTML = '&#127758; View on the web';
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredInstallPrompt = e;
     installBtn.classList.remove('disabled');
-} else {
-    window.addEventListener('beforeinstallprompt', function(e) {
-        e.preventDefault();
-        deferredInstallPrompt = e;
-        installBtn.classList.remove('disabled');
-    });
-    window.addEventListener('appinstalled', function() {
-        installBtn.classList.add('disabled');
-        deferredInstallPrompt = null;
-    });
-}
+    installBtn.style.display = '';
+});
+window.addEventListener('appinstalled', function() {
+    installBtn.style.display = 'none';
+    deferredInstallPrompt = null;
+});
 function installPwa(e) {
     e.preventDefault();
-    if (isStandalone) {
-        window.open(window.location.href, '_blank');
-        return;
-    }
     if (!deferredInstallPrompt) return;
     deferredInstallPrompt.prompt();
     deferredInstallPrompt.userChoice.then(function() { deferredInstallPrompt = null; });

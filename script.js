@@ -35,23 +35,35 @@ function highlightParagraph() {
     }
 }
 
-function openSettingsPane() {
-    document.getElementById('settings-overlay').classList.add('active');
-    document.getElementById('settings-pane').classList.add('active');
-    document.body.style.overflow = 'hidden';
+function switchPaneTab(tab) {
+    document.getElementById('pane-notes-body').style.display = tab === 'notes' ? '' : 'none';
+    document.getElementById('pane-settings-body').style.display = tab === 'settings' ? '' : 'none';
+    document.getElementById('tab-notes').classList.toggle('active', tab === 'notes');
+    document.getElementById('tab-settings').classList.toggle('active', tab === 'settings');
+    if (tab === 'notes') {
+        const content = document.getElementById('notes-pane-content');
+        if (content && !content.hasChildNodes() && typeof notes !== 'undefined') {
+            notes.renderAllNotes();
+        }
+    }
 }
 
-function closeSettingsPane() {
-    document.getElementById('settings-overlay').classList.remove('active');
-    document.getElementById('settings-pane').classList.remove('active');
-    document.body.style.overflow = '';
+function openSidePane(tab) {
+    switchPaneTab(tab);
+    document.getElementById('side-pane').classList.add('active');
+    document.body.classList.add('notes-open');
 }
+
+function closeSidePane() {
+    document.getElementById('side-pane').classList.remove('active');
+    document.body.classList.remove('notes-open');
+}
+
+function openSettingsPane() { openSidePane('settings'); }
+function closeSettingsPane() { closeSidePane(); }
 
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeSettingsPane();
-        notes.closePane();
-    }
+    if (e.key === 'Escape') closeSidePane();
 });
 
 function toggleDarkMode() {
@@ -87,6 +99,7 @@ function setMenuPosition(position) {
         document.documentElement.setAttribute('data-menu-position', position);
     }
     updateMenuPositionToggle(position);
+    updateFabTop();
 }
 
 function updateMenuPositionToggle(position) {
@@ -125,8 +138,19 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuPosition = localStorage.getItem('menuPosition') || 'bottom-right';
     updateMenuPositionToggle(menuPosition);
     applyZoom();
+    updateFabTop();
 });
 window.addEventListener("hashchange", highlightParagraph);
+
+function updateFabTop() {
+    const pos = localStorage.getItem('menuPosition') || 'bottom-right';
+    if (pos !== 'top-right' && pos !== 'top-left') return;
+    const firstHeader = document.querySelector('article header');
+    if (!firstHeader) return;
+    const bottom = firstHeader.getBoundingClientRect().bottom;
+    const top = Math.max(39, (bottom + 8) * 0.5 + 10);
+    document.documentElement.style.setProperty('--fab-top', top + 'px');
+}
 
 window.addEventListener('scroll', function() {
     const headers = document.querySelectorAll('header');
@@ -138,6 +162,7 @@ window.addEventListener('scroll', function() {
             header.classList.remove('shadow');
         }
     });
+    updateFabTop();
 });
 
 // Click outside highlighted text clears the highlight without changing URL

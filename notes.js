@@ -368,16 +368,14 @@ const notesModule = {
   },
 
   openPane() {
-    document.getElementById('notes-pane').classList.add('active');
-    document.body.classList.add('notes-open');
+    openSidePane('notes');
     const label = document.getElementById('fab-notes-label');
     if (label) { label.classList.remove('active'); label.textContent = ''; }
     if (typeof updateFabExpanded === 'function') updateFabExpanded();
   },
 
   closePane() {
-    document.getElementById('notes-pane').classList.remove('active');
-    document.body.classList.remove('notes-open');
+    closeSidePane();
     currentNoteElementId = '';
     currentNoteContent = '';
     if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
@@ -529,7 +527,7 @@ const notesModule = {
     if (previousElement) {
         const elementId = previousElement.id;
         // If pane is already open for this element, close it
-        if (document.getElementById('notes-pane').classList.contains('active') && currentNoteElementId === elementId) {
+        if (document.getElementById('side-pane').classList.contains('active') && currentNoteElementId === elementId) {
             notesModule.closePane();
             return;
         }
