@@ -45,9 +45,7 @@ var bookmarks = (function () {
     function _getAll() {
         var stored = _load();
         if (stored !== null) return stored;
-        var defaults = _generateDefaults();
-        _save(defaults);
-        return defaults;
+        return [];
     }
 
     function _uid() {
