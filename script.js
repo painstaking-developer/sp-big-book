@@ -6,12 +6,17 @@ function highlightParagraph() {
     if (highlighted) {
         highlighted.classList.remove('highlight');
         notes.highlightRemoved(highlighted);
+        if (typeof bookmarks !== 'undefined') bookmarks.setCurrentHighlight(null);
     }
 
     // Highlight the new paragraph
     const hash = window.location.hash;
     if (hash) {
-        const element = document.querySelector(hash);
+        let element = null;
+        try { element = document.querySelector(hash); } catch (e) {
+            // querySelector fails for IDs starting with a digit; fall back to getElementById
+            element = document.getElementById(hash.slice(1));
+        }
         if (element) {
             element.classList.add('highlight');
             notes.highlightAdded(element);
@@ -63,7 +68,10 @@ function openSettingsPane() { openSidePane('settings'); }
 function closeSettingsPane() { closeSidePane(); }
 
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeSidePane();
+    if (e.key === 'Escape') {
+        closeSidePane();
+        if (typeof bookmarks !== 'undefined') bookmarks.hideAddDialog();
+    }
 });
 
 function toggleDarkMode() {
@@ -179,6 +187,7 @@ document.addEventListener('click', function(event) {
 
     highlighted.classList.remove('highlight');
     notes.highlightRemoved(highlighted);
+    if (typeof bookmarks !== 'undefined') bookmarks.setCurrentHighlight(null);
 });
 
 document.addEventListener('dblclick', function (event) {
@@ -214,6 +223,7 @@ document.addEventListener('dblclick', function (event) {
         history.pushState(null, '', '#' + elementId);
         highlightParagraph();
         notes.closePane();
+        if (typeof bookmarks !== 'undefined') bookmarks.setCurrentHighlight('#' + elementId);
 
         // Copy the target URL (with the element ID) to the clipboard
         navigator.clipboard.writeText(targetUrl)

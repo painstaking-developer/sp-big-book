@@ -1,0 +1,238 @@
+/* ── Bookmark page rows ── */
+
+/* Bookmark rows: same dots as index but centered vertically (not fixed 14px) */
+.bookmark-row .index_chapter_section {
+    background-position: 0 50%;
+    height: auto;
+    min-height: 25px;
+}
+
+/* Reset default h4 margins so rows don't balloon in height */
+.bookmark-row h4 {
+    margin: 0;
+}
+
+/* Dots spacer: transparent flex-1 gap — dots come from parent background-image */
+.bm-dots {
+    flex: 1;
+    min-width: 8px;
+}
+
+/* ── Edit mode row layout ── */
+
+/* Hide the dots spacer — name input expands into that space */
+.bm-edit .bm-dots {
+    display: none;
+}
+
+/* Chapter-name h4 fills all remaining space */
+.bm-edit .chapter-name {
+    flex: 1;
+    min-width: 0;
+    padding-right: 8px;
+}
+
+/* Input fills its container */
+.bm-edit .bm-name-edit {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Move buttons — left side, background masks dots */
+.bm-move-btns {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+    background: var(--color-bg-surface);
+    padding-right: 5px;
+    flex-shrink: 0;
+}
+
+.bm-move-btn {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 3px;
+    background: var(--color-settings-card-bg);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.6em;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+    line-height: 1;
+}
+
+.bm-move-btn:hover:not(:disabled) {
+    background: var(--color-settings-card-hover-bg);
+    color: var(--color-settings-title);
+}
+
+.bm-move-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+/* Inline name edit */
+.bm-name-edit {
+    border: none;
+    border-bottom: 1px dashed var(--color-border);
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: var(--color-text);
+    padding: 0;
+    min-width: 60px;
+}
+
+.bm-name-edit:focus {
+    border-bottom-color: var(--color-toggle-active);
+}
+
+/* Delete button — right side, background masks dots */
+.bm-delete-wrap {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-bg-surface);
+    padding-left: 6px;
+    flex-shrink: 0;
+}
+
+.bm-delete-btn {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 3px;
+    background: var(--color-settings-card-bg);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.6em;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+    line-height: 1;
+}
+
+.bm-delete-btn:hover {
+    background: var(--color-settings-card-hover-bg);
+    color: var(--color-notes-delete);
+}
+
+/* Edit/Done button in header nav */
+a.bm-edit-link {
+    font-size: 0.78em;
+    white-space: nowrap;
+}
+
+
+/* ── Add bookmark overlay ── */
+
+.bookmark-add-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--color-bg-overlay);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-add-overlay.active {
+    display: flex;
+}
+
+.bookmark-add-dialog {
+    background: var(--color-settings-bg);
+    border: 1px solid var(--color-settings-border);
+    border-radius: 14px;
+    padding: 22px 24px;
+    width: min(320px, 88vw);
+    box-shadow: 0 8px 32px var(--color-shadow);
+}
+
+.bookmark-add-title {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--color-settings-title);
+    margin-bottom: 12px;
+}
+
+.bookmark-name-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 11px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    background: var(--color-settings-card-bg);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.bookmark-name-input:focus {
+    border-color: var(--color-settings-card-hover-border);
+}
+
+.bookmark-add-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: flex-end;
+}
+
+.notes-btn-primary {
+    background: var(--color-toggle-active);
+    color: #fff;
+    border-color: var(--color-toggle-active);
+}
+
+.notes-btn-primary:hover {
+    background: var(--color-notes-btn-hover);
+    border-color: var(--color-notes-btn-hover);
+    color: #fff;
+}
+
+/* ── FAB bookmark button (slides in when a sentence is highlighted) ── */
+
+.fab-btn-bookmark {
+    overflow: hidden;
+    max-width: 0;
+    padding: 0;
+    opacity: 0;
+    transition: max-width 0.2s ease, opacity 0.15s ease;
+    font-size: 0.95em;
+}
+
+.fab-btn-bookmark.visible {
+    max-width: 44px;
+    opacity: 1;
+}
+
+#fab-bookmark-divider {
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    transition: max-width 0.2s ease, opacity 0.15s ease;
+}
+
+#fab-bookmark-divider.visible {
+    max-width: 1px;
+    opacity: 1;
+}
+
+/* ── Print ── */
+@media print {
+    .bm-move-btns,
+    .bm-delete-wrap,
+    .bookmark-add-overlay {
+        display: none !important;
+    }
+}

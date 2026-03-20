@@ -23,6 +23,7 @@
     <link rel="apple-touch-icon" href="image.jpg">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="notes.css">
+    <link rel="stylesheet" href="bookmarks.css">
     <link rel="stylesheet" href="highlight.css">
     <script>
         (function() {
@@ -41,6 +42,7 @@
         })();
     </script>
     <script src="notes.js" defer></script>
+    <script src="bookmarks.js" defer></script>
     <script src="highlight.js" defer></script>
     <script src="script.js" defer></script>
     <title>Alcoholics Anonymous</title>
@@ -136,6 +138,21 @@
     <a href="#" class="about-bar-btn disabled" id="install-btn" onclick="installPwa(event)" style="display:none">&#11015; Install app</a>
     <a href="#" class="about-bar-btn" id="share-btn" onclick="shareSite(event)">&#8599; Share</a>
 </div>
+<article>
+    <section id="bookmarks-section">
+        <header>
+            <nav>
+                <span class="page-link" style="min-width:2em"></span>
+                <a class="chapter-title page-link" href="#bookmarks-section">Bookmarks</a>
+                <a class="page-link bm-edit-link" id="bookmarks-edit-btn" href="#" onclick="bookmarks.toggleEditMode(event)">&#9998; Edit</a>
+            </nav>
+        </header>
+        <div class="page-content">
+            <h1>Bookmarks</h1>
+            <div id="bookmarks-list"></div>
+        </div>
+    </section>
+</article>
 <article>
     <section>
         <header>
@@ -13887,7 +13904,7 @@ I remember this, I can see I’ve never had it so good. </span>
             </div>
             <div class="about-footer">
                 <p>Everything is stored in your browser. No account needed, nothing leaves your device.</p>
-                <p>Generated 2026-03-16 23:50:12.033067. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+                <p>Generated 2026-03-20 00:25:51.811432. Questions or requests? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>
@@ -13896,8 +13913,21 @@ I remember this, I can see I’ve never had it so good. </span>
     <div id="hl-fab-colors" class="hl-fab-colors"></div>
     <span id="fab-notes-label" class="fab-notes-label" onclick="handleFabNotesClick()"></span>
     <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes">&#10000;</button>
+    <div class="fab-divider" id="fab-bookmark-divider"></div>
+    <button class="fab-btn fab-btn-bookmark" id="fab-bookmark-btn" onclick="bookmarks.showAddDialog()" aria-label="Bookmark">&#9733;</button>
     <div class="fab-divider"></div>
     <button class="fab-btn fab-btn-settings" onclick="openSettingsPane()" aria-label="Settings">&#9881;&#65038;</button>
+</div>
+<!-- Add bookmark dialog -->
+<div id="bookmark-add-overlay" class="bookmark-add-overlay">
+    <div class="bookmark-add-dialog">
+        <div class="bookmark-add-title">Add Bookmark</div>
+        <input type="text" id="bookmark-name-input" class="bookmark-name-input" placeholder="Name this bookmark&#8230;" autocomplete="off" />
+        <div class="bookmark-add-actions">
+            <button class="notes-btn" onclick="bookmarks.hideAddDialog()">Cancel</button>
+            <button class="notes-btn notes-btn-primary" onclick="bookmarks.confirmAdd()">Save</button>
+        </div>
+    </div>
 </div>
 <script>
 if ('serviceWorker' in navigator) {

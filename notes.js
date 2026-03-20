@@ -401,6 +401,9 @@ const notesModule = {
 
     const text = document.createElement('div');
     text.className = 'notes-quote-text';
+    if (element && element.classList.contains('highlight')) {
+        text.classList.add('highlight');
+    }
     text.textContent = quoteText;
     quoteBox.appendChild(text);
 
