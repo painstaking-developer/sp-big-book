@@ -34,7 +34,7 @@
     <script src="bookmarks.js" defer></script>
     <script src="highlight.js" defer></script>
     <script src="script.js" defer></script>
-    <title>Settings &#8211; Alcoholics Anonymous</title>
+    <title>Guide &#8211; Alcoholics Anonymous</title>
 </head>
 <body>
 <!-- Side Pane (Notes + Bookmarks) -->
@@ -578,79 +578,318 @@
 </div>
 <div class="about-bar">
     <a href="index.html" class="about-bar-btn">&#8592; Back to book</a>
+    <a href="#" class="about-bar-btn" id="share-btn" onclick="shareSite(event)">&#8599; Share</a>
 </div>
+<!-- Hero -->
 <article>
-    <section id="settings-top">
-        <div class="page-content about-page settings-page">
-            <div class="settings-section">
-                <div class="settings-section-label">Appearance</div>
-                <div class="settings-zoom-card">
-                    <button class="settings-zoom-btn" onclick="adjustZoom(-10)">&#8722;</button>
-                    <div class="settings-zoom-label">
-                        <div class="settings-card-title">Zoom</div>
-                        <div class="settings-card-subtitle zoom-level-display">100%</div>
-                    </div>
-                    <button class="settings-zoom-btn" onclick="adjustZoom(10)">&#43;</button>
+    <section id="guide-top">
+        <header>
+            <nav>
+                <a class="page-link" href="index.html">&#8592; Book</a>
+                <span class="chapter-title page-link">Feature Guide</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <h1 class="about-heading">How to use this app</h1>
+            <p class="about-intro">Try each feature live.</p>
+            <a href="#feature-navigate" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#8801;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Navigate</div>
+                    <p class="feature-desc">Jump between chapters and pages</p>
                 </div>
-                <div class="settings-card" onclick="toggleDarkMode()">
-                    <div class="settings-card-icon" id="theme-icon">&#9728;&#65038;</div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Dark Mode</div>
-                        <div class="settings-card-subtitle">Switch between light and dark themes</div>
-                    </div>
-                    <div class="theme-toggle-track" id="dark-mode-track"></div>
+            </a>
+            <a href="#feature-share" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#10022;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Select &amp; Share</div>
+                    <p class="feature-desc">Deep-link any sentence to anyone</p>
                 </div>
-                <div class="settings-font-switch">
-                    <button class="settings-font-option settings-font-option-serif active" data-font="serif" onclick="setFont('serif')">Serif</button>
-                    <button class="settings-font-option settings-font-option-sans" data-font="sans-serif" onclick="setFont('sans-serif')">Sans Serif</button>
+            </a>
+            <a href="#feature-highlight" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9899;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Highlight</div>
+                    <p class="feature-desc">Mark passages with five colors</p>
                 </div>
-                <div class="settings-section-label" style="margin-top: 20px;">Menu Position</div>
-                <p class="settings-description">Choose which corner to place the floating menu.</p>
-                <div class="settings-position-picker">
-                    <button class="settings-position-btn active" data-position="top-left" onclick="setMenuPosition('top-left')"><span class="settings-position-dot"></span></button>
-                    <button class="settings-position-btn" data-position="top-right" onclick="setMenuPosition('top-right')"><span class="settings-position-dot"></span></button>
-                    <button class="settings-position-btn" data-position="bottom-left" onclick="setMenuPosition('bottom-left')"><span class="settings-position-dot"></span></button>
-                    <button class="settings-position-btn" data-position="bottom-right" onclick="setMenuPosition('bottom-right')"><span class="settings-position-dot"></span></button>
+            </a>
+            <a href="#feature-bookmarks" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9733;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Bookmarks</div>
+                    <p class="feature-desc">Save and name your place in the text</p>
+                </div>
+            </a>
+            <a href="#feature-notes" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#10000;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Notes</div>
+                    <p class="feature-desc">Write annotations on any sentence</p>
+                </div>
+            </a>
+            <a href="#feature-appearance" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9728;&#65038;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Appearance</div>
+                    <p class="feature-desc">Theme, font, and zoom</p>
+                </div>
+            </a>
+            <a href="#feature-search" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#8981;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Search</div>
+                    <p class="feature-desc">Find any word or passage instantly</p>
+                </div>
+            </a>
+            <a href="#feature-settings" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9881;&#65038;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Settings &amp; Backup</div>
+                    <p class="feature-desc">Export, import, and sync your data</p>
+                </div>
+            </a>
+            <div class="about-footer">
+                <p>Everything stays in your browser &#8212; no account needed.</p>
+                <p>Generated 2026-03-22 22:26:41.186697. Questions? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Navigate -->
+<article>
+    <section id="feature-navigate">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Navigate</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Tap a chapter to jump there.</p>
+            <div class="feature-demo">
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Preface">Preface</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xi</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_First_Edition">Foreword To First Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xiii</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Second_Edition">Foreword To Second Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xv</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Third_Edition">Foreword To Third Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xxii</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Fourth_Edition">Foreword To Fourth Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xxiii</h4>
                 </div>
             </div>
-            <div class="settings-section">
-                <div class="settings-section-label">Notes</div>
-                <p class="settings-description">Notes are stored locally in your browser. Use these tools to back up or transfer your notes.</p>
-                <div class="settings-card" onclick="notes.exportNotesAsMarkdown()">
-                    <div class="settings-card-icon">&#8615;</div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Export Notes</div>
-                        <div class="settings-card-subtitle">Download all notes as a Markdown file</div>
-                    </div>
-                </div>
-                <div class="settings-card" onclick="notes.importNotesFromMarkdown()">
-                    <div class="settings-card-icon">&#8613;</div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Import Notes</div>
-                        <div class="settings-card-subtitle">Load notes from a previously exported file</div>
-                    </div>
-                </div>
-                <div id="sync-folder-card" class="settings-card" onclick="notes.syncToFolder()" style="display:none;">
-                    <div class="settings-card-icon">&#8644;</div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Sync to Folder</div>
-                        <div class="settings-card-subtitle">Auto-save notes as files to a local folder</div>
-                    </div>
-                </div>
-                <div id="sync-status" class="settings-status" style="display:none;">
-                    <div class="settings-status-indicator"></div>
-                    <div class="settings-status-text">
-                        <span>Folder sync active</span>
-                        <div id="sync-folder-name" class="settings-status-folder"></div>
-                    </div>
-                    <button class="settings-status-action" onclick="notes.disconnectFolder()">Disconnect</button>
-                </div>
-                <script>
-                    if ('showDirectoryPicker' in window) {
-                        document.getElementById('sync-folder-card').style.display = '';
-                    }
-                </script>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Select & Share -->
+<article>
+    <section id="feature-share">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Select &amp; Share</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Double-click any sentence.</p>
+            <div class="feature-demo">
+                <span id="share-s1" class="feature-demo-text">This is the first sentence of a sample passage.</span>
+                <span id="share-s2" class="feature-demo-text"> This is the second sentence, which continues the thought.</span>
+                <span id="share-s3" class="feature-demo-text"> And this is the third sentence, completing the paragraph.</span>
+                <p class="feature-desc" style="margin-top:8px"><span id="share-feedback" style="opacity:0;color:#6c5ce7;font-weight:600;font-style:normal;transition:opacity 0.25s">&#10003; Link copied!</span></p>
             </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Highlight -->
+<article>
+    <section id="feature-highlight">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Highlight</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Drag to select text, then tap a color in the menu below.</p>
+            <div class="feature-demo">
+                <span id="hl-s1" class="feature-demo-text">This is a sample passage you can highlight.</span>
+                <span id="hl-s2" class="feature-demo-text"> Drag across any of these words, then pick a color from the floating menu.</span>
+                <span id="hl-s3" class="feature-demo-text"> Your highlights are saved automatically.</span>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Bookmarks -->
+<article>
+    <section id="feature-bookmarks">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Bookmarks</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Tap the button to add a bookmark.</p>
+            <div class="feature-demo">
+                <button class="feature-action" onclick="bookmarks.showAddDialog()">&#9733; Add bookmark</button>
+            </div>
+            <p class="feature-desc" style="margin-top:12px">Bookmarks appear at the top of the book. Tap &#9998; Edit in the header to rename or delete them.</p>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Notes -->
+<article>
+    <section id="feature-notes">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Notes</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Double-click a sentence, then tap the pen icon below.</p>
+            <div class="feature-demo">
+                <span id="notes-s1" class="feature-demo-text">Double-click this sentence to select it.</span>
+                <span id="notes-s2" class="feature-demo-text"> Then tap the pen icon in the floating menu to add a note.</span>
+                <span id="notes-s3" class="feature-demo-text"> Each sentence can have its own annotation.</span>
+            </div>
+            <button class="feature-action" onclick="notes.renderAllNotes()">&#128196; View all notes</button>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Appearance -->
+<article>
+    <section id="feature-appearance">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Appearance</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Try the controls below.</p>
+            <div class="feature-card">
+                <div class="feature-icon">&#9728;&#65038;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Dark Mode</div>
+                    <button class="feature-action" onclick="toggleDarkMode()">Toggle theme</button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">T</div>
+                <div class="feature-body">
+                    <div class="feature-title">Font</div>
+                    <button class="feature-action" onclick="setFont('serif')">Serif</button>
+                    <button class="feature-action" onclick="setFont('sans-serif')">Sans Serif</button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">Aa</div>
+                <div class="feature-body">
+                    <div class="feature-title">Zoom</div>
+                    <div class="feature-zoom">
+                        <button class="feature-zoom-btn" onclick="adjustZoom(-10)">&#8722;</button>
+                        <span class="zoom-level-display">100%</span>
+                        <button class="feature-zoom-btn" onclick="adjustZoom(10)">&#43;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Search -->
+<article>
+    <section id="feature-search">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Search</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Press <kbd style="font-size:0.9em;padding:2px 7px;background:var(--color-settings-icon-bg);border:1px solid var(--color-border-light);border-radius:4px">Ctrl</kbd> + <kbd style="font-size:0.9em;padding:2px 7px;background:var(--color-settings-icon-bg);border:1px solid var(--color-border-light);border-radius:4px">F</kbd> to search the full text.</p>
+            <div class="feature-card">
+                <div class="feature-icon">&#8981;</div>
+                <div class="feature-body">
+                    <p class="feature-desc">Windows / Linux: <kbd>Ctrl</kbd> + <kbd>F</kbd></p>
+                    <p class="feature-desc">Mac: <kbd>&#8984;</kbd> + <kbd>F</kbd></p>
+                    <p class="feature-desc">iPhone: Share &#8594; <em>Find on Page</em></p>
+                    <p class="feature-desc">Android: Chrome menu &#8942; &#8594; <em>Find in page</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Settings & Backup -->
+<article>
+    <section id="feature-settings">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Settings &amp; Backup</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Back up or restore your notes.</p>
+            <div class="feature-card">
+                <div class="feature-icon">&#8615;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Export &amp; Import</div>
+                    <button class="feature-action" onclick="notes.exportNotesAsMarkdown()">&#8615; Export notes</button>
+                    <button class="feature-action" onclick="notes.importNotesFromMarkdown()">&#8613; Import notes</button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#8644;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Folder Sync</div>
+                    <p class="feature-desc">Chrome / Edge desktop: auto-save notes as files to a local folder.</p>
+                </div>
+            </div>
+            <a class="feature-action" href="settings.html">&#9881;&#65038; Open settings</a>
         </div>
     </section>
 </article>
@@ -690,6 +929,16 @@ function shareSite(e) {
         setTimeout(function() { btn.innerHTML = orig; }, 1500);
     }
 }
+window.addEventListener('hashchange', function() {
+    var hash = window.location.hash;
+    if (/^#(share|hl|notes)-s\d+$/.test(hash)) {
+        var fb = document.getElementById('share-feedback');
+        if (fb) {
+            fb.style.opacity = '1';
+            setTimeout(function() { fb.style.opacity = '0'; }, 2200);
+        }
+    }
+});
 </script>
 </body>
 </html>

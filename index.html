@@ -79,7 +79,7 @@
         <div class="left-nav-body">
             <nav class="left-nav-section">
                 <a class="left-nav-item" href="index.html#Cover">
-                    <span class="left-nav-icon">&#128366;</span>
+                    <span class="left-nav-icon">𝓐</span>
                     <span class="left-nav-text">Book Text</span>
                 </a>
                 <a class="left-nav-item" href="#" onclick="showLeftPaneIndex(); return false;">
@@ -96,6 +96,18 @@
                 </a>
             </nav>
             <nav class="left-nav-footer">
+                <a class="left-nav-item" href="features.html">
+                    <span class="left-nav-icon">&#9758;</span>
+                    <span class="left-nav-text">Feature guide</span>
+                </a>
+                <a class="left-nav-item" href="about.html">
+                    <span class="left-nav-icon">&#9432;</span>
+                    <span class="left-nav-text">About</span>
+                </a>
+                <a class="left-nav-item" href="settings.html">
+                    <span class="left-nav-icon">&#9881;&#65038;</span>
+                    <span class="left-nav-text">Settings</span>
+                </a>
                 <a class="left-nav-item" href="#" onclick="shareApp(event, this); return false;">
                     <span class="left-nav-icon">&#8599;</span>
                     <span class="left-nav-text">Share this app</span>
@@ -103,14 +115,6 @@
                 <a class="left-nav-item" id="nav-install-item" href="#" onclick="installPwa(event); return false;" style="display:none">
                     <span class="left-nav-icon">&#11015;</span>
                     <span class="left-nav-text">Install as app</span>
-                </a>
-                <a class="left-nav-item" href="settings.html">
-                    <span class="left-nav-icon">&#9881;&#65038;</span>
-                    <span class="left-nav-text">App settings</span>
-                </a>
-                <a class="left-nav-item" href="about.html">
-                    <span class="left-nav-icon">&#9758;</span>
-                    <span class="left-nav-text">Feature guide</span>
                 </a>
             </nav>
         </div>
@@ -582,11 +586,6 @@
             </div>
         </div>
     </div>
-</div>
-<div class="about-bar">
-    <a href="about.html" class="about-bar-btn">&#9758; Feature guide</a>
-    <a href="#" class="about-bar-btn disabled" id="install-btn" onclick="installPwa(event)" style="display:none">&#11015; Install app</a>
-    <a href="#" class="about-bar-btn" id="share-btn" onclick="shareSite(event)">&#8599; Share</a>
 </div>
 <article>
     <section>
@@ -14296,14 +14295,6 @@ function shareSite(e) {
         setTimeout(function() { btn.innerHTML = orig; }, 1500);
     }
 }
-var installBtn = document.getElementById('install-btn');
-window.addEventListener('beforeinstallprompt', function() {
-    installBtn.classList.remove('disabled');
-    installBtn.style.display = '';
-});
-window.addEventListener('appinstalled', function() {
-    installBtn.style.display = 'none';
-});
 </script>
 </body>
 </html>

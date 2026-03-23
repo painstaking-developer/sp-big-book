@@ -206,8 +206,9 @@ var bookmarks = (function () {
                 nameH4.appendChild(nameInput);
             } else {
                 var nameLink = document.createElement('a');
-                nameLink.href = bm.anchor;
+                nameLink.href = 'index.html' + bm.anchor;
                 nameLink.textContent = bm.name;
+                nameLink.addEventListener('click', function () { closeSidePane(); });
                 nameH4.appendChild(nameLink);
             }
             section.appendChild(nameH4);
@@ -221,9 +222,10 @@ var bookmarks = (function () {
             var refH4 = document.createElement('h4');
             refH4.className = 'page-number';
             var refLink = document.createElement('a');
-            refLink.href = bm.anchor;
+            refLink.href = 'index.html' + bm.anchor;
             refLink.className = 'page-link';
             refLink.textContent = bm.ref || '';
+            refLink.addEventListener('click', function () { closeSidePane(); });
             refH4.appendChild(refLink);
             section.appendChild(refH4);
 
