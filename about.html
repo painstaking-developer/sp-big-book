@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Alcoholics Anonymous">
+    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+    <link rel="apple-touch-icon" href="image.jpg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="notes.css">
+    <link rel="stylesheet" href="bookmarks.css">
+    <link rel="stylesheet" href="highlight.css">
+    <script>
+        (function() {
+            var saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+            var font = localStorage.getItem('font');
+            if (font === 'sans-serif') {
+                document.documentElement.setAttribute('data-font', 'sans-serif');
+            }
+            var menuPos = localStorage.getItem('menuPosition') || 'top-left';
+            if (menuPos !== 'bottom-right') {
+                document.documentElement.setAttribute('data-menu-position', menuPos);
+            }
+        })();
+    </script>
+    <script src="notes.js" defer></script>
+    <script src="bookmarks.js" defer></script>
+    <script src="highlight.js" defer></script>
+    <script src="script.js" defer></script>
+    <title>Guide &#8211; Alcoholics Anonymous</title>
+</head>
+<body>
+<!-- Side Pane (Notes + Bookmarks) -->
+<div id="side-pane" class="side-pane" data-slide-from="right">
+    <div class="pane-header">
+        <button class="pane-tab" id="tab-notes" onclick="switchPaneTab('notes')">Notes</button>
+        <button class="pane-tab" id="tab-bookmarks" onclick="switchPaneTab('bookmarks')">Bookmarks</button>
+        <span class="settings-close" onclick="closeSidePane()">&times;</span>
+    </div>
+    <div id="pane-notes-body" class="pane-body">
+        <div id="notes-pane-content" class="notes-pane-content"></div>
+    </div>
+    <div id="pane-bookmarks-body" class="pane-body" style="display:none">
+        <div class="settings-pane-content">
+            <div class="pane-bookmarks-toolbar">
+                <a class="bm-edit-link" id="bookmarks-edit-btn" href="#" onclick="bookmarks.toggleEditMode(event)">&#9998; Edit</a>
+            </div>
+            <p class="notes-empty" id="bookmarks-empty" style="display:none">No bookmarks yet.</p>
+            <div id="bookmarks-list"></div>
+        </div>
+    </div>
+</div>
+<!-- Left Pane (Nav Menu + Index) -->
+<div id="left-pane" class="side-pane" data-slide-from="left">
+    <!-- Nav view -->
+    <div id="left-pane-nav" class="left-pane-view">
+        <div class="pane-header">
+            <span class="pane-header-title">Alcoholics Anonymous</span>
+            <span class="settings-close" onclick="closeLeftPane()">&times;</span>
+        </div>
+        <div class="left-nav-body">
+            <nav class="left-nav-section">
+                <a class="left-nav-item" href="index.html#Cover">
+                    <span class="left-nav-icon">&#128366;</span>
+                    <span class="left-nav-text">Book Text</span>
+                </a>
+                <a class="left-nav-item" href="#" onclick="showLeftPaneIndex(); return false;">
+                    <span class="left-nav-icon">&#9783;</span>
+                    <span class="left-nav-text">Index</span>
+                </a>
+                <a class="left-nav-item" href="#" onclick="closeLeftPane(); openSidePane('bookmarks'); return false;">
+                    <span class="left-nav-icon">&#9733;</span>
+                    <span class="left-nav-text">Bookmarks</span>
+                </a>
+                <a class="left-nav-item" href="#" onclick="closeLeftPane(); openSidePane('notes'); return false;">
+                    <span class="left-nav-icon">&#9998;</span>
+                    <span class="left-nav-text">Notes</span>
+                </a>
+            </nav>
+            <nav class="left-nav-footer">
+                <a class="left-nav-item" href="#" onclick="shareApp(event, this); return false;">
+                    <span class="left-nav-icon">&#8599;</span>
+                    <span class="left-nav-text">Share this app</span>
+                </a>
+                <a class="left-nav-item" id="nav-install-item" href="#" onclick="installPwa(event); return false;" style="display:none">
+                    <span class="left-nav-icon">&#11015;</span>
+                    <span class="left-nav-text">Install as app</span>
+                </a>
+                <a class="left-nav-item" href="settings.html">
+                    <span class="left-nav-icon">&#9881;&#65038;</span>
+                    <span class="left-nav-text">App settings</span>
+                </a>
+                <a class="left-nav-item" href="about.html">
+                    <span class="left-nav-icon">&#9758;</span>
+                    <span class="left-nav-text">Feature guide</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+    <!-- Index view -->
+    <div id="left-pane-index" class="left-pane-view" style="display:none">
+        <div class="pane-header">
+            <button class="pane-back-btn" onclick="showLeftPaneNav()">&#8592; Menu</button>
+            <span class="settings-close" onclick="closeLeftPane()">&times;</span>
+        </div>
+        <div class="settings-pane-content">
+            <div id="index"></div>
+            <h1 id="Forewords"><a href="index.html#Forewords">Forewords</a></h1>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Preface">
+                            Preface
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pgxi" class="page-link">xi</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pgxi" class="sm-pg-num">xi</a>
+                    <a href="index.html#pgxii" class="sm-pg-num">xii</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_First_Edition">
+                            Foreword To First Edition
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pgxiii" class="page-link">xiii</a></h4>
+                </div>
+                <div class="pg-nums">
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Second_Edition">
+                            Foreword To Second Edition
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pgxv" class="page-link">xv</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pgxv" class="sm-pg-num">xv</a>
+                    <a href="index.html#pgxvi" class="sm-pg-num">xvi</a>
+                    <a href="index.html#pgxvii" class="sm-pg-num">xvii</a>
+                    <a href="index.html#pgxviii" class="sm-pg-num">xviii</a>
+                    <a href="index.html#pgxix" class="sm-pg-num">xix</a>
+                    <a href="index.html#pgxx" class="sm-pg-num">xx</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Third_Edition">
+                            Foreword To Third Edition
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pgxxii" class="page-link">xxii</a></h4>
+                </div>
+                <div class="pg-nums">
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Fourth_Edition">
+                            Foreword To Fourth Edition
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pgxxiii" class="page-link">xxiii</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pgxxiii" class="sm-pg-num">xxiii</a>
+                    <a href="index.html#pgxxiv" class="sm-pg-num">xxiv</a>
+                </div>
+            </div>
+            <h1 id="Chapters"><a href="index.html#Chapters">Chapters</a></h1>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#The_Doctor's_Opinion">
+                            The Doctor's Opinion
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pgxxv" class="page-link">xxv</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pgxxv" class="sm-pg-num">xxv</a>
+                    <a href="index.html#pgxxvi" class="sm-pg-num">xxvi</a>
+                    <a href="index.html#pgxxvii" class="sm-pg-num">xxvii</a>
+                    <a href="index.html#pgxxviii" class="sm-pg-num">xxviii</a>
+                    <a href="index.html#pgxxix" class="sm-pg-num">xxix</a>
+                    <a href="index.html#pgxxx" class="sm-pg-num">xxx</a>
+                    <a href="index.html#pgxxxi" class="sm-pg-num">xxxi</a>
+                    <a href="index.html#pgxxxii" class="sm-pg-num">xxxii</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_1">
+                            Chapter 1 - Bill's Story
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg1" class="page-link">1</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg1" class="sm-pg-num">1</a>
+                    <a href="index.html#pg2" class="sm-pg-num">2</a>
+                    <a href="index.html#pg3" class="sm-pg-num">3</a>
+                    <a href="index.html#pg4" class="sm-pg-num">4</a>
+                    <a href="index.html#pg5" class="sm-pg-num">5</a>
+                    <a href="index.html#pg6" class="sm-pg-num">6</a>
+                    <a href="index.html#pg7" class="sm-pg-num">7</a>
+                    <a href="index.html#pg8" class="sm-pg-num">8</a>
+                    <a href="index.html#pg9" class="sm-pg-num">9</a>
+                    <a href="index.html#pg10" class="sm-pg-num">10</a>
+                    <a href="index.html#pg11" class="sm-pg-num">11</a>
+                    <a href="index.html#pg12" class="sm-pg-num">12</a>
+                    <a href="index.html#pg13" class="sm-pg-num">13</a>
+                    <a href="index.html#pg14" class="sm-pg-num">14</a>
+                    <a href="index.html#pg15" class="sm-pg-num">15</a>
+                    <a href="index.html#pg16" class="sm-pg-num">16</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_2">
+                            Chapter 2 - There Is a Solution
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg17" class="page-link">17</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg17" class="sm-pg-num">17</a>
+                    <a href="index.html#pg18" class="sm-pg-num">18</a>
+                    <a href="index.html#pg19" class="sm-pg-num">19</a>
+                    <a href="index.html#pg20" class="sm-pg-num">20</a>
+                    <a href="index.html#pg21" class="sm-pg-num">21</a>
+                    <a href="index.html#pg22" class="sm-pg-num">22</a>
+                    <a href="index.html#pg23" class="sm-pg-num">23</a>
+                    <a href="index.html#pg24" class="sm-pg-num">24</a>
+                    <a href="index.html#pg25" class="sm-pg-num">25</a>
+                    <a href="index.html#pg26" class="sm-pg-num">26</a>
+                    <a href="index.html#pg27" class="sm-pg-num">27</a>
+                    <a href="index.html#pg28" class="sm-pg-num">28</a>
+                    <a href="index.html#pg29" class="sm-pg-num">29</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_3">
+                            Chapter 3 - More About Alcoholism
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg30" class="page-link">30</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg30" class="sm-pg-num">30</a>
+                    <a href="index.html#pg31" class="sm-pg-num">31</a>
+                    <a href="index.html#pg32" class="sm-pg-num">32</a>
+                    <a href="index.html#pg33" class="sm-pg-num">33</a>
+                    <a href="index.html#pg34" class="sm-pg-num">34</a>
+                    <a href="index.html#pg35" class="sm-pg-num">35</a>
+                    <a href="index.html#pg36" class="sm-pg-num">36</a>
+                    <a href="index.html#pg37" class="sm-pg-num">37</a>
+                    <a href="index.html#pg38" class="sm-pg-num">38</a>
+                    <a href="index.html#pg39" class="sm-pg-num">39</a>
+                    <a href="index.html#pg40" class="sm-pg-num">40</a>
+                    <a href="index.html#pg41" class="sm-pg-num">41</a>
+                    <a href="index.html#pg42" class="sm-pg-num">42</a>
+                    <a href="index.html#pg43" class="sm-pg-num">43</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_4">
+                            Chapter 4 - We Agnostics
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg44" class="page-link">44</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg44" class="sm-pg-num">44</a>
+                    <a href="index.html#pg45" class="sm-pg-num">45</a>
+                    <a href="index.html#pg46" class="sm-pg-num">46</a>
+                    <a href="index.html#pg47" class="sm-pg-num">47</a>
+                    <a href="index.html#pg48" class="sm-pg-num">48</a>
+                    <a href="index.html#pg49" class="sm-pg-num">49</a>
+                    <a href="index.html#pg50" class="sm-pg-num">50</a>
+                    <a href="index.html#pg51" class="sm-pg-num">51</a>
+                    <a href="index.html#pg52" class="sm-pg-num">52</a>
+                    <a href="index.html#pg53" class="sm-pg-num">53</a>
+                    <a href="index.html#pg54" class="sm-pg-num">54</a>
+                    <a href="index.html#pg55" class="sm-pg-num">55</a>
+                    <a href="index.html#pg56" class="sm-pg-num">56</a>
+                    <a href="index.html#pg57" class="sm-pg-num">57</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_5">
+                            Chapter 5 - How It Works
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg58" class="page-link">58</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg58" class="sm-pg-num">58</a>
+                    <a href="index.html#pg59" class="sm-pg-num">59</a>
+                    <a href="index.html#pg60" class="sm-pg-num">60</a>
+                    <a href="index.html#pg61" class="sm-pg-num">61</a>
+                    <a href="index.html#pg62" class="sm-pg-num">62</a>
+                    <a href="index.html#pg63" class="sm-pg-num">63</a>
+                    <a href="index.html#pg64" class="sm-pg-num">64</a>
+                    <a href="index.html#pg65" class="sm-pg-num">65</a>
+                    <a href="index.html#pg66" class="sm-pg-num">66</a>
+                    <a href="index.html#pg67" class="sm-pg-num">67</a>
+                    <a href="index.html#pg68" class="sm-pg-num">68</a>
+                    <a href="index.html#pg69" class="sm-pg-num">69</a>
+                    <a href="index.html#pg70" class="sm-pg-num">70</a>
+                    <a href="index.html#pg71" class="sm-pg-num">71</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_6">
+                            Chapter 6 - Into Action
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg72" class="page-link">72</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg72" class="sm-pg-num">72</a>
+                    <a href="index.html#pg73" class="sm-pg-num">73</a>
+                    <a href="index.html#pg74" class="sm-pg-num">74</a>
+                    <a href="index.html#pg75" class="sm-pg-num">75</a>
+                    <a href="index.html#pg76" class="sm-pg-num">76</a>
+                    <a href="index.html#pg77" class="sm-pg-num">77</a>
+                    <a href="index.html#pg78" class="sm-pg-num">78</a>
+                    <a href="index.html#pg79" class="sm-pg-num">79</a>
+                    <a href="index.html#pg80" class="sm-pg-num">80</a>
+                    <a href="index.html#pg81" class="sm-pg-num">81</a>
+                    <a href="index.html#pg82" class="sm-pg-num">82</a>
+                    <a href="index.html#pg83" class="sm-pg-num">83</a>
+                    <a href="index.html#pg84" class="sm-pg-num">84</a>
+                    <a href="index.html#pg85" class="sm-pg-num">85</a>
+                    <a href="index.html#pg86" class="sm-pg-num">86</a>
+                    <a href="index.html#pg87" class="sm-pg-num">87</a>
+                    <a href="index.html#pg88" class="sm-pg-num">88</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_7">
+                            Chapter 7 - Working With Others
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg89" class="page-link">89</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg89" class="sm-pg-num">89</a>
+                    <a href="index.html#pg90" class="sm-pg-num">90</a>
+                    <a href="index.html#pg91" class="sm-pg-num">91</a>
+                    <a href="index.html#pg92" class="sm-pg-num">92</a>
+                    <a href="index.html#pg93" class="sm-pg-num">93</a>
+                    <a href="index.html#pg94" class="sm-pg-num">94</a>
+                    <a href="index.html#pg95" class="sm-pg-num">95</a>
+                    <a href="index.html#pg96" class="sm-pg-num">96</a>
+                    <a href="index.html#pg97" class="sm-pg-num">97</a>
+                    <a href="index.html#pg98" class="sm-pg-num">98</a>
+                    <a href="index.html#pg99" class="sm-pg-num">99</a>
+                    <a href="index.html#pg100" class="sm-pg-num">100</a>
+                    <a href="index.html#pg101" class="sm-pg-num">101</a>
+                    <a href="index.html#pg102" class="sm-pg-num">102</a>
+                    <a href="index.html#pg103" class="sm-pg-num">103</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_8">
+                            Chapter 8 - To Wives
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg104" class="page-link">104</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg104" class="sm-pg-num">104</a>
+                    <a href="index.html#pg105" class="sm-pg-num">105</a>
+                    <a href="index.html#pg106" class="sm-pg-num">106</a>
+                    <a href="index.html#pg107" class="sm-pg-num">107</a>
+                    <a href="index.html#pg108" class="sm-pg-num">108</a>
+                    <a href="index.html#pg109" class="sm-pg-num">109</a>
+                    <a href="index.html#pg110" class="sm-pg-num">110</a>
+                    <a href="index.html#pg111" class="sm-pg-num">111</a>
+                    <a href="index.html#pg112" class="sm-pg-num">112</a>
+                    <a href="index.html#pg113" class="sm-pg-num">113</a>
+                    <a href="index.html#pg114" class="sm-pg-num">114</a>
+                    <a href="index.html#pg115" class="sm-pg-num">115</a>
+                    <a href="index.html#pg116" class="sm-pg-num">116</a>
+                    <a href="index.html#pg117" class="sm-pg-num">117</a>
+                    <a href="index.html#pg118" class="sm-pg-num">118</a>
+                    <a href="index.html#pg119" class="sm-pg-num">119</a>
+                    <a href="index.html#pg120" class="sm-pg-num">120</a>
+                    <a href="index.html#pg121" class="sm-pg-num">121</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_9">
+                            Chapter 9 - The Family Afterword
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg122" class="page-link">122</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg122" class="sm-pg-num">122</a>
+                    <a href="index.html#pg123" class="sm-pg-num">123</a>
+                    <a href="index.html#pg124" class="sm-pg-num">124</a>
+                    <a href="index.html#pg125" class="sm-pg-num">125</a>
+                    <a href="index.html#pg126" class="sm-pg-num">126</a>
+                    <a href="index.html#pg127" class="sm-pg-num">127</a>
+                    <a href="index.html#pg128" class="sm-pg-num">128</a>
+                    <a href="index.html#pg129" class="sm-pg-num">129</a>
+                    <a href="index.html#pg130" class="sm-pg-num">130</a>
+                    <a href="index.html#pg131" class="sm-pg-num">131</a>
+                    <a href="index.html#pg132" class="sm-pg-num">132</a>
+                    <a href="index.html#pg133" class="sm-pg-num">133</a>
+                    <a href="index.html#pg134" class="sm-pg-num">134</a>
+                    <a href="index.html#pg135" class="sm-pg-num">135</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_10">
+                            Chapter 10 - To Employers
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg136" class="page-link">136</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg136" class="sm-pg-num">136</a>
+                    <a href="index.html#pg137" class="sm-pg-num">137</a>
+                    <a href="index.html#pg138" class="sm-pg-num">138</a>
+                    <a href="index.html#pg139" class="sm-pg-num">139</a>
+                    <a href="index.html#pg140" class="sm-pg-num">140</a>
+                    <a href="index.html#pg141" class="sm-pg-num">141</a>
+                    <a href="index.html#pg142" class="sm-pg-num">142</a>
+                    <a href="index.html#pg143" class="sm-pg-num">143</a>
+                    <a href="index.html#pg144" class="sm-pg-num">144</a>
+                    <a href="index.html#pg145" class="sm-pg-num">145</a>
+                    <a href="index.html#pg146" class="sm-pg-num">146</a>
+                    <a href="index.html#pg147" class="sm-pg-num">147</a>
+                    <a href="index.html#pg148" class="sm-pg-num">148</a>
+                    <a href="index.html#pg149" class="sm-pg-num">149</a>
+                    <a href="index.html#pg150" class="sm-pg-num">150</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Chapter_11">
+                            Chapter 11 - A Vision For You
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg151" class="page-link">151</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg151" class="sm-pg-num">151</a>
+                    <a href="index.html#pg152" class="sm-pg-num">152</a>
+                    <a href="index.html#pg153" class="sm-pg-num">153</a>
+                    <a href="index.html#pg154" class="sm-pg-num">154</a>
+                    <a href="index.html#pg155" class="sm-pg-num">155</a>
+                    <a href="index.html#pg156" class="sm-pg-num">156</a>
+                    <a href="index.html#pg157" class="sm-pg-num">157</a>
+                    <a href="index.html#pg158" class="sm-pg-num">158</a>
+                    <a href="index.html#pg159" class="sm-pg-num">159</a>
+                    <a href="index.html#pg160" class="sm-pg-num">160</a>
+                    <a href="index.html#pg161" class="sm-pg-num">161</a>
+                    <a href="index.html#pg162" class="sm-pg-num">162</a>
+                    <a href="index.html#pg163" class="sm-pg-num">163</a>
+                    <a href="index.html#pg164" class="sm-pg-num">164</a>
+                </div>
+            </div>
+            <h1 id="Personal_Stories"><a href="index.html#Personal_Stories">Personal Stories</a></h1>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Doctor_Bob's_Nightmare">
+                            Doctor Bob's Nightmare
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg171" class="page-link">171</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg171" class="sm-pg-num">171</a>
+                    <a href="index.html#pg172" class="sm-pg-num">172</a>
+                    <a href="index.html#pg173" class="sm-pg-num">173</a>
+                    <a href="index.html#pg174" class="sm-pg-num">174</a>
+                    <a href="index.html#pg175" class="sm-pg-num">175</a>
+                    <a href="index.html#pg176" class="sm-pg-num">176</a>
+                    <a href="index.html#pg177" class="sm-pg-num">177</a>
+                    <a href="index.html#pg178" class="sm-pg-num">178</a>
+                    <a href="index.html#pg179" class="sm-pg-num">179</a>
+                    <a href="index.html#pg180" class="sm-pg-num">180</a>
+                    <a href="index.html#pg181" class="sm-pg-num">181</a>
+                </div>
+            </div>
+            <div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Acceptance_Was_The_Answer">
+                            Acceptance Was The Answer
+                        </a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number"><a href="index.html#pg407" class="page-link">407</a></h4>
+                </div>
+                <div class="pg-nums">
+                    <a href="index.html#pg407" class="sm-pg-num">407</a>
+                    <a href="index.html#pg408" class="sm-pg-num">408</a>
+                    <a href="index.html#pg409" class="sm-pg-num">409</a>
+                    <a href="index.html#pg410" class="sm-pg-num">410</a>
+                    <a href="index.html#pg411" class="sm-pg-num">411</a>
+                    <a href="index.html#pg412" class="sm-pg-num">412</a>
+                    <a href="index.html#pg413" class="sm-pg-num">413</a>
+                    <a href="index.html#pg414" class="sm-pg-num">414</a>
+                    <a href="index.html#pg415" class="sm-pg-num">415</a>
+                    <a href="index.html#pg416" class="sm-pg-num">416</a>
+                    <a href="index.html#pg417" class="sm-pg-num">417</a>
+                    <a href="index.html#pg418" class="sm-pg-num">418</a>
+                    <a href="index.html#pg419" class="sm-pg-num">419</a>
+                    <a href="index.html#pg420" class="sm-pg-num">420</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="about-bar">
+    <a href="index.html" class="about-bar-btn">&#8592; Back to book</a>
+    <a href="#" class="about-bar-btn" id="share-btn" onclick="shareSite(event)">&#8599; Share</a>
+</div>
+<!-- Hero -->
+<article>
+    <section id="guide-top">
+        <header>
+            <nav>
+                <a class="page-link" href="index.html">&#8592; Book</a>
+                <span class="chapter-title page-link">Feature Guide</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <h1 class="about-heading">How to use this app</h1>
+            <p class="about-intro">Try each feature live.</p>
+            <a href="#feature-navigate" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#8801;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Navigate</div>
+                    <p class="feature-desc">Jump between chapters and pages</p>
+                </div>
+            </a>
+            <a href="#feature-share" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#10022;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Select &amp; Share</div>
+                    <p class="feature-desc">Deep-link any sentence to anyone</p>
+                </div>
+            </a>
+            <a href="#feature-highlight" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9899;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Highlight</div>
+                    <p class="feature-desc">Mark passages with five colors</p>
+                </div>
+            </a>
+            <a href="#feature-bookmarks" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9733;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Bookmarks</div>
+                    <p class="feature-desc">Save and name your place in the text</p>
+                </div>
+            </a>
+            <a href="#feature-notes" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#10000;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Notes</div>
+                    <p class="feature-desc">Write annotations on any sentence</p>
+                </div>
+            </a>
+            <a href="#feature-appearance" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9728;&#65038;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Appearance</div>
+                    <p class="feature-desc">Theme, font, and zoom</p>
+                </div>
+            </a>
+            <a href="#feature-search" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#8981;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Search</div>
+                    <p class="feature-desc">Find any word or passage instantly</p>
+                </div>
+            </a>
+            <a href="#feature-settings" class="feature-card" style="text-decoration:none;color:inherit;display:flex">
+                <div class="feature-icon">&#9881;&#65038;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Settings &amp; Backup</div>
+                    <p class="feature-desc">Export, import, and sync your data</p>
+                </div>
+            </a>
+            <div class="about-footer">
+                <p>Everything stays in your browser &#8212; no account needed.</p>
+                <p>Generated 2026-03-22 21:57:09.789607. Questions? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Navigate -->
+<article>
+    <section id="feature-navigate">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Navigate</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Tap a chapter to jump there.</p>
+            <div class="feature-demo">
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Preface">Preface</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xi</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_First_Edition">Foreword To First Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xiii</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Second_Edition">Foreword To Second Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xv</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Third_Edition">Foreword To Third Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xxii</h4>
+                </div>
+                <div class="index_chapter_section">
+                    <h4 class="chapter-name">
+                        <a href="index.html#Foreword_To_Fourth_Edition">Foreword To Fourth Edition</a>
+                    </h4>
+                    <div class="dots"></div>
+                    <h4 class="page-number">xxiii</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Select & Share -->
+<article>
+    <section id="feature-share">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Select &amp; Share</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Double-click any sentence.</p>
+            <div class="feature-demo">
+                <span id="share-s1" class="feature-demo-text">This is the first sentence of a sample passage.</span>
+                <span id="share-s2" class="feature-demo-text"> This is the second sentence, which continues the thought.</span>
+                <span id="share-s3" class="feature-demo-text"> And this is the third sentence, completing the paragraph.</span>
+                <p class="feature-desc" style="margin-top:8px"><span id="share-feedback" style="opacity:0;color:#6c5ce7;font-weight:600;font-style:normal;transition:opacity 0.25s">&#10003; Link copied!</span></p>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Highlight -->
+<article>
+    <section id="feature-highlight">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Highlight</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Drag to select text, then tap a color in the menu below.</p>
+            <div class="feature-demo">
+                <span id="hl-s1" class="feature-demo-text">This is a sample passage you can highlight.</span>
+                <span id="hl-s2" class="feature-demo-text"> Drag across any of these words, then pick a color from the floating menu.</span>
+                <span id="hl-s3" class="feature-demo-text"> Your highlights are saved automatically.</span>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Bookmarks -->
+<article>
+    <section id="feature-bookmarks">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Bookmarks</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Tap the button to add a bookmark.</p>
+            <div class="feature-demo">
+                <button class="feature-action" onclick="bookmarks.showAddDialog()">&#9733; Add bookmark</button>
+            </div>
+            <p class="feature-desc" style="margin-top:12px">Bookmarks appear at the top of the book. Tap &#9998; Edit in the header to rename or delete them.</p>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Notes -->
+<article>
+    <section id="feature-notes">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Notes</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Double-click a sentence, then tap the pen icon below.</p>
+            <div class="feature-demo">
+                <span id="notes-s1" class="feature-demo-text">Double-click this sentence to select it.</span>
+                <span id="notes-s2" class="feature-demo-text"> Then tap the pen icon in the floating menu to add a note.</span>
+                <span id="notes-s3" class="feature-demo-text"> Each sentence can have its own annotation.</span>
+            </div>
+            <button class="feature-action" onclick="notes.renderAllNotes()">&#128196; View all notes</button>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Appearance -->
+<article>
+    <section id="feature-appearance">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Appearance</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Try the controls below.</p>
+            <div class="feature-card">
+                <div class="feature-icon">&#9728;&#65038;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Dark Mode</div>
+                    <button class="feature-action" onclick="toggleDarkMode()">Toggle theme</button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">T</div>
+                <div class="feature-body">
+                    <div class="feature-title">Font</div>
+                    <button class="feature-action" onclick="setFont('serif')">Serif</button>
+                    <button class="feature-action" onclick="setFont('sans-serif')">Sans Serif</button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">Aa</div>
+                <div class="feature-body">
+                    <div class="feature-title">Zoom</div>
+                    <div class="feature-zoom">
+                        <button class="feature-zoom-btn" onclick="adjustZoom(-10)">&#8722;</button>
+                        <span class="zoom-level-display">100%</span>
+                        <button class="feature-zoom-btn" onclick="adjustZoom(10)">&#43;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Search -->
+<article>
+    <section id="feature-search">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Search</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Press <kbd style="font-size:0.9em;padding:2px 7px;background:var(--color-settings-icon-bg);border:1px solid var(--color-border-light);border-radius:4px">Ctrl</kbd> + <kbd style="font-size:0.9em;padding:2px 7px;background:var(--color-settings-icon-bg);border:1px solid var(--color-border-light);border-radius:4px">F</kbd> to search the full text.</p>
+            <div class="feature-card">
+                <div class="feature-icon">&#8981;</div>
+                <div class="feature-body">
+                    <p class="feature-desc">Windows / Linux: <kbd>Ctrl</kbd> + <kbd>F</kbd></p>
+                    <p class="feature-desc">Mac: <kbd>&#8984;</kbd> + <kbd>F</kbd></p>
+                    <p class="feature-desc">iPhone: Share &#8594; <em>Find on Page</em></p>
+                    <p class="feature-desc">Android: Chrome menu &#8942; &#8594; <em>Find in page</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+</article>
+<hr class="page-separator">
+<!-- Settings & Backup -->
+<article>
+    <section id="feature-settings">
+        <header>
+            <nav>
+                <a class="page-link" href="#guide-top">&#8593; Guide</a>
+                <span class="chapter-title page-link">Settings &amp; Backup</span>
+                <span class="page-link"></span>
+            </nav>
+        </header>
+        <div class="page-content about-page">
+            <p class="feature-prompt">Back up or restore your notes.</p>
+            <div class="feature-card">
+                <div class="feature-icon">&#8615;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Export &amp; Import</div>
+                    <button class="feature-action" onclick="notes.exportNotesAsMarkdown()">&#8615; Export notes</button>
+                    <button class="feature-action" onclick="notes.importNotesFromMarkdown()">&#8613; Import notes</button>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#8644;</div>
+                <div class="feature-body">
+                    <div class="feature-title">Folder Sync</div>
+                    <p class="feature-desc">Chrome / Edge desktop: auto-save notes as files to a local folder.</p>
+                </div>
+            </div>
+            <a class="feature-action" href="settings.html">&#9881;&#65038; Open settings</a>
+        </div>
+    </section>
+</article>
+<div class="fab-group">
+    <div id="hl-fab-colors" class="hl-fab-colors"></div>
+    <button class="fab-btn fab-btn-menu" onclick="toggleLeftPaneNav()" aria-label="Menu">&#9776;</button>
+    <div class="fab-divider"></div>
+    <div class="fab-divider" id="fab-bookmark-divider"></div>
+    <button class="fab-btn fab-btn-bookmark" id="fab-bookmark-btn" onclick="bookmarks.showAddDialog()" aria-label="Bookmark">&#9733;</button>
+    <span id="fab-notes-label" class="fab-notes-label" onclick="handleFabNotesClick()"></span>
+    <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes">&#10000;</button>
+</div>
+<div id="bookmark-add-overlay" class="bookmark-add-overlay">
+    <div class="bookmark-add-dialog">
+        <div class="bookmark-add-title">Add Bookmark</div>
+        <input type="text" id="bookmark-name-input" class="bookmark-name-input" placeholder="Name this bookmark&#8230;" autocomplete="off" />
+        <div class="bookmark-add-actions">
+            <button class="notes-btn" onclick="bookmarks.hideAddDialog()">Cancel</button>
+            <button class="notes-btn notes-btn-primary" onclick="bookmarks.confirmAdd()">Save</button>
+        </div>
+    </div>
+</div>
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+}
+function shareSite(e) {
+    e.preventDefault();
+    var url = window.location.origin + window.location.pathname;
+    if (navigator.share) {
+        navigator.share({ title: document.title, url: url });
+    } else {
+        navigator.clipboard.writeText(url);
+        var btn = document.getElementById('share-btn');
+        var orig = btn.innerHTML;
+        btn.innerHTML = '&#10003; Copied';
+        setTimeout(function() { btn.innerHTML = orig; }, 1500);
+    }
+}
+window.addEventListener('hashchange', function() {
+    var hash = window.location.hash;
+    if (/^#(share|hl|notes)-s\d+$/.test(hash)) {
+        var fb = document.getElementById('share-feedback');
+        if (fb) {
+            fb.style.opacity = '1';
+            setTimeout(function() { fb.style.opacity = '0'; }, 2200);
+        }
+    }
+});
+</script>
+</body>
+</html>

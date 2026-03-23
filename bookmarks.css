@@ -1,27 +1,9 @@
 /* ── Bookmark page rows ── */
 
-/* Bookmark rows: same dots as index but centered vertically (not fixed 14px) */
-.bookmark-row .index_chapter_section {
-    background-position: 0 50%;
-    height: auto;
-    min-height: 25px;
-}
-
-/* Reset default h4 margins so rows don't balloon in height */
-.bookmark-row h4 {
-    margin: 0;
-}
-
-/* Dots spacer: transparent flex-1 gap — dots come from parent background-image */
-.bm-dots {
-    flex: 1;
-    min-width: 8px;
-}
-
 /* ── Edit mode row layout ── */
 
 /* Hide the dots spacer — name input expands into that space */
-.bm-edit .bm-dots {
+.bm-edit .dots {
     display: none;
 }
 

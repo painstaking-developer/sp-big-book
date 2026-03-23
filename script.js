@@ -1,5 +1,42 @@
 let isInitialLoad = true;
 
+/* ── PWA install ── */
+var deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    var el = document.getElementById('nav-install-item');
+    if (el) el.style.display = '';
+});
+
+window.addEventListener('appinstalled', function() {
+    deferredInstallPrompt = null;
+    var el = document.getElementById('nav-install-item');
+    if (el) el.style.display = 'none';
+});
+
+function installPwa(e) {
+    if (e) e.preventDefault();
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(function() { deferredInstallPrompt = null; });
+}
+
+function shareApp(e, el) {
+    e.preventDefault();
+    var url = window.location.origin + window.location.pathname;
+    if (navigator.share) {
+        navigator.share({ title: document.title, url: url });
+    } else {
+        navigator.clipboard.writeText(url);
+        var textEl = el.querySelector('.left-nav-text');
+        var orig = textEl.textContent;
+        textEl.textContent = '\u2713 Copied!';
+        setTimeout(function() { textEl.textContent = orig; }, 1500);
+    }
+}
+
 function highlightParagraph() {
     // Remove existing highlights
     const highlighted = document.querySelector('.highlight');
@@ -42,9 +79,9 @@ function highlightParagraph() {
 
 function switchPaneTab(tab) {
     document.getElementById('pane-notes-body').style.display = tab === 'notes' ? '' : 'none';
-    document.getElementById('pane-settings-body').style.display = tab === 'settings' ? '' : 'none';
+    document.getElementById('pane-bookmarks-body').style.display = tab === 'bookmarks' ? '' : 'none';
     document.getElementById('tab-notes').classList.toggle('active', tab === 'notes');
-    document.getElementById('tab-settings').classList.toggle('active', tab === 'settings');
+    document.getElementById('tab-bookmarks').classList.toggle('active', tab === 'bookmarks');
     if (tab === 'notes') {
         const content = document.getElementById('notes-pane-content');
         if (content && !content.hasChildNodes() && typeof notes !== 'undefined') {
@@ -64,12 +101,54 @@ function closeSidePane() {
     document.body.classList.remove('notes-open');
 }
 
-function openSettingsPane() { openSidePane('settings'); }
-function closeSettingsPane() { closeSidePane(); }
+function openSettingsPane() { window.location.href = 'settings.html'; }
+
+function openLeftPane() {
+    document.getElementById('left-pane').classList.add('active');
+    document.body.classList.add('left-pane-open');
+}
+
+function closeLeftPane() {
+    document.getElementById('left-pane').classList.remove('active');
+    document.body.classList.remove('left-pane-open');
+}
+
+function showLeftPaneNav() {
+    document.getElementById('left-pane-nav').style.display = '';
+    document.getElementById('left-pane-index').style.display = 'none';
+}
+
+function showLeftPaneIndex() {
+    document.getElementById('left-pane-nav').style.display = 'none';
+    document.getElementById('left-pane-index').style.display = '';
+}
+
+function toggleLeftPane() { // page-header Index link → index view
+    const pane = document.getElementById('left-pane');
+    const indexShown = document.getElementById('left-pane-index').style.display !== 'none';
+    if (pane.classList.contains('active') && indexShown) {
+        closeLeftPane();
+    } else {
+        showLeftPaneIndex();
+        openLeftPane();
+    }
+}
+
+function toggleLeftPaneNav() { // FAB burger → nav view
+    const pane = document.getElementById('left-pane');
+    const navShown = document.getElementById('left-pane-nav').style.display !== 'none';
+    if (pane.classList.contains('active') && navShown) {
+        closeLeftPane();
+    } else {
+        showLeftPaneNav();
+        openLeftPane();
+    }
+}
 
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeSidePane();
+        closeLeftPane();
         if (typeof bookmarks !== 'undefined') bookmarks.hideAddDialog();
     }
 });
@@ -101,11 +180,7 @@ function setFont(font) {
 
 function setMenuPosition(position) {
     localStorage.setItem('menuPosition', position);
-    if (position === 'bottom-right') {
-        document.documentElement.removeAttribute('data-menu-position');
-    } else {
-        document.documentElement.setAttribute('data-menu-position', position);
-    }
+    document.documentElement.setAttribute('data-menu-position', position);
     updateMenuPositionToggle(position);
     updateFabTop();
 }
@@ -143,15 +218,23 @@ document.addEventListener("DOMContentLoaded", function() {
     updateThemeToggle(theme);
     const font = document.documentElement.getAttribute('data-font') || 'serif';
     updateFontToggle(font);
-    const menuPosition = localStorage.getItem('menuPosition') || 'bottom-right';
+    const menuPosition = localStorage.getItem('menuPosition') || 'top-left';
     updateMenuPositionToggle(menuPosition);
     applyZoom();
     updateFabTop();
+
+    // Auto-close left pane when navigating via any index link
+    const leftPaneIndex = document.getElementById('left-pane-index');
+    if (leftPaneIndex) {
+        leftPaneIndex.addEventListener('click', function(e) {
+            if (e.target.closest('a[href]')) closeLeftPane();
+        });
+    }
 });
 window.addEventListener("hashchange", highlightParagraph);
 
 function updateFabTop() {
-    const pos = localStorage.getItem('menuPosition') || 'bottom-right';
+    const pos = localStorage.getItem('menuPosition') || 'top-left';
     if (pos !== 'top-right' && pos !== 'top-left') return;
     const firstHeader = document.querySelector('article header');
     if (!firstHeader) return;
@@ -179,7 +262,7 @@ document.addEventListener('click', function(event) {
     if (!highlighted) return;
 
     // Don't clear if clicking inside panes, fab, or notes toggles
-    if (event.target.closest('#settings-pane') || event.target.closest('#notes-pane') || event.target.closest('.fab-group')) return;
+    if (event.target.closest('#side-pane') || event.target.closest('#left-pane') || event.target.closest('.fab-group')) return;
     if (event.target.classList.contains('notes-toggle')) return;
 
     // Don't clear if clicking on the highlighted element itself
@@ -195,8 +278,8 @@ document.addEventListener('dblclick', function (event) {
     event.preventDefault();
     window.getSelection().removeAllRanges();
 
-    // Ignore double-clicks inside the settings pane
-    if (event.target.closest('#settings-pane')) return;
+    // Ignore double-clicks inside panes
+    if (event.target.closest('#side-pane') || event.target.closest('#left-pane')) return;
 
     // Get the element that was double-clicked
     const targetElement = event.target;

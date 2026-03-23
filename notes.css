@@ -28,11 +28,6 @@
     opacity: 1;
 }
 
-/* Left-positioned menu: swap label padding for reversed layout */
-[data-menu-position="bottom-left"] .fab-notes-label.active,
-[data-menu-position="top-left"] .fab-notes-label.active {
-    padding: 0 12px 0 2px;
-}
 
 
 .notes-pane-content {

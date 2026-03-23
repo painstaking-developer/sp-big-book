@@ -83,7 +83,7 @@ var bookmarks = (function () {
         var section = el.closest('section');
         if (!section) return '';
         var links = section.querySelectorAll('header nav .page-link');
-        return links[0] ? (links[0].textContent || '').trim() : '';
+        return links.length ? (links[links.length - 1].textContent || '').trim() : '';
     }
 
     /* ── CRUD ── */
@@ -148,12 +148,12 @@ var bookmarks = (function () {
         var bms = _getAll();
         list.innerHTML = '';
 
-        var article = list.closest('article');
+        var emptyEl = document.getElementById('bookmarks-empty');
         if (bms.length === 0) {
-            if (article) article.style.display = 'none';
+            if (emptyEl) emptyEl.style.display = '';
             return;
         }
-        if (article) article.style.display = '';
+        if (emptyEl) emptyEl.style.display = 'none';
 
         bms.forEach(function (bm, idx) {
             var row = document.createElement('div');
@@ -214,7 +214,7 @@ var bookmarks = (function () {
 
             /* ── Dots spacer (hidden in edit mode via CSS) ── */
             var dotsDiv = document.createElement('div');
-            dotsDiv.className = 'bm-dots';
+            dotsDiv.className = 'dots';
             section.appendChild(dotsDiv);
 
             /* ── Ref / page number (page-number side) ── */
