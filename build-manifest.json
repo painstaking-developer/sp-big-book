@@ -1,8 +1,9 @@
 {
-  "built_at": "2026-03-23T23:37:14.809074",
+  "built_at": "2026-03-24T00:17:11.628389",
   "assets": {
-    "index.html": "b27b0a112c39",
+    "index.html": "c7d35d919fec",
     "manifest.json": "b40d20ca799a",
+    "search-index.json": "62037d7f1a79",
     "styles.css": "1f68a9685d06",
     "fab.css": "f191918a8231",
     "script.js": "dfd2a51ac80f",
@@ -13,6 +14,9 @@
     "bookmarks.css": "a13f10f79894",
     "bookmarks.js": "c9c6571f74fd",
     "highlight.css": "6ef00a30b438",
-    "highlight.js": "585323be0259"
+    "highlight.js": "585323be0259",
+    "fuse.min.js": "e3621b53cb77",
+    "search.js": "c5f631409879",
+    "search.css": "4ea4d7036b78"
   }
 }

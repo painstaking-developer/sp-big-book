@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="notes.css">
     <link rel="stylesheet" href="bookmarks.css">
     <link rel="stylesheet" href="highlight.css">
+    <link rel="stylesheet" href="search.css">
     <script>
         (function() {
             var saved = localStorage.getItem('theme');
@@ -36,6 +37,8 @@
     <script src="notes.js" defer></script>
     <script src="bookmarks.js" defer></script>
     <script src="highlight.js" defer></script>
+    <script src="fuse.min.js" defer></script>
+    <script src="search.js" defer></script>
     <script type="module" src="script.js"></script>
     <title>Guide &#8211; Alcoholics Anonymous</title>
 </head>
@@ -608,7 +611,7 @@
             </div>
             <div class="about-footer">
                 <p>Everything stays on your device &#8212; no account needed.</p>
-                <p>Generated 2026-03-23 23:37:14.809074.</p>
+                <p>Generated 2026-03-24 00:17:11.628389.</p>
             </div>
         </div>
     </section>
@@ -835,9 +838,20 @@
         </div>
     </section>
 </article>
+<div id="search-bar" role="search">
+    <div id="search-bar-inner">
+        <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search">&#8592;</button>
+        <input id="search-input" type="search" placeholder="Search&#8230;" autocomplete="off" oninput="handleSearchInput(event)" />
+        <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
+    </div>
+</div>
+<div id="search-results"></div>
+<div id="search-backdrop" onclick="closeSearch()"></div>
 <div class="fab-group">
     <div id="hl-fab-colors" class="hl-fab-colors"></div>
     <button class="fab-btn fab-btn-menu" onclick="toggleLeftPaneNav()" aria-label="Menu">&#9776;</button>
+    <div class="fab-divider"></div>
+    <button class="fab-btn fab-btn-search" onclick="openSearch()" aria-label="Search"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13.5" y2="13.5"/></svg></button>
     <div class="fab-divider" id="fab-bookmark-divider"></div>
     <button class="fab-btn fab-btn-bookmark" id="fab-bookmark-btn" onclick="bookmarks.showAddDialog()" aria-label="Bookmark">&#9733;</button>
     <div class="fab-divider" id="fab-notes-divider"></div>
