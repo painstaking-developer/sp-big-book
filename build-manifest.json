@@ -1,0 +1,18 @@
+{
+  "built_at": "2026-03-23T23:37:14.809074",
+  "assets": {
+    "index.html": "b27b0a112c39",
+    "manifest.json": "b40d20ca799a",
+    "styles.css": "1f68a9685d06",
+    "fab.css": "f191918a8231",
+    "script.js": "dfd2a51ac80f",
+    "image.jpg": "8c2de12a2518",
+    "favicon.ico": "ae8b5c52d81f",
+    "notes.css": "ea651f2beca1",
+    "notes.js": "8ffced756a72",
+    "bookmarks.css": "a13f10f79894",
+    "bookmarks.js": "c9c6571f74fd",
+    "highlight.css": "6ef00a30b438",
+    "highlight.js": "585323be0259"
+  }
+}

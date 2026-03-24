@@ -1,3 +1,18 @@
+/**
+ * bookmarks.js — Bookmark management
+ *
+ * Responsibility: add, edit, delete, and display named bookmarks that anchor
+ * to sentences in the book; persists to localStorage.
+ *
+ * Public interface (on window.bookmarks):
+ *   bookmarks.showAddDialog()      — open the add-bookmark overlay
+ *   bookmarks.hideAddDialog()      — close the overlay
+ *   bookmarks.confirmAdd()         — save bookmark from overlay input
+ *   bookmarks.toggleEditMode(e)    — toggle edit/delete mode in pane
+ *
+ * Listens to: dialog:close (app event bus)
+ */
+
 // bookmarks.js – Bookmarks feature for single-page book app
 
 var bookmarks = (function () {
@@ -24,7 +39,7 @@ var bookmarks = (function () {
     // Build defaults from the first few rows of the book's index
     function _generateDefaults() {
         var defaults = [];
-        var rows = document.querySelectorAll('#index .index_chapter_section');
+        var rows = document.querySelectorAll('#index .index-chapter-section');
         Array.from(rows).slice(0, 4).forEach(function (row, i) {
             var nameLink = row.querySelector('.chapter-name a');
             var pageLink = row.querySelector('.page-number a');
@@ -54,26 +69,8 @@ var bookmarks = (function () {
 
     /* ── Folder sync ── */
 
-    function _buildMarkdown(bms) {
-        var lines = ['# Bookmarks', ''];
-        bms.forEach(function (bm, i) {
-            lines.push('## ' + (bm.name || 'Bookmark ' + (i + 1)));
-            if (bm.ref) lines.push('p.\u00a0' + bm.ref);
-            lines.push(bm.anchor);
-            lines.push('');
-        });
-        return lines.join('\n');
-    }
-
     function _syncBookmarksFile() {
-        // syncDirHandle is a top-level variable in notes.js (shared global scope)
-        var sd = (typeof syncDirHandle !== 'undefined') ? syncDirHandle : null;
-        if (!sd) return;
-        var md = _buildMarkdown(_getAll());
-        sd.getFileHandle('bookmarks.md', { create: true })
-            .then(function (fh) { return fh.createWritable(); })
-            .then(function (w) { return w.write(md).then(function () { return w.close(); }); })
-            .catch(function (e) { console.error('Bookmarks sync error:', e); });
+        if (typeof notesModule !== 'undefined') notesModule.syncAllToFolder();
     }
 
     /* ── Reference extraction ── */
@@ -160,7 +157,7 @@ var bookmarks = (function () {
             row.className = 'bookmark-row' + (_editMode ? ' bm-edit' : '');
 
             var section = document.createElement('div');
-            section.className = 'index_chapter_section';
+            section.className = 'index-chapter-section';
 
             /* ── Left: move buttons (edit mode only) ── */
             if (_editMode) {
@@ -208,7 +205,7 @@ var bookmarks = (function () {
                 var nameLink = document.createElement('a');
                 nameLink.href = 'index.html' + bm.anchor;
                 nameLink.textContent = bm.name;
-                nameLink.addEventListener('click', function () { closeSidePane(); });
+                nameLink.addEventListener('click', function () { app.emit('pane:close'); });
                 nameH4.appendChild(nameLink);
             }
             section.appendChild(nameH4);
@@ -225,7 +222,7 @@ var bookmarks = (function () {
             refLink.href = 'index.html' + bm.anchor;
             refLink.className = 'page-link';
             refLink.textContent = bm.ref || '';
-            refLink.addEventListener('click', function () { closeSidePane(); });
+            refLink.addEventListener('click', function () { app.emit('pane:close'); });
             refH4.appendChild(refLink);
             section.appendChild(refH4);
 
@@ -251,9 +248,9 @@ var bookmarks = (function () {
 
     function setCurrentHighlight(anchor) {
         var btn = document.getElementById('fab-bookmark-btn');
-        var div = document.getElementById('fab-bookmark-divider');
+        var notesDiv = document.getElementById('fab-notes-divider');
         if (btn) btn.classList.toggle('visible', !!anchor);
-        if (div) div.classList.toggle('visible', !!anchor);
+        if (notesDiv) notesDiv.classList.toggle('visible', !!anchor);
     }
 
     /* ── Add dialog ── */
@@ -317,6 +314,10 @@ var bookmarks = (function () {
     }
 
     document.addEventListener('DOMContentLoaded', _init);
+
+    app.on('highlight:added', function(el) { setCurrentHighlight(el ? '#' + el.id : null); });
+    app.on('highlight:removed', function() { setCurrentHighlight(null); });
+    app.on('dialog:close', hideAddDialog);
 
     return {
         add:                 add,

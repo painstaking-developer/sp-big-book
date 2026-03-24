@@ -1,3 +1,15 @@
+/**
+ * script.js — Navigation and UI coordinator  (ES module)
+ *
+ * Responsibility: hash-based navigation, paragraph highlighting, PWA install,
+ * theme/font/zoom settings, left-pane and side-pane state, FAB positioning.
+ *
+ * All public functions used as HTML event-handler attributes are exported
+ * to window at the bottom of this file.
+ *
+ * Depends on: window.app (event bus, provided by notes.js)
+ */
+
 let isInitialLoad = true;
 
 /* ── PWA install ── */
@@ -42,8 +54,7 @@ function highlightParagraph() {
     const highlighted = document.querySelector('.highlight');
     if (highlighted) {
         highlighted.classList.remove('highlight');
-        notes.highlightRemoved(highlighted);
-        if (typeof bookmarks !== 'undefined') bookmarks.setCurrentHighlight(null);
+        app.emit('highlight:removed', highlighted);
     }
 
     // Highlight the new paragraph
@@ -56,11 +67,11 @@ function highlightParagraph() {
         }
         if (element) {
             element.classList.add('highlight');
-            notes.highlightAdded(element);
+            app.emit('highlight:added', element);
 
             // Only scroll to center on initial page load (visiting via URL)
             if (isInitialLoad) {
-                const pageContent = element.closest('.p');
+                const pageContent = element.closest('.text-block');
                 if (pageContent) {
                     const elementPosition = element.getBoundingClientRect().top + window.scrollY;
                     const offset = window.innerHeight / 2 - element.clientHeight / 2;
@@ -149,7 +160,7 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeSidePane();
         closeLeftPane();
-        if (typeof bookmarks !== 'undefined') bookmarks.hideAddDialog();
+        app.emit('dialog:close');
     }
 });
 
@@ -212,6 +223,9 @@ function applyZoom() {
     });
 }
 
+app.on('pane:open-notes', function() { openSidePane('notes'); });
+app.on('pane:close', closeSidePane);
+
 document.addEventListener("DOMContentLoaded", function() {
     highlightParagraph();
     const theme = document.documentElement.getAttribute('data-theme') || 'light';
@@ -234,8 +248,8 @@ document.addEventListener("DOMContentLoaded", function() {
 window.addEventListener("hashchange", highlightParagraph);
 
 function updateFabTop() {
-    const pos = localStorage.getItem('menuPosition') || 'top-left';
-    if (pos !== 'top-right' && pos !== 'top-left') return;
+    const pos = document.documentElement.getAttribute('data-menu-position') || 'top-left';
+    if (!pos.startsWith('top-')) return;
     const firstHeader = document.querySelector('article header');
     if (!firstHeader) return;
     const bottom = firstHeader.getBoundingClientRect().bottom;
@@ -269,8 +283,7 @@ document.addEventListener('click', function(event) {
     if (highlighted.contains(event.target) || event.target === highlighted) return;
 
     highlighted.classList.remove('highlight');
-    notes.highlightRemoved(highlighted);
-    if (typeof bookmarks !== 'undefined') bookmarks.setCurrentHighlight(null);
+    app.emit('highlight:removed', highlighted);
 });
 
 document.addEventListener('dblclick', function (event) {
@@ -285,14 +298,12 @@ document.addEventListener('dblclick', function (event) {
     const targetElement = event.target;
 
     // Get the ID of the clicked element
-    elementId = targetElement.id; // Get the current element ID
+    let elementId = targetElement.id;
 
     // Check if the element does not have an ID, and get the parent ID if necessary
     if (!elementId && targetElement.parentElement) {
-        elementId = targetElement.parentElement.id; // Get the parent element ID
+        elementId = targetElement.parentElement.id;
     }
-
-    console.log("elementId", elementId)
 
     // Only proceed if we have an ID
     if (elementId) {
@@ -306,7 +317,6 @@ document.addEventListener('dblclick', function (event) {
         history.pushState(null, '', '#' + elementId);
         highlightParagraph();
         notes.closePane();
-        if (typeof bookmarks !== 'undefined') bookmarks.setCurrentHighlight('#' + elementId);
 
         // Copy the target URL (with the element ID) to the clipboard
         navigator.clipboard.writeText(targetUrl)
@@ -317,4 +327,29 @@ document.addEventListener('dblclick', function (event) {
                 console.error('Failed to copy: ', err);
             });
     }
+});
+
+// Expose functions used as HTML event-handler attributes
+Object.assign(window, {
+    installPwa,
+    shareApp,
+    switchPaneTab,
+    openSidePane,
+    closeSidePane,
+    openSettingsPane,
+    openLeftPane,
+    closeLeftPane,
+    showLeftPaneNav,
+    showLeftPaneIndex,
+    toggleLeftPane,
+    toggleLeftPaneNav,
+    toggleDarkMode,
+    updateThemeToggle,
+    setFont,
+    updateFontToggle,
+    setMenuPosition,
+    updateMenuPositionToggle,
+    adjustZoom,
+    applyZoom,
+    updateFabTop,
 });

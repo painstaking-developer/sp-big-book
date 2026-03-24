@@ -100,8 +100,7 @@
 }
 
 /* Left-positioned menu: hide trailing divider (it ends up at wrong edge) */
-[data-menu-position="bottom-left"] .hl-fab-divider,
-[data-menu-position="top-left"] .hl-fab-divider {
+[data-menu-position$="-left"] .hl-fab-divider {
     display: none;
 }
 
@@ -116,3 +115,14 @@ mark.hl-green  { background: var(--hl-green);  color: inherit; }
 mark.hl-red    { background: var(--hl-red);    color: inherit; }
 mark.hl-purple { background: var(--hl-purple); color: inherit; }
 mark.hl-blue   { background: var(--hl-blue);   color: inherit; }
+
+/* ── URL-hash navigation highlight (re-uses the same highlight colour token) ── */
+.highlight {
+    background-color: var(--color-bg-highlight);
+}
+
+@media print {
+    .highlight {
+        background-color: transparent;
+    }
+}

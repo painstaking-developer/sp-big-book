@@ -10,7 +10,10 @@
     <meta name="apple-mobile-web-app-title" content="Alcoholics Anonymous">
     <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="apple-touch-icon" href="image.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fab.css">
     <link rel="stylesheet" href="notes.css">
     <link rel="stylesheet" href="bookmarks.css">
     <link rel="stylesheet" href="highlight.css">
@@ -33,7 +36,7 @@
     <script src="notes.js" defer></script>
     <script src="bookmarks.js" defer></script>
     <script src="highlight.js" defer></script>
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js"></script>
     <title>About &#8211; Alcoholics Anonymous</title>
 </head>
 <body>
@@ -67,7 +70,7 @@
         </div>
         <div class="left-nav-body">
             <nav class="left-nav-section">
-                <a class="left-nav-item" href="index.html#Cover">
+                <a class="left-nav-item" href="index.html">
                     <span class="left-nav-icon">𝓐</span>
                     <span class="left-nav-text">Book Text</span>
                 </a>
@@ -112,466 +115,467 @@
     <div id="left-pane-index" class="left-pane-view" style="display:none">
         <div class="pane-header">
             <button class="pane-back-btn" onclick="showLeftPaneNav()">&#8592; Menu</button>
-            <span class="settings-close" onclick="closeLeftPane()">&times;</span>
+            <span class="settings-close" onclick="closeLeftPane()" style="margin-left:auto">&times;</span>
         </div>
         <div class="settings-pane-content">
-            <div id="index"></div>
-            <h1 id="Forewords"><a href="index.html#Forewords">Forewords</a></h1>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Preface">
-                            Preface
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pgxi" class="page-link">xi</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pgxi" class="sm-pg-num">xi</a>
-                    <a href="index.html#pgxii" class="sm-pg-num">xii</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Foreword_To_First_Edition">
-                            Foreword To First Edition
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pgxiii" class="page-link">xiii</a></h4>
-                </div>
-                <div class="pg-nums">
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Foreword_To_Second_Edition">
-                            Foreword To Second Edition
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pgxv" class="page-link">xv</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pgxv" class="sm-pg-num">xv</a>
-                    <a href="index.html#pgxvi" class="sm-pg-num">xvi</a>
-                    <a href="index.html#pgxvii" class="sm-pg-num">xvii</a>
-                    <a href="index.html#pgxviii" class="sm-pg-num">xviii</a>
-                    <a href="index.html#pgxix" class="sm-pg-num">xix</a>
-                    <a href="index.html#pgxx" class="sm-pg-num">xx</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Foreword_To_Third_Edition">
-                            Foreword To Third Edition
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pgxxii" class="page-link">xxii</a></h4>
-                </div>
-                <div class="pg-nums">
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Foreword_To_Fourth_Edition">
-                            Foreword To Fourth Edition
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pgxxiii" class="page-link">xxiii</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pgxxiii" class="sm-pg-num">xxiii</a>
-                    <a href="index.html#pgxxiv" class="sm-pg-num">xxiv</a>
-                </div>
-            </div>
-            <h1 id="Chapters"><a href="index.html#Chapters">Chapters</a></h1>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#The_Doctor's_Opinion">
-                            The Doctor's Opinion
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pgxxv" class="page-link">xxv</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pgxxv" class="sm-pg-num">xxv</a>
-                    <a href="index.html#pgxxvi" class="sm-pg-num">xxvi</a>
-                    <a href="index.html#pgxxvii" class="sm-pg-num">xxvii</a>
-                    <a href="index.html#pgxxviii" class="sm-pg-num">xxviii</a>
-                    <a href="index.html#pgxxix" class="sm-pg-num">xxix</a>
-                    <a href="index.html#pgxxx" class="sm-pg-num">xxx</a>
-                    <a href="index.html#pgxxxi" class="sm-pg-num">xxxi</a>
-                    <a href="index.html#pgxxxii" class="sm-pg-num">xxxii</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_1">
-                            Chapter 1 - Bill's Story
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg1" class="page-link">1</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg1" class="sm-pg-num">1</a>
-                    <a href="index.html#pg2" class="sm-pg-num">2</a>
-                    <a href="index.html#pg3" class="sm-pg-num">3</a>
-                    <a href="index.html#pg4" class="sm-pg-num">4</a>
-                    <a href="index.html#pg5" class="sm-pg-num">5</a>
-                    <a href="index.html#pg6" class="sm-pg-num">6</a>
-                    <a href="index.html#pg7" class="sm-pg-num">7</a>
-                    <a href="index.html#pg8" class="sm-pg-num">8</a>
-                    <a href="index.html#pg9" class="sm-pg-num">9</a>
-                    <a href="index.html#pg10" class="sm-pg-num">10</a>
-                    <a href="index.html#pg11" class="sm-pg-num">11</a>
-                    <a href="index.html#pg12" class="sm-pg-num">12</a>
-                    <a href="index.html#pg13" class="sm-pg-num">13</a>
-                    <a href="index.html#pg14" class="sm-pg-num">14</a>
-                    <a href="index.html#pg15" class="sm-pg-num">15</a>
-                    <a href="index.html#pg16" class="sm-pg-num">16</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_2">
-                            Chapter 2 - There Is a Solution
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg17" class="page-link">17</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg17" class="sm-pg-num">17</a>
-                    <a href="index.html#pg18" class="sm-pg-num">18</a>
-                    <a href="index.html#pg19" class="sm-pg-num">19</a>
-                    <a href="index.html#pg20" class="sm-pg-num">20</a>
-                    <a href="index.html#pg21" class="sm-pg-num">21</a>
-                    <a href="index.html#pg22" class="sm-pg-num">22</a>
-                    <a href="index.html#pg23" class="sm-pg-num">23</a>
-                    <a href="index.html#pg24" class="sm-pg-num">24</a>
-                    <a href="index.html#pg25" class="sm-pg-num">25</a>
-                    <a href="index.html#pg26" class="sm-pg-num">26</a>
-                    <a href="index.html#pg27" class="sm-pg-num">27</a>
-                    <a href="index.html#pg28" class="sm-pg-num">28</a>
-                    <a href="index.html#pg29" class="sm-pg-num">29</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_3">
-                            Chapter 3 - More About Alcoholism
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg30" class="page-link">30</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg30" class="sm-pg-num">30</a>
-                    <a href="index.html#pg31" class="sm-pg-num">31</a>
-                    <a href="index.html#pg32" class="sm-pg-num">32</a>
-                    <a href="index.html#pg33" class="sm-pg-num">33</a>
-                    <a href="index.html#pg34" class="sm-pg-num">34</a>
-                    <a href="index.html#pg35" class="sm-pg-num">35</a>
-                    <a href="index.html#pg36" class="sm-pg-num">36</a>
-                    <a href="index.html#pg37" class="sm-pg-num">37</a>
-                    <a href="index.html#pg38" class="sm-pg-num">38</a>
-                    <a href="index.html#pg39" class="sm-pg-num">39</a>
-                    <a href="index.html#pg40" class="sm-pg-num">40</a>
-                    <a href="index.html#pg41" class="sm-pg-num">41</a>
-                    <a href="index.html#pg42" class="sm-pg-num">42</a>
-                    <a href="index.html#pg43" class="sm-pg-num">43</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_4">
-                            Chapter 4 - We Agnostics
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg44" class="page-link">44</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg44" class="sm-pg-num">44</a>
-                    <a href="index.html#pg45" class="sm-pg-num">45</a>
-                    <a href="index.html#pg46" class="sm-pg-num">46</a>
-                    <a href="index.html#pg47" class="sm-pg-num">47</a>
-                    <a href="index.html#pg48" class="sm-pg-num">48</a>
-                    <a href="index.html#pg49" class="sm-pg-num">49</a>
-                    <a href="index.html#pg50" class="sm-pg-num">50</a>
-                    <a href="index.html#pg51" class="sm-pg-num">51</a>
-                    <a href="index.html#pg52" class="sm-pg-num">52</a>
-                    <a href="index.html#pg53" class="sm-pg-num">53</a>
-                    <a href="index.html#pg54" class="sm-pg-num">54</a>
-                    <a href="index.html#pg55" class="sm-pg-num">55</a>
-                    <a href="index.html#pg56" class="sm-pg-num">56</a>
-                    <a href="index.html#pg57" class="sm-pg-num">57</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_5">
-                            Chapter 5 - How It Works
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg58" class="page-link">58</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg58" class="sm-pg-num">58</a>
-                    <a href="index.html#pg59" class="sm-pg-num">59</a>
-                    <a href="index.html#pg60" class="sm-pg-num">60</a>
-                    <a href="index.html#pg61" class="sm-pg-num">61</a>
-                    <a href="index.html#pg62" class="sm-pg-num">62</a>
-                    <a href="index.html#pg63" class="sm-pg-num">63</a>
-                    <a href="index.html#pg64" class="sm-pg-num">64</a>
-                    <a href="index.html#pg65" class="sm-pg-num">65</a>
-                    <a href="index.html#pg66" class="sm-pg-num">66</a>
-                    <a href="index.html#pg67" class="sm-pg-num">67</a>
-                    <a href="index.html#pg68" class="sm-pg-num">68</a>
-                    <a href="index.html#pg69" class="sm-pg-num">69</a>
-                    <a href="index.html#pg70" class="sm-pg-num">70</a>
-                    <a href="index.html#pg71" class="sm-pg-num">71</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_6">
-                            Chapter 6 - Into Action
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg72" class="page-link">72</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg72" class="sm-pg-num">72</a>
-                    <a href="index.html#pg73" class="sm-pg-num">73</a>
-                    <a href="index.html#pg74" class="sm-pg-num">74</a>
-                    <a href="index.html#pg75" class="sm-pg-num">75</a>
-                    <a href="index.html#pg76" class="sm-pg-num">76</a>
-                    <a href="index.html#pg77" class="sm-pg-num">77</a>
-                    <a href="index.html#pg78" class="sm-pg-num">78</a>
-                    <a href="index.html#pg79" class="sm-pg-num">79</a>
-                    <a href="index.html#pg80" class="sm-pg-num">80</a>
-                    <a href="index.html#pg81" class="sm-pg-num">81</a>
-                    <a href="index.html#pg82" class="sm-pg-num">82</a>
-                    <a href="index.html#pg83" class="sm-pg-num">83</a>
-                    <a href="index.html#pg84" class="sm-pg-num">84</a>
-                    <a href="index.html#pg85" class="sm-pg-num">85</a>
-                    <a href="index.html#pg86" class="sm-pg-num">86</a>
-                    <a href="index.html#pg87" class="sm-pg-num">87</a>
-                    <a href="index.html#pg88" class="sm-pg-num">88</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_7">
-                            Chapter 7 - Working With Others
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg89" class="page-link">89</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg89" class="sm-pg-num">89</a>
-                    <a href="index.html#pg90" class="sm-pg-num">90</a>
-                    <a href="index.html#pg91" class="sm-pg-num">91</a>
-                    <a href="index.html#pg92" class="sm-pg-num">92</a>
-                    <a href="index.html#pg93" class="sm-pg-num">93</a>
-                    <a href="index.html#pg94" class="sm-pg-num">94</a>
-                    <a href="index.html#pg95" class="sm-pg-num">95</a>
-                    <a href="index.html#pg96" class="sm-pg-num">96</a>
-                    <a href="index.html#pg97" class="sm-pg-num">97</a>
-                    <a href="index.html#pg98" class="sm-pg-num">98</a>
-                    <a href="index.html#pg99" class="sm-pg-num">99</a>
-                    <a href="index.html#pg100" class="sm-pg-num">100</a>
-                    <a href="index.html#pg101" class="sm-pg-num">101</a>
-                    <a href="index.html#pg102" class="sm-pg-num">102</a>
-                    <a href="index.html#pg103" class="sm-pg-num">103</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_8">
-                            Chapter 8 - To Wives
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg104" class="page-link">104</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg104" class="sm-pg-num">104</a>
-                    <a href="index.html#pg105" class="sm-pg-num">105</a>
-                    <a href="index.html#pg106" class="sm-pg-num">106</a>
-                    <a href="index.html#pg107" class="sm-pg-num">107</a>
-                    <a href="index.html#pg108" class="sm-pg-num">108</a>
-                    <a href="index.html#pg109" class="sm-pg-num">109</a>
-                    <a href="index.html#pg110" class="sm-pg-num">110</a>
-                    <a href="index.html#pg111" class="sm-pg-num">111</a>
-                    <a href="index.html#pg112" class="sm-pg-num">112</a>
-                    <a href="index.html#pg113" class="sm-pg-num">113</a>
-                    <a href="index.html#pg114" class="sm-pg-num">114</a>
-                    <a href="index.html#pg115" class="sm-pg-num">115</a>
-                    <a href="index.html#pg116" class="sm-pg-num">116</a>
-                    <a href="index.html#pg117" class="sm-pg-num">117</a>
-                    <a href="index.html#pg118" class="sm-pg-num">118</a>
-                    <a href="index.html#pg119" class="sm-pg-num">119</a>
-                    <a href="index.html#pg120" class="sm-pg-num">120</a>
-                    <a href="index.html#pg121" class="sm-pg-num">121</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_9">
-                            Chapter 9 - The Family Afterword
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg122" class="page-link">122</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg122" class="sm-pg-num">122</a>
-                    <a href="index.html#pg123" class="sm-pg-num">123</a>
-                    <a href="index.html#pg124" class="sm-pg-num">124</a>
-                    <a href="index.html#pg125" class="sm-pg-num">125</a>
-                    <a href="index.html#pg126" class="sm-pg-num">126</a>
-                    <a href="index.html#pg127" class="sm-pg-num">127</a>
-                    <a href="index.html#pg128" class="sm-pg-num">128</a>
-                    <a href="index.html#pg129" class="sm-pg-num">129</a>
-                    <a href="index.html#pg130" class="sm-pg-num">130</a>
-                    <a href="index.html#pg131" class="sm-pg-num">131</a>
-                    <a href="index.html#pg132" class="sm-pg-num">132</a>
-                    <a href="index.html#pg133" class="sm-pg-num">133</a>
-                    <a href="index.html#pg134" class="sm-pg-num">134</a>
-                    <a href="index.html#pg135" class="sm-pg-num">135</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_10">
-                            Chapter 10 - To Employers
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg136" class="page-link">136</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg136" class="sm-pg-num">136</a>
-                    <a href="index.html#pg137" class="sm-pg-num">137</a>
-                    <a href="index.html#pg138" class="sm-pg-num">138</a>
-                    <a href="index.html#pg139" class="sm-pg-num">139</a>
-                    <a href="index.html#pg140" class="sm-pg-num">140</a>
-                    <a href="index.html#pg141" class="sm-pg-num">141</a>
-                    <a href="index.html#pg142" class="sm-pg-num">142</a>
-                    <a href="index.html#pg143" class="sm-pg-num">143</a>
-                    <a href="index.html#pg144" class="sm-pg-num">144</a>
-                    <a href="index.html#pg145" class="sm-pg-num">145</a>
-                    <a href="index.html#pg146" class="sm-pg-num">146</a>
-                    <a href="index.html#pg147" class="sm-pg-num">147</a>
-                    <a href="index.html#pg148" class="sm-pg-num">148</a>
-                    <a href="index.html#pg149" class="sm-pg-num">149</a>
-                    <a href="index.html#pg150" class="sm-pg-num">150</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Chapter_11">
-                            Chapter 11 - A Vision For You
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg151" class="page-link">151</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg151" class="sm-pg-num">151</a>
-                    <a href="index.html#pg152" class="sm-pg-num">152</a>
-                    <a href="index.html#pg153" class="sm-pg-num">153</a>
-                    <a href="index.html#pg154" class="sm-pg-num">154</a>
-                    <a href="index.html#pg155" class="sm-pg-num">155</a>
-                    <a href="index.html#pg156" class="sm-pg-num">156</a>
-                    <a href="index.html#pg157" class="sm-pg-num">157</a>
-                    <a href="index.html#pg158" class="sm-pg-num">158</a>
-                    <a href="index.html#pg159" class="sm-pg-num">159</a>
-                    <a href="index.html#pg160" class="sm-pg-num">160</a>
-                    <a href="index.html#pg161" class="sm-pg-num">161</a>
-                    <a href="index.html#pg162" class="sm-pg-num">162</a>
-                    <a href="index.html#pg163" class="sm-pg-num">163</a>
-                    <a href="index.html#pg164" class="sm-pg-num">164</a>
-                </div>
-            </div>
-            <h1 id="Personal_Stories"><a href="index.html#Personal_Stories">Personal Stories</a></h1>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Doctor_Bob's_Nightmare">
-                            Doctor Bob's Nightmare
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg171" class="page-link">171</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg171" class="sm-pg-num">171</a>
-                    <a href="index.html#pg172" class="sm-pg-num">172</a>
-                    <a href="index.html#pg173" class="sm-pg-num">173</a>
-                    <a href="index.html#pg174" class="sm-pg-num">174</a>
-                    <a href="index.html#pg175" class="sm-pg-num">175</a>
-                    <a href="index.html#pg176" class="sm-pg-num">176</a>
-                    <a href="index.html#pg177" class="sm-pg-num">177</a>
-                    <a href="index.html#pg178" class="sm-pg-num">178</a>
-                    <a href="index.html#pg179" class="sm-pg-num">179</a>
-                    <a href="index.html#pg180" class="sm-pg-num">180</a>
-                    <a href="index.html#pg181" class="sm-pg-num">181</a>
-                </div>
-            </div>
-            <div>
-                <div class="index_chapter_section">
-                    <h4 class="chapter-name">
-                        <a href="index.html#Acceptance_Was_The_Answer">
-                            Acceptance Was The Answer
-                        </a>
-                    </h4>
-                    <div class="dots"></div>
-                    <h4 class="page-number"><a href="index.html#pg407" class="page-link">407</a></h4>
-                </div>
-                <div class="pg-nums">
-                    <a href="index.html#pg407" class="sm-pg-num">407</a>
-                    <a href="index.html#pg408" class="sm-pg-num">408</a>
-                    <a href="index.html#pg409" class="sm-pg-num">409</a>
-                    <a href="index.html#pg410" class="sm-pg-num">410</a>
-                    <a href="index.html#pg411" class="sm-pg-num">411</a>
-                    <a href="index.html#pg412" class="sm-pg-num">412</a>
-                    <a href="index.html#pg413" class="sm-pg-num">413</a>
-                    <a href="index.html#pg414" class="sm-pg-num">414</a>
-                    <a href="index.html#pg415" class="sm-pg-num">415</a>
-                    <a href="index.html#pg416" class="sm-pg-num">416</a>
-                    <a href="index.html#pg417" class="sm-pg-num">417</a>
-                    <a href="index.html#pg418" class="sm-pg-num">418</a>
-                    <a href="index.html#pg419" class="sm-pg-num">419</a>
-                    <a href="index.html#pg420" class="sm-pg-num">420</a>
-                </div>
+            <div id="index">
+<h1 id="Forewords"><a href="index.html#Forewords">Forewords</a></h1>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Preface">
+                Preface
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pgxi" class="page-link">xi</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pgxi" class="sm-pg-num">xi</a>
+        <a href="index.html#pgxii" class="sm-pg-num">xii</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Foreword_To_First_Edition">
+                Foreword To First Edition
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pgxiii" class="page-link">xiii</a></h4>
+    </div>
+    <div class="pg-nums">
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Foreword_To_Second_Edition">
+                Foreword To Second Edition
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pgxv" class="page-link">xv</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pgxv" class="sm-pg-num">xv</a>
+        <a href="index.html#pgxvi" class="sm-pg-num">xvi</a>
+        <a href="index.html#pgxvii" class="sm-pg-num">xvii</a>
+        <a href="index.html#pgxviii" class="sm-pg-num">xviii</a>
+        <a href="index.html#pgxix" class="sm-pg-num">xix</a>
+        <a href="index.html#pgxx" class="sm-pg-num">xx</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Foreword_To_Third_Edition">
+                Foreword To Third Edition
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pgxxii" class="page-link">xxii</a></h4>
+    </div>
+    <div class="pg-nums">
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Foreword_To_Fourth_Edition">
+                Foreword To Fourth Edition
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pgxxiii" class="page-link">xxiii</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pgxxiii" class="sm-pg-num">xxiii</a>
+        <a href="index.html#pgxxiv" class="sm-pg-num">xxiv</a>
+    </div>
+</div>
+<h1 id="Chapters"><a href="index.html#Chapters">Chapters</a></h1>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#The_Doctor's_Opinion">
+                The Doctor's Opinion
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pgxxv" class="page-link">xxv</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pgxxv" class="sm-pg-num">xxv</a>
+        <a href="index.html#pgxxvi" class="sm-pg-num">xxvi</a>
+        <a href="index.html#pgxxvii" class="sm-pg-num">xxvii</a>
+        <a href="index.html#pgxxviii" class="sm-pg-num">xxviii</a>
+        <a href="index.html#pgxxix" class="sm-pg-num">xxix</a>
+        <a href="index.html#pgxxx" class="sm-pg-num">xxx</a>
+        <a href="index.html#pgxxxi" class="sm-pg-num">xxxi</a>
+        <a href="index.html#pgxxxii" class="sm-pg-num">xxxii</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_1">
+                Chapter 1 - Bill's Story
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg1" class="page-link">1</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg1" class="sm-pg-num">1</a>
+        <a href="index.html#pg2" class="sm-pg-num">2</a>
+        <a href="index.html#pg3" class="sm-pg-num">3</a>
+        <a href="index.html#pg4" class="sm-pg-num">4</a>
+        <a href="index.html#pg5" class="sm-pg-num">5</a>
+        <a href="index.html#pg6" class="sm-pg-num">6</a>
+        <a href="index.html#pg7" class="sm-pg-num">7</a>
+        <a href="index.html#pg8" class="sm-pg-num">8</a>
+        <a href="index.html#pg9" class="sm-pg-num">9</a>
+        <a href="index.html#pg10" class="sm-pg-num">10</a>
+        <a href="index.html#pg11" class="sm-pg-num">11</a>
+        <a href="index.html#pg12" class="sm-pg-num">12</a>
+        <a href="index.html#pg13" class="sm-pg-num">13</a>
+        <a href="index.html#pg14" class="sm-pg-num">14</a>
+        <a href="index.html#pg15" class="sm-pg-num">15</a>
+        <a href="index.html#pg16" class="sm-pg-num">16</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_2">
+                Chapter 2 - There Is a Solution
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg17" class="page-link">17</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg17" class="sm-pg-num">17</a>
+        <a href="index.html#pg18" class="sm-pg-num">18</a>
+        <a href="index.html#pg19" class="sm-pg-num">19</a>
+        <a href="index.html#pg20" class="sm-pg-num">20</a>
+        <a href="index.html#pg21" class="sm-pg-num">21</a>
+        <a href="index.html#pg22" class="sm-pg-num">22</a>
+        <a href="index.html#pg23" class="sm-pg-num">23</a>
+        <a href="index.html#pg24" class="sm-pg-num">24</a>
+        <a href="index.html#pg25" class="sm-pg-num">25</a>
+        <a href="index.html#pg26" class="sm-pg-num">26</a>
+        <a href="index.html#pg27" class="sm-pg-num">27</a>
+        <a href="index.html#pg28" class="sm-pg-num">28</a>
+        <a href="index.html#pg29" class="sm-pg-num">29</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_3">
+                Chapter 3 - More About Alcoholism
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg30" class="page-link">30</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg30" class="sm-pg-num">30</a>
+        <a href="index.html#pg31" class="sm-pg-num">31</a>
+        <a href="index.html#pg32" class="sm-pg-num">32</a>
+        <a href="index.html#pg33" class="sm-pg-num">33</a>
+        <a href="index.html#pg34" class="sm-pg-num">34</a>
+        <a href="index.html#pg35" class="sm-pg-num">35</a>
+        <a href="index.html#pg36" class="sm-pg-num">36</a>
+        <a href="index.html#pg37" class="sm-pg-num">37</a>
+        <a href="index.html#pg38" class="sm-pg-num">38</a>
+        <a href="index.html#pg39" class="sm-pg-num">39</a>
+        <a href="index.html#pg40" class="sm-pg-num">40</a>
+        <a href="index.html#pg41" class="sm-pg-num">41</a>
+        <a href="index.html#pg42" class="sm-pg-num">42</a>
+        <a href="index.html#pg43" class="sm-pg-num">43</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_4">
+                Chapter 4 - We Agnostics
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg44" class="page-link">44</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg44" class="sm-pg-num">44</a>
+        <a href="index.html#pg45" class="sm-pg-num">45</a>
+        <a href="index.html#pg46" class="sm-pg-num">46</a>
+        <a href="index.html#pg47" class="sm-pg-num">47</a>
+        <a href="index.html#pg48" class="sm-pg-num">48</a>
+        <a href="index.html#pg49" class="sm-pg-num">49</a>
+        <a href="index.html#pg50" class="sm-pg-num">50</a>
+        <a href="index.html#pg51" class="sm-pg-num">51</a>
+        <a href="index.html#pg52" class="sm-pg-num">52</a>
+        <a href="index.html#pg53" class="sm-pg-num">53</a>
+        <a href="index.html#pg54" class="sm-pg-num">54</a>
+        <a href="index.html#pg55" class="sm-pg-num">55</a>
+        <a href="index.html#pg56" class="sm-pg-num">56</a>
+        <a href="index.html#pg57" class="sm-pg-num">57</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_5">
+                Chapter 5 - How It Works
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg58" class="page-link">58</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg58" class="sm-pg-num">58</a>
+        <a href="index.html#pg59" class="sm-pg-num">59</a>
+        <a href="index.html#pg60" class="sm-pg-num">60</a>
+        <a href="index.html#pg61" class="sm-pg-num">61</a>
+        <a href="index.html#pg62" class="sm-pg-num">62</a>
+        <a href="index.html#pg63" class="sm-pg-num">63</a>
+        <a href="index.html#pg64" class="sm-pg-num">64</a>
+        <a href="index.html#pg65" class="sm-pg-num">65</a>
+        <a href="index.html#pg66" class="sm-pg-num">66</a>
+        <a href="index.html#pg67" class="sm-pg-num">67</a>
+        <a href="index.html#pg68" class="sm-pg-num">68</a>
+        <a href="index.html#pg69" class="sm-pg-num">69</a>
+        <a href="index.html#pg70" class="sm-pg-num">70</a>
+        <a href="index.html#pg71" class="sm-pg-num">71</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_6">
+                Chapter 6 - Into Action
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg72" class="page-link">72</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg72" class="sm-pg-num">72</a>
+        <a href="index.html#pg73" class="sm-pg-num">73</a>
+        <a href="index.html#pg74" class="sm-pg-num">74</a>
+        <a href="index.html#pg75" class="sm-pg-num">75</a>
+        <a href="index.html#pg76" class="sm-pg-num">76</a>
+        <a href="index.html#pg77" class="sm-pg-num">77</a>
+        <a href="index.html#pg78" class="sm-pg-num">78</a>
+        <a href="index.html#pg79" class="sm-pg-num">79</a>
+        <a href="index.html#pg80" class="sm-pg-num">80</a>
+        <a href="index.html#pg81" class="sm-pg-num">81</a>
+        <a href="index.html#pg82" class="sm-pg-num">82</a>
+        <a href="index.html#pg83" class="sm-pg-num">83</a>
+        <a href="index.html#pg84" class="sm-pg-num">84</a>
+        <a href="index.html#pg85" class="sm-pg-num">85</a>
+        <a href="index.html#pg86" class="sm-pg-num">86</a>
+        <a href="index.html#pg87" class="sm-pg-num">87</a>
+        <a href="index.html#pg88" class="sm-pg-num">88</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_7">
+                Chapter 7 - Working With Others
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg89" class="page-link">89</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg89" class="sm-pg-num">89</a>
+        <a href="index.html#pg90" class="sm-pg-num">90</a>
+        <a href="index.html#pg91" class="sm-pg-num">91</a>
+        <a href="index.html#pg92" class="sm-pg-num">92</a>
+        <a href="index.html#pg93" class="sm-pg-num">93</a>
+        <a href="index.html#pg94" class="sm-pg-num">94</a>
+        <a href="index.html#pg95" class="sm-pg-num">95</a>
+        <a href="index.html#pg96" class="sm-pg-num">96</a>
+        <a href="index.html#pg97" class="sm-pg-num">97</a>
+        <a href="index.html#pg98" class="sm-pg-num">98</a>
+        <a href="index.html#pg99" class="sm-pg-num">99</a>
+        <a href="index.html#pg100" class="sm-pg-num">100</a>
+        <a href="index.html#pg101" class="sm-pg-num">101</a>
+        <a href="index.html#pg102" class="sm-pg-num">102</a>
+        <a href="index.html#pg103" class="sm-pg-num">103</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_8">
+                Chapter 8 - To Wives
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg104" class="page-link">104</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg104" class="sm-pg-num">104</a>
+        <a href="index.html#pg105" class="sm-pg-num">105</a>
+        <a href="index.html#pg106" class="sm-pg-num">106</a>
+        <a href="index.html#pg107" class="sm-pg-num">107</a>
+        <a href="index.html#pg108" class="sm-pg-num">108</a>
+        <a href="index.html#pg109" class="sm-pg-num">109</a>
+        <a href="index.html#pg110" class="sm-pg-num">110</a>
+        <a href="index.html#pg111" class="sm-pg-num">111</a>
+        <a href="index.html#pg112" class="sm-pg-num">112</a>
+        <a href="index.html#pg113" class="sm-pg-num">113</a>
+        <a href="index.html#pg114" class="sm-pg-num">114</a>
+        <a href="index.html#pg115" class="sm-pg-num">115</a>
+        <a href="index.html#pg116" class="sm-pg-num">116</a>
+        <a href="index.html#pg117" class="sm-pg-num">117</a>
+        <a href="index.html#pg118" class="sm-pg-num">118</a>
+        <a href="index.html#pg119" class="sm-pg-num">119</a>
+        <a href="index.html#pg120" class="sm-pg-num">120</a>
+        <a href="index.html#pg121" class="sm-pg-num">121</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_9">
+                Chapter 9 - The Family Afterword
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg122" class="page-link">122</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg122" class="sm-pg-num">122</a>
+        <a href="index.html#pg123" class="sm-pg-num">123</a>
+        <a href="index.html#pg124" class="sm-pg-num">124</a>
+        <a href="index.html#pg125" class="sm-pg-num">125</a>
+        <a href="index.html#pg126" class="sm-pg-num">126</a>
+        <a href="index.html#pg127" class="sm-pg-num">127</a>
+        <a href="index.html#pg128" class="sm-pg-num">128</a>
+        <a href="index.html#pg129" class="sm-pg-num">129</a>
+        <a href="index.html#pg130" class="sm-pg-num">130</a>
+        <a href="index.html#pg131" class="sm-pg-num">131</a>
+        <a href="index.html#pg132" class="sm-pg-num">132</a>
+        <a href="index.html#pg133" class="sm-pg-num">133</a>
+        <a href="index.html#pg134" class="sm-pg-num">134</a>
+        <a href="index.html#pg135" class="sm-pg-num">135</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_10">
+                Chapter 10 - To Employers
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg136" class="page-link">136</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg136" class="sm-pg-num">136</a>
+        <a href="index.html#pg137" class="sm-pg-num">137</a>
+        <a href="index.html#pg138" class="sm-pg-num">138</a>
+        <a href="index.html#pg139" class="sm-pg-num">139</a>
+        <a href="index.html#pg140" class="sm-pg-num">140</a>
+        <a href="index.html#pg141" class="sm-pg-num">141</a>
+        <a href="index.html#pg142" class="sm-pg-num">142</a>
+        <a href="index.html#pg143" class="sm-pg-num">143</a>
+        <a href="index.html#pg144" class="sm-pg-num">144</a>
+        <a href="index.html#pg145" class="sm-pg-num">145</a>
+        <a href="index.html#pg146" class="sm-pg-num">146</a>
+        <a href="index.html#pg147" class="sm-pg-num">147</a>
+        <a href="index.html#pg148" class="sm-pg-num">148</a>
+        <a href="index.html#pg149" class="sm-pg-num">149</a>
+        <a href="index.html#pg150" class="sm-pg-num">150</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Chapter_11">
+                Chapter 11 - A Vision For You
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg151" class="page-link">151</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg151" class="sm-pg-num">151</a>
+        <a href="index.html#pg152" class="sm-pg-num">152</a>
+        <a href="index.html#pg153" class="sm-pg-num">153</a>
+        <a href="index.html#pg154" class="sm-pg-num">154</a>
+        <a href="index.html#pg155" class="sm-pg-num">155</a>
+        <a href="index.html#pg156" class="sm-pg-num">156</a>
+        <a href="index.html#pg157" class="sm-pg-num">157</a>
+        <a href="index.html#pg158" class="sm-pg-num">158</a>
+        <a href="index.html#pg159" class="sm-pg-num">159</a>
+        <a href="index.html#pg160" class="sm-pg-num">160</a>
+        <a href="index.html#pg161" class="sm-pg-num">161</a>
+        <a href="index.html#pg162" class="sm-pg-num">162</a>
+        <a href="index.html#pg163" class="sm-pg-num">163</a>
+        <a href="index.html#pg164" class="sm-pg-num">164</a>
+    </div>
+</div>
+<h1 id="Personal_Stories"><a href="index.html#Personal_Stories">Personal Stories</a></h1>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Doctor_Bob's_Nightmare">
+                Doctor Bob's Nightmare
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg171" class="page-link">171</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg171" class="sm-pg-num">171</a>
+        <a href="index.html#pg172" class="sm-pg-num">172</a>
+        <a href="index.html#pg173" class="sm-pg-num">173</a>
+        <a href="index.html#pg174" class="sm-pg-num">174</a>
+        <a href="index.html#pg175" class="sm-pg-num">175</a>
+        <a href="index.html#pg176" class="sm-pg-num">176</a>
+        <a href="index.html#pg177" class="sm-pg-num">177</a>
+        <a href="index.html#pg178" class="sm-pg-num">178</a>
+        <a href="index.html#pg179" class="sm-pg-num">179</a>
+        <a href="index.html#pg180" class="sm-pg-num">180</a>
+        <a href="index.html#pg181" class="sm-pg-num">181</a>
+    </div>
+</div>
+<div>
+    <div class="index-chapter-section">
+        <h4 class="chapter-name">
+            <a href="index.html#Acceptance_Was_The_Answer">
+                Acceptance Was The Answer
+            </a>
+        </h4>
+        <div class="dots"></div>
+        <h4 class="page-number"><a href="index.html#pg407" class="page-link">407</a></h4>
+    </div>
+    <div class="pg-nums">
+        <a href="index.html#pg407" class="sm-pg-num">407</a>
+        <a href="index.html#pg408" class="sm-pg-num">408</a>
+        <a href="index.html#pg409" class="sm-pg-num">409</a>
+        <a href="index.html#pg410" class="sm-pg-num">410</a>
+        <a href="index.html#pg411" class="sm-pg-num">411</a>
+        <a href="index.html#pg412" class="sm-pg-num">412</a>
+        <a href="index.html#pg413" class="sm-pg-num">413</a>
+        <a href="index.html#pg414" class="sm-pg-num">414</a>
+        <a href="index.html#pg415" class="sm-pg-num">415</a>
+        <a href="index.html#pg416" class="sm-pg-num">416</a>
+        <a href="index.html#pg417" class="sm-pg-num">417</a>
+        <a href="index.html#pg418" class="sm-pg-num">418</a>
+        <a href="index.html#pg419" class="sm-pg-num">419</a>
+        <a href="index.html#pg420" class="sm-pg-num">420</a>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -581,13 +585,6 @@
 </div>
 <article>
     <section id="about-top">
-        <header>
-            <nav>
-                <a class="page-link" href="index.html">&#8592; Book</a>
-                <span class="chapter-title page-link">About</span>
-                <span class="page-link"></span>
-            </nav>
-        </header>
         <div class="page-content about-page">
             <h1 class="about-heading">Alcoholics Anonymous</h1>
             <p class="about-intro">A free, private app for reading recovery literature.</p>
@@ -621,7 +618,6 @@
             </div>
             <div class="about-footer">
                 <p><a href="features.html">&#9758; Feature guide</a> &mdash; learn how to use highlights, notes, bookmarks, and more.</p>
-                <p>Questions? <a href="mailto:painstaking.developer@gmail.com">Get in touch</a>.</p>
             </div>
         </div>
     </section>
@@ -629,9 +625,9 @@
 <div class="fab-group">
     <div id="hl-fab-colors" class="hl-fab-colors"></div>
     <button class="fab-btn fab-btn-menu" onclick="toggleLeftPaneNav()" aria-label="Menu">&#9776;</button>
-    <div class="fab-divider"></div>
     <div class="fab-divider" id="fab-bookmark-divider"></div>
     <button class="fab-btn fab-btn-bookmark" id="fab-bookmark-btn" onclick="bookmarks.showAddDialog()" aria-label="Bookmark">&#9733;</button>
+    <div class="fab-divider" id="fab-notes-divider"></div>
     <span id="fab-notes-label" class="fab-notes-label" onclick="handleFabNotesClick()"></span>
     <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes">&#10000;</button>
 </div>

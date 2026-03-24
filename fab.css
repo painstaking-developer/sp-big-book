@@ -1,0 +1,91 @@
+/* ── Floating Action Button (FAB) ── */
+
+.fab-group {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    border-radius: 22px;
+    border: 1px solid var(--color-border-light);
+    background: var(--color-settings-card-bg);
+    box-shadow: 0 2px 8px var(--color-shadow);
+    z-index: 1500;
+    opacity: 0.7;
+    transition: opacity 0.15s, box-shadow 0.15s;
+    overflow: hidden;
+}
+
+.fab-group:hover,
+.fab-group.fab-expanded {
+    opacity: 1;
+    box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.fab-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.fab-btn:hover {
+    background: var(--color-settings-card-hover-bg);
+    color: var(--color-settings-title);
+}
+
+.fab-btn-notes {
+    font-size: 0.95em;
+}
+
+.fab-btn-menu {
+    font-size: 1em;
+}
+
+.fab-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--color-border-light);
+    flex-shrink: 0;
+}
+
+/* Menu position variants */
+[data-menu-position$="-left"] .fab-group {
+    right: auto;
+    left: 24px;
+}
+
+[data-menu-position^="top-"] .fab-group {
+    bottom: auto;
+    top: var(--fab-top, 39px);
+    transition: top 0.15s ease;
+}
+
+@media (min-width: 768px) {
+    body.notes-open .fab-group {
+        right: 444px;
+        transition: right 0.25s ease;
+    }
+
+    [data-menu-position$="-left"] body.notes-open .fab-group {
+        right: auto;
+        transition: none;
+    }
+
+    [data-menu-position$="-left"] body.left-pane-open .fab-group {
+        left: 444px;
+        transition: left 0.25s ease;
+    }
+}
+
+@media print {
+    .fab-group {
+        display: none;
+    }
+}

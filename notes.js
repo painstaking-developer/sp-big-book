@@ -1,3 +1,31 @@
+/**
+ * notes.js — Annotation feature
+ *
+ * Responsibility: create, read, update, delete per-sentence notes stored in
+ * localStorage; optional folder-sync via File System Access API.
+ *
+ * Public interface (on window.notes):
+ *   notes.renderPane(elementId)   — open pane for a specific sentence
+ *   notes.renderAllNotes()        — open the all-notes view
+ *   notes.closePane()             — close the notes pane
+ *   notes.exportData()             — download all data as .json
+ *   notes.importData()             — import data from a .json file
+ *   notes.syncToFolder()          — connect a folder for auto-sync
+ *   notes.disconnectFolder()      — disconnect the sync folder
+ *
+ * Also reads: window.app (event bus, defined in this file)
+ * Emits: highlight:added, highlight:removed, pane:open-notes, fab:update-expanded
+ */
+
+/* ── Cross-module event bus ── */
+window.app = (function () {
+    const h = {};
+    return {
+        on(e, fn) { (h[e] || (h[e] = [])).push(fn); },
+        emit(e, d) { (h[e] || []).slice().forEach(fn => fn(d)); }
+    };
+})();
+
 const notesEnabled = true;
 let currentNoteContent = '';
 let notesById = {};
@@ -48,8 +76,13 @@ async function clearDirHandle() {
 window.addEventListener('load', async () => {
     const storedNotes = localStorage.getItem('notesById');
     if (storedNotes) {
-        notesById = JSON.parse(storedNotes);
-        notes.placeNoteToggles();
+        try {
+            notesById = JSON.parse(storedNotes);
+            notes.placeNoteToggles();
+        } catch (e) {
+            console.warn('Could not parse stored notes; starting fresh.', e);
+            localStorage.removeItem('notesById');
+        }
     }
 
     // Restore folder sync handle from previous session
@@ -368,14 +401,14 @@ const notesModule = {
   },
 
   openPane() {
-    openSidePane('notes');
+    app.emit('pane:open-notes');
     const label = document.getElementById('fab-notes-label');
     if (label) { label.classList.remove('active'); label.textContent = ''; }
-    if (typeof updateFabExpanded === 'function') updateFabExpanded();
+    app.emit('fab:update-expanded');
   },
 
   closePane() {
-    closeSidePane();
+    app.emit('pane:close');
     currentNoteElementId = '';
     currentNoteContent = '';
     if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
@@ -401,9 +434,6 @@ const notesModule = {
 
     const text = document.createElement('div');
     text.className = 'notes-quote-text';
-    if (element && element.classList.contains('highlight')) {
-        text.classList.add('highlight');
-    }
     text.textContent = quoteText;
     quoteBox.appendChild(text);
 
@@ -651,7 +681,7 @@ const notesModule = {
         }
         notesById[elementId][noteIndex].contents = newContent;
         localStorage.setItem('notesById', JSON.stringify(notesById));
-        notesModule.syncFileForElement(elementId);
+        notesModule.syncAllToFolder();
         notesModule.renderPane(elementId);
     });
     btnRow.appendChild(saveBtn);
@@ -668,39 +698,20 @@ const notesModule = {
     editor.focus();
   },
 
-  async syncFileForElement(elementId) {
+  async syncAllToFolder() {
     if (!syncDirHandle) return;
     try {
-        const notesList = notesById[elementId];
-        const safeFilename = elementId.replace(/[^a-zA-Z0-9_-]/g, '_') + '.md';
-
-        if (!notesList || notesList.length === 0) {
-            try {
-                await syncDirHandle.removeEntry(safeFilename);
-            } catch (e) {
-                // File may not exist, that's fine
-            }
-            return;
-        }
-
-        const element = document.getElementById(elementId);
-        const sourceText = element ? element.textContent.trim() : '';
-
-        let markdown = `# ${elementId}\n\n`;
-        if (sourceText) {
-            markdown += `> ${sourceText}\n\n`;
-        }
-        notesList.forEach((note) => {
-            markdown += `**${note.createdDate || 'No date'}**\n\n`;
-            markdown += `${note.contents}\n\n---\n\n`;
-        });
-
-        const fileHandle = await syncDirHandle.getFileHandle(safeFilename, { create: true });
+        const data = {
+            notes: notesById,
+            bookmarks: JSON.parse(localStorage.getItem('bookmarks') || '[]'),
+            highlights: JSON.parse(localStorage.getItem('highlightsData') || '{}'),
+        };
+        const fileHandle = await syncDirHandle.getFileHandle('data.json', { create: true });
         const writable = await fileHandle.createWritable();
-        await writable.write(markdown);
+        await writable.write(JSON.stringify(data, null, 2));
         await writable.close();
     } catch (err) {
-        console.error('Auto-sync error for', elementId, err);
+        console.error('Sync error:', err);
     }
   },
 
@@ -729,7 +740,7 @@ const notesModule = {
     currentNoteContent = '';
 
     notesModule.placeNoteToggles();
-    notesModule.syncFileForElement(elementId);
+    notesModule.syncAllToFolder();
     notesModule.renderPane(elementId);
     if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
   },
@@ -749,121 +760,79 @@ const notesModule = {
             }
         }
         localStorage.setItem('notesById', JSON.stringify(notesById));
-        notesModule.syncFileForElement(elementId);
+        notesModule.syncAllToFolder();
         if (currentHighlightedId) updateFabNotesLabel(currentHighlightedId);
     }
   },
 
-  exportNotesAsMarkdown() {
-    if (Object.keys(notesById).length === 0) {
-        alert('No notes to export.');
-        return;
-    }
-
-    let markdown = '# Notes\n\n';
-    markdown += `Exported: ${getFormattedDateTime()}\n\n`;
-
-    for (const [elementId, notesList] of Object.entries(notesById)) {
-        const element = document.getElementById(elementId);
-        const sourceText = element ? element.textContent.trim() : '';
-
-        markdown += `## ${elementId}\n\n`;
-        if (sourceText) {
-            markdown += `> ${sourceText}\n\n`;
-        }
-
-        notesList.forEach((note) => {
-            markdown += `**${note.createdDate || 'No date'}**\n\n`;
-            markdown += `${note.contents}\n\n`;
-            markdown += `---\n\n`;
-        });
-    }
-
-    const blob = new Blob([markdown], { type: 'text/markdown' });
+  exportData() {
+    const data = {
+        notes: notesById,
+        bookmarks: JSON.parse(localStorage.getItem('bookmarks') || '[]'),
+        highlights: JSON.parse(localStorage.getItem('highlightsData') || '{}'),
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `notes-${new Date().toISOString().slice(0, 10)}.md`;
+    a.download = `data-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   },
 
-  importNotesFromMarkdown() {
+  importData() {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.md';
+    input.accept = '.json';
     input.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
         reader.onload = (event) => {
-            const text = event.target.result;
-            const imported = notesModule.parseNotesMarkdown(text);
-            let count = 0;
+            let data;
+            try { data = JSON.parse(event.target.result); }
+            catch (e) { alert('Could not parse file.'); return; }
 
-            for (const [elementId, notesList] of Object.entries(imported)) {
-                if (!notesById[elementId]) {
-                    notesById[elementId] = [];
+            let noteCount = 0, bookmarkCount = 0, highlightCount = 0;
+
+            if (data.notes) {
+                for (const [elementId, notesList] of Object.entries(data.notes)) {
+                    if (!notesById[elementId]) notesById[elementId] = [];
+                    notesList.forEach(note => {
+                        const exists = notesById[elementId].some(
+                            n => n.contents === note.contents && n.createdDate === note.createdDate
+                        );
+                        if (!exists) { notesById[elementId].push(note); noteCount++; }
+                    });
                 }
-                notesList.forEach((note) => {
-                    const exists = notesById[elementId].some(
-                        n => n.contents === note.contents && n.createdDate === note.createdDate
-                    );
-                    if (!exists) {
-                        notesById[elementId].push(note);
-                        count++;
-                    }
-                });
+                localStorage.setItem('notesById', JSON.stringify(notesById));
+                notesModule.placeNoteToggles();
             }
 
-            localStorage.setItem('notesById', JSON.stringify(notesById));
-            notesModule.placeNoteToggles();
-            alert(`Imported ${count} note(s).`);
+            if (data.bookmarks) {
+                const existing = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+                data.bookmarks.forEach(bm => {
+                    if (!existing.some(b => b.anchor === bm.anchor)) {
+                        existing.push(bm);
+                        bookmarkCount++;
+                    }
+                });
+                localStorage.setItem('bookmarks', JSON.stringify(existing));
+                if (window.bookmarks) bookmarks.render();
+            }
+
+            if (data.highlights && window.highlightsModule) {
+                highlightCount = window.highlightsModule.mergeAndRestore(data.highlights);
+            }
+
+            alert(`Imported ${noteCount} note(s), ${bookmarkCount} bookmark(s), ${highlightCount} highlight(s).`);
         };
         reader.readAsText(file);
     });
     input.click();
-  },
-
-  parseNotesMarkdown(text) {
-    const result = {};
-    const sections = text.split(/^## /m).filter(s => s.trim());
-
-    sections.forEach((section) => {
-        const lines = section.split('\n');
-        const elementId = lines[0].trim();
-        if (!elementId) return;
-
-        result[elementId] = [];
-
-        const content = lines.slice(1).join('\n');
-        const noteBlocks = content.split(/^---$/m);
-
-        noteBlocks.forEach((block) => {
-            const blockTrimmed = block.trim();
-            if (!blockTrimmed) return;
-
-            const dateMatch = blockTrimmed.match(/\*\*(.+?)\*\*/);
-            const createdDate = dateMatch ? dateMatch[1] : '';
-
-            const blockLines = blockTrimmed.split('\n').filter(l => l.trim());
-            const contentLines = blockLines.filter(l => !l.startsWith('> ') && !l.match(/^\*\*.+\*\*$/));
-            const noteContent = contentLines.join('\n').trim();
-
-            if (noteContent) {
-                result[elementId].push({
-                    contents: noteContent,
-                    createdDate: createdDate,
-                    id: elementId
-                });
-            }
-        });
-    });
-
-    return result;
   },
 
   async syncToFolder() {
@@ -878,11 +847,9 @@ const notesModule = {
         await saveDirHandle(dirHandle);
         updateSyncButton();
 
-        for (const elementId of Object.keys(notesById)) {
-            await notesModule.syncFileForElement(elementId);
-        }
+        await notesModule.syncAllToFolder();
 
-        alert(`Folder sync enabled. ${Object.keys(notesById).length} file(s) written. Notes will auto-save to this folder.`);
+        alert(`Folder sync enabled. Notes will auto-save to this folder.`);
     } catch (err) {
         if (err.name !== 'AbortError') {
             console.error('Folder sync error:', err);
@@ -1044,14 +1011,14 @@ function updateFabNotesLabel(elementId) {
     if (!elementId) {
         label.classList.remove('active');
         label.textContent = '';
-        if (typeof updateFabExpanded === 'function') updateFabExpanded();
+        app.emit('fab:update-expanded');
         return;
     }
 
     const hasNotes = notesById[elementId] && notesById[elementId].length > 0;
     label.textContent = hasNotes ? 'View notes' : 'Add note';
     label.classList.add('active');
-    if (typeof updateFabExpanded === 'function') updateFabExpanded();
+    app.emit('fab:update-expanded');
 }
 
 function handleFabNotesClick() {
@@ -1062,3 +1029,5 @@ function handleFabNotesClick() {
     }
 }
 
+app.on('highlight:added', el => notesModule.highlightAdded(el));
+app.on('highlight:removed', el => notesModule.highlightRemoved(el));

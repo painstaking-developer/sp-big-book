@@ -198,14 +198,15 @@ a.bm-edit-link {
     opacity: 1;
 }
 
-#fab-bookmark-divider {
+
+#fab-notes-divider {
     overflow: hidden;
     max-width: 0;
     opacity: 0;
     transition: max-width 0.2s ease, opacity 0.15s ease;
 }
 
-#fab-bookmark-divider.visible {
+#fab-notes-divider.visible {
     max-width: 1px;
     opacity: 1;
 }

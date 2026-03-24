@@ -1,3 +1,18 @@
+/**
+ * highlight.js — Text highlighting
+ *
+ * Responsibility: apply, remove, and persist colored highlight marks on
+ * sentences; exposes a color-picker panel in the FAB.
+ *
+ * Public interface (on window via IIFE):
+ *   updateFabExpanded(expanded) — show/hide the highlight color picker in FAB
+ *
+ * Listens to: highlight:added, highlight:removed, fab:update-expanded (app event bus)
+ */
+
+(function () {
+'use strict';
+
 let highlightsData = {};
 
 const HL_COLORS = ['yellow', 'green', 'red', 'purple', 'blue'];
@@ -5,9 +20,14 @@ const HL_COLORS = ['yellow', 'green', 'red', 'purple', 'blue'];
 window.addEventListener('load', () => {
     const stored = localStorage.getItem('highlightsData');
     if (stored) {
-        highlightsData = JSON.parse(stored);
-        migrateHighlightsData();
-        restoreAllHighlights();
+        try {
+            highlightsData = JSON.parse(stored);
+            migrateHighlightsData();
+            restoreAllHighlights();
+        } catch (e) {
+            console.warn('Could not parse stored highlights; starting fresh.', e);
+            localStorage.removeItem('highlightsData');
+        }
     }
     createFabHighlightButtons();
 });
@@ -41,6 +61,7 @@ function migrateHighlightsData() {
 function createFabHighlightButtons() {
     const container = document.getElementById('hl-fab-colors');
     if (!container) return;
+    if (container.children.length > 0) return; // guard against duplicate init
 
     HL_COLORS.forEach(color => {
         const btn = document.createElement('button');
@@ -453,46 +474,27 @@ function applyColorRuns(element, runs) {
     }
 }
 
-// ── Folder sync (reuses syncDirHandle from notes.js) ──
+// ── Folder sync ──
 
-async function syncHighlightsToFolder() {
-    if (typeof syncDirHandle === 'undefined' || !syncDirHandle) return;
-
-    try {
-        const filename = '_highlights.md';
-
-        if (Object.keys(highlightsData).length === 0) {
-            try { await syncDirHandle.removeEntry(filename); } catch (e) {}
-            return;
-        }
-
-        let markdown = '# Highlights\n\n';
-
-        for (const [elementId, hlList] of Object.entries(highlightsData)) {
-            if (!hlList || hlList.length === 0) continue;
-
-            const element = document.getElementById(elementId);
-            const sourceText = element ? element.textContent.trim() : '';
-
-            markdown += '## ' + elementId + '\n\n';
-            if (sourceText) {
-                markdown += '> ' + sourceText + '\n\n';
-            }
-
-            hlList.forEach(hl => {
-                markdown += '- **' + hl.color + '**: "' + hl.text + '"';
-                if (hl.createdDate) markdown += '  (' + hl.createdDate + ')';
-                markdown += '\n';
-            });
-
-            markdown += '\n';
-        }
-
-        const fileHandle = await syncDirHandle.getFileHandle(filename, { create: true });
-        const writable = await fileHandle.createWritable();
-        await writable.write(markdown);
-        await writable.close();
-    } catch (err) {
-        console.error('Highlights sync error:', err);
-    }
+function syncHighlightsToFolder() {
+    if (typeof notesModule !== 'undefined') notesModule.syncAllToFolder();
 }
+
+window.highlightsModule = {
+    mergeAndRestore(newData) {
+        let count = 0;
+        for (const [id, list] of Object.entries(newData)) {
+            if (!highlightsData[id]) {
+                highlightsData[id] = list;
+                count += list.length;
+            }
+        }
+        saveHighlights();
+        restoreAllHighlights();
+        return count;
+    }
+};
+
+app.on('fab:update-expanded', updateFabExpanded);
+
+})();
