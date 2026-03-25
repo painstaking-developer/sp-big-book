@@ -56,7 +56,7 @@
     <div id="pane-bookmarks-body" class="pane-body" style="display:none">
         <div class="settings-pane-content">
             <div class="pane-bookmarks-toolbar">
-                <a class="bm-edit-link" id="bookmarks-edit-btn" href="#" onclick="bookmarks.toggleEditMode(event)">&#9998; Edit</a>
+                <a class="bm-edit-link" id="bookmarks-edit-btn" href="#" onclick="bookmarks.toggleEditMode(event)"><i data-lucide="pencil"></i> Edit</a>
             </div>
             <p class="notes-empty" id="bookmarks-empty" style="display:none">No bookmarks yet.</p>
             <div id="bookmarks-list"></div>
@@ -74,41 +74,41 @@
         <div class="left-nav-body">
             <nav class="left-nav-section">
                 <a class="left-nav-item" href="index.html">
-                    <span class="left-nav-icon">𝓐</span>
+                    <span class="left-nav-icon"><i data-lucide="book-open"></i></span>
                     <span class="left-nav-text">Book Text</span>
                 </a>
                 <a class="left-nav-item" href="#" onclick="showLeftPaneIndex(); return false;">
-                    <span class="left-nav-icon">&#9783;</span>
+                    <span class="left-nav-icon"><i data-lucide="list"></i></span>
                     <span class="left-nav-text">Index</span>
                 </a>
                 <a class="left-nav-item" href="#" onclick="closeLeftPane(); openSidePane('bookmarks'); return false;">
-                    <span class="left-nav-icon">&#9733;</span>
+                    <span class="left-nav-icon"><i data-lucide="bookmark"></i></span>
                     <span class="left-nav-text">Bookmarks</span>
                 </a>
                 <a class="left-nav-item" href="#" onclick="closeLeftPane(); openSidePane('notes'); return false;">
-                    <span class="left-nav-icon">&#9998;</span>
+                    <span class="left-nav-icon"><i data-lucide="pencil-line"></i></span>
                     <span class="left-nav-text">Notes</span>
                 </a>
             </nav>
             <nav class="left-nav-footer">
                 <a class="left-nav-item" href="features.html">
-                    <span class="left-nav-icon">&#9758;</span>
+                    <span class="left-nav-icon"><i data-lucide="compass"></i></span>
                     <span class="left-nav-text">Feature guide</span>
                 </a>
                 <a class="left-nav-item" href="about.html">
-                    <span class="left-nav-icon">&#9432;</span>
+                    <span class="left-nav-icon"><i data-lucide="info"></i></span>
                     <span class="left-nav-text">About</span>
                 </a>
                 <a class="left-nav-item" href="settings.html">
-                    <span class="left-nav-icon">&#9881;&#65038;</span>
+                    <span class="left-nav-icon"><i data-lucide="settings"></i></span>
                     <span class="left-nav-text">Settings</span>
                 </a>
                 <a class="left-nav-item" href="#" onclick="shareApp(event, this); return false;">
-                    <span class="left-nav-icon">&#8599;</span>
+                    <span class="left-nav-icon"><i data-lucide="share-2"></i></span>
                     <span class="left-nav-text">Share this app</span>
                 </a>
                 <a class="left-nav-item" id="nav-install-item" href="#" onclick="installPwa(event); return false;" style="display:none">
-                    <span class="left-nav-icon">&#11015;</span>
+                    <span class="left-nav-icon"><i data-lucide="download"></i></span>
                     <span class="left-nav-text">Install as app</span>
                 </a>
             </nav>
@@ -117,7 +117,7 @@
     <!-- Index view -->
     <div id="left-pane-index" class="left-pane-view" style="display:none">
         <div class="pane-header">
-            <button class="pane-back-btn" onclick="showLeftPaneNav()">&#8592; Menu</button>
+            <button class="pane-back-btn" onclick="showLeftPaneNav()"><i data-lucide="arrow-left"></i> Menu</button>
             <span class="settings-close" onclick="closeLeftPane()" style="margin-left:auto">&times;</span>
         </div>
         <div class="settings-pane-content">
@@ -584,7 +584,7 @@
     </div>
 </div>
 <div class="about-bar">
-    <a href="index.html" class="about-bar-btn">&#8592; Back to book</a>
+    <a href="index.html" class="about-bar-btn"><i data-lucide="arrow-left"></i> Back to book</a>
 </div>
 <article>
     <section id="about-top">
@@ -627,7 +627,7 @@
 </article>
 <div id="search-bar" role="search">
     <div id="search-bar-inner">
-        <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search">&#8592;</button>
+        <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search"><i data-lucide="arrow-left"></i></button>
         <input id="search-input" type="search" placeholder="Search&#8230;" autocomplete="off" oninput="handleSearchInput(event)" />
         <span id="search-result-count" class="search-result-count"></span>
         <span class="search-bar-pipe"></span>
@@ -637,33 +637,25 @@
             <span class="search-mode-track"><span class="search-mode-thumb"></span></span>
             <span class="search-mode-label">Exact</span>
         </label>
-        <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
+        <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search"><i data-lucide="x"></i></button>
     </div>
 </div>
 <div id="search-results"></div>
 <div id="search-backdrop" onclick="closeSearch()"></div>
 <div class="fab-group">
-    <button class="fab-btn fab-btn-menu" onclick="toggleLeftPaneNav()" aria-label="Menu">&#9776;</button>
+    <button class="fab-btn fab-btn-menu" onclick="toggleLeftPaneNav()" aria-label="Menu"><i data-lucide="menu"></i></button>
     <div class="fab-divider"></div>
-    <button class="fab-btn fab-btn-search" onclick="openSearch()" aria-label="Search"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13.5" y2="13.5"/></svg></button>
+    <button class="fab-btn fab-btn-search" onclick="openSearch()" aria-label="Search"><i data-lucide="search"></i></button>
     <div class="fab-divider" id="fab-bookmark-divider"></div>
-    <button class="fab-btn fab-btn-bookmark" id="fab-bookmark-btn" onclick="bookmarks.showAddDialog()" aria-label="Bookmark">&#9733;</button>
+    <button class="fab-btn fab-btn-bookmark" id="fab-bookmark-btn" onclick="bookmarks.addBookmarkInline()" aria-label="Bookmark"><i data-lucide="bookmark"></i></button>
     <div class="fab-divider" id="fab-notes-divider"></div>
     <span id="fab-notes-label" class="fab-notes-label" onclick="handleFabNotesClick()"></span>
-    <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes">&#10000;</button>
+    <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes"><i data-lucide="pencil-line"></i></button>
     <div id="hl-fab-colors" class="hl-fab-colors"></div>
 </div>
-<div id="bookmark-add-overlay" class="bookmark-add-overlay">
-    <div class="bookmark-add-dialog">
-        <div class="bookmark-add-title">Add Bookmark</div>
-        <input type="text" id="bookmark-name-input" class="bookmark-name-input" placeholder="Name this bookmark&#8230;" autocomplete="off" />
-        <div class="bookmark-add-actions">
-            <button class="notes-btn" onclick="bookmarks.hideAddDialog()">Cancel</button>
-            <button class="notes-btn notes-btn-primary" onclick="bookmarks.confirmAdd()">Save</button>
-        </div>
-    </div>
-</div>
+<script src="lucide.min.js"></script>
 <script>
+lucide.createIcons({ attrs: { 'stroke-width': '1.75' } });
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js');
 }

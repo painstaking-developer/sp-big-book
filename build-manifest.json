@@ -1,22 +1,23 @@
 {
-  "built_at": "2026-03-24T23:46:20.006668",
+  "built_at": "2026-03-25T00:13:13.532185",
   "assets": {
-    "index.html": "d40e959de10a",
+    "index.html": "438294177971",
     "manifest.json": "b40d20ca799a",
     "search-index.json": "4f6c92a03ff2",
-    "styles.css": "1f68a9685d06",
-    "fab.css": "acb102668955",
-    "script.js": "861c0f426d9f",
+    "styles.css": "f4a731c7fae2",
+    "fab.css": "c748b1c8a22b",
+    "script.js": "38457b4aa040",
     "image.jpg": "8c2de12a2518",
     "favicon.ico": "ae8b5c52d81f",
-    "notes.css": "ea651f2beca1",
-    "notes.js": "d58e5ad6fb39",
-    "bookmarks.css": "a27dacb03135",
-    "bookmarks.js": "13da4b3a45b6",
+    "notes.css": "4157d99e1d72",
+    "notes.js": "eb3a9ed84119",
+    "bookmarks.css": "d2be05a2f1b7",
+    "bookmarks.js": "873242c5b356",
     "highlight.css": "3090faeb5010",
     "highlight.js": "cb609cf6a019",
     "fuse.min.js": "e3621b53cb77",
     "search.js": "25139c39f589",
-    "search.css": "5418a9a7e703"
+    "search.css": "1b1a6123ae39",
+    "lucide.min.js": "1bd32a372c02"
   }
 }

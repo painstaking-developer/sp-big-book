@@ -5,12 +5,10 @@
  * to sentences in the book; persists to localStorage.
  *
  * Public interface (on window.bookmarks):
- *   bookmarks.showAddDialog()      — open the add-bookmark overlay
- *   bookmarks.hideAddDialog()      — close the overlay
- *   bookmarks.confirmAdd()         — save bookmark from overlay input
+ *   bookmarks.addBookmarkInline()  — add bookmark inline in the pane (no modal)
  *   bookmarks.toggleEditMode(e)    — toggle edit/delete mode in pane
  *
- * Listens to: dialog:close (app event bus)
+ * Listens to: (app event bus)
  */
 
 // bookmarks.js – Bookmarks feature for single-page book app
@@ -257,71 +255,55 @@ var bookmarks = (function () {
         if (notesBtn) notesBtn.classList.toggle('visible', !!anchor);
     }
 
-    /* ── Add dialog ── */
+    /* ── Inline add (no modal) ── */
 
-    function showAddDialog() {
+    function addBookmarkInline() {
         var highlighted = document.querySelector('.highlight');
         if (!highlighted || !highlighted.id) return;
         var anchor = '#' + highlighted.id;
         var ref    = _extractRef(highlighted);
-        var overlay = document.getElementById('bookmark-add-overlay');
-        if (!overlay) return;
-        overlay.setAttribute('data-anchor', anchor);
-        overlay.setAttribute('data-ref', ref);
-        var input = document.getElementById('bookmark-name-input');
-        if (input) {
-            var text = (highlighted.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 50);
-            input.value = text;
-        }
-        overlay.classList.add('active');
-        if (input) { setTimeout(function () { input.focus(); input.select(); }, 50); }
-    }
 
-    function hideAddDialog() {
-        var overlay = document.getElementById('bookmark-add-overlay');
-        if (overlay) overlay.classList.remove('active');
-    }
+        // Use first 3 words (or fewer) as the default name
+        var text  = (highlighted.textContent || '').trim().replace(/\s+/g, ' ');
+        var name  = text.split(' ').slice(0, 3).join(' ') || 'Bookmark';
 
-    function confirmAdd() {
-        var overlay = document.getElementById('bookmark-add-overlay');
-        var input   = document.getElementById('bookmark-name-input');
-        if (!overlay || !input) return;
-        var anchor = overlay.getAttribute('data-anchor');
-        var ref    = overlay.getAttribute('data-ref') || '';
-        var name   = input.value.trim();
-        if (!name || !anchor) return;
-        add(name, anchor, ref);
-        hideAddDialog();
+        var bms   = _getAll();
+        var newId = _uid();
+        bms.push({ id: newId, name: name, anchor: anchor, ref: ref || '' });
+        _save(bms);
+
+        // Enter edit mode so the new row is editable
+        _editMode = true;
+        render();
+
+        // Open the bookmarks pane
+        if (typeof openSidePane === 'function') openSidePane('bookmarks');
+
+        // Focus the new bookmark's name input so the user can rename it
+        setTimeout(function () {
+            var list = document.getElementById('bookmarks-list');
+            if (!list) return;
+            var inputs = list.querySelectorAll('.bm-name-edit');
+            if (inputs.length) {
+                var last = inputs[inputs.length - 1];
+                last.focus();
+                last.select();
+            }
+        }, 60);
     }
 
     /* ── Init ── */
 
     function _init() {
         render();
-
         // Attempt initial sync after notes.js has restored the directory handle
         setTimeout(_syncBookmarksFile, 1500);
-
-        var overlay = document.getElementById('bookmark-add-overlay');
-        if (overlay) {
-            overlay.addEventListener('click', function (e) {
-                if (e.target === overlay) hideAddDialog();
-            });
-        }
-        var nameInput = document.getElementById('bookmark-name-input');
-        if (nameInput) {
-            nameInput.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter')  { e.preventDefault(); confirmAdd(); }
-                if (e.key === 'Escape') hideAddDialog();
-            });
-        }
     }
 
     document.addEventListener('DOMContentLoaded', _init);
 
     app.on('highlight:added', function(el) { setCurrentHighlight(el ? '#' + el.id : null); });
     app.on('highlight:removed', function() { setCurrentHighlight(null); });
-    app.on('dialog:close', hideAddDialog);
 
     return {
         add:                 add,
@@ -332,9 +314,7 @@ var bookmarks = (function () {
         render:              render,
         toggleEditMode:      toggleEditMode,
         setCurrentHighlight: setCurrentHighlight,
-        showAddDialog:       showAddDialog,
-        hideAddDialog:       hideAddDialog,
-        confirmAdd:          confirmAdd,
+        addBookmarkInline:   addBookmarkInline,
         syncFile:            _syncBookmarksFile
     };
 })();

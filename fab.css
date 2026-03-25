@@ -52,6 +52,11 @@
     color: var(--color-settings-title);
 }
 
+.fab-btn svg {
+    width: 17px;
+    height: 17px;
+}
+
 .fab-btn-notes {
     font-size: 0.95em;
 }

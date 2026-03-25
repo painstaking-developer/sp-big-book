@@ -7,6 +7,11 @@
     position: relative;
 }
 
+.notes-toggle svg {
+    vertical-align: middle;
+    display: inline-block;
+}
+
 /* FAB notes label */
 .fab-notes-label {
     display: inline-flex;

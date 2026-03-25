@@ -17,6 +17,16 @@
  * Emits: highlight:added, highlight:removed, pane:open-notes, fab:update-expanded
  */
 
+/* ── Lucide icon helper ── */
+function _lucideIcon(name, size) {
+    var tmp = document.createElement('span');
+    tmp.innerHTML = '<i data-lucide="' + name + '"></i>';
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons({ root: tmp, attrs: { width: String(size), height: String(size), 'stroke-width': '1.75' } });
+    }
+    return tmp.innerHTML;
+}
+
 /* ── Cross-module event bus ── */
 window.app = (function () {
     const h = {};
@@ -365,7 +375,7 @@ const notesModule = {
     if (!notesEnabled) return;
     if (!element.querySelector('.notes-toggle')) {
         const emojiSpan = document.createElement('span');
-        emojiSpan.textContent = emoji;
+        emojiSpan.innerHTML = _lucideIcon('pencil-line', 13);
         emojiSpan.className = 'notes-toggle';
         element.insertAdjacentElement('afterend', emojiSpan);
     }
@@ -534,7 +544,7 @@ const notesModule = {
     saveBtn.className = 'notes-btn';
     const saveIcon = document.createElement('span');
     saveIcon.className = 'notes-btn-icon';
-    saveIcon.innerHTML = '&#10003;';
+    saveIcon.innerHTML = _lucideIcon('check', 14);
     saveBtn.appendChild(saveIcon);
     saveBtn.appendChild(document.createTextNode('Save'));
     saveBtn.addEventListener('click', () => notesModule.saveNote());
@@ -594,7 +604,7 @@ const notesModule = {
     const copyBtn = document.createElement('span');
     copyBtn.classList.add('note-action-btn');
     copyBtn.title = 'Copy';
-    copyBtn.innerHTML = '&#10064;';
+    copyBtn.innerHTML = _lucideIcon('copy', 14);
     copyBtn.addEventListener('click', () => {
         const element = document.getElementById(elementId);
         const quoteText = element ? element.textContent.trim() : '';
@@ -610,8 +620,8 @@ const notesModule = {
         if (note.createdDate) text += note.createdDate + '\n';
         text += '\n' + note.contents;
         navigator.clipboard.writeText(text).then(() => {
-            copyBtn.innerHTML = '&#10003;';
-            setTimeout(() => { copyBtn.innerHTML = '&#10064;'; }, 1500);
+            copyBtn.innerHTML = _lucideIcon('check', 14);
+            setTimeout(() => { copyBtn.innerHTML = _lucideIcon('copy', 14); }, 1500);
         });
     });
     actions.appendChild(copyBtn);
@@ -619,7 +629,7 @@ const notesModule = {
     const editBtn = document.createElement('span');
     editBtn.classList.add('note-action-btn');
     editBtn.title = 'Edit';
-    editBtn.innerHTML = '&#9998;';
+    editBtn.innerHTML = _lucideIcon('pencil', 14);
     editBtn.addEventListener('click', () => {
         notesModule.enterEditMode(elementId, index);
     });
@@ -628,7 +638,7 @@ const notesModule = {
     const deleteBtn = document.createElement('span');
     deleteBtn.classList.add('note-action-btn', 'note-action-delete');
     deleteBtn.title = 'Delete';
-    deleteBtn.innerHTML = '&#10005;';
+    deleteBtn.innerHTML = _lucideIcon('trash-2', 14);
     deleteBtn.addEventListener('click', () => {
         if (confirm('Delete this note? This action cannot be undone.')) {
             notesModule.deleteNote(elementId, index);
@@ -669,7 +679,7 @@ const notesModule = {
     saveBtn.className = 'notes-btn';
     const saveIcon = document.createElement('span');
     saveIcon.className = 'notes-btn-icon';
-    saveIcon.innerHTML = '&#10003;';
+    saveIcon.innerHTML = _lucideIcon('check', 14);
     saveBtn.appendChild(saveIcon);
     saveBtn.appendChild(document.createTextNode('Save'));
     saveBtn.addEventListener('click', () => {

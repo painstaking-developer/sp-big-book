@@ -1,4 +1,4 @@
-var CACHE_NAME = 'book-cache-d2a89a2603';
+var CACHE_NAME = 'book-cache-d94901099c';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -21,7 +21,8 @@ self.addEventListener('install', function(event) {
         './highlight.js',
         './fuse.min.js',
         './search.js',
-        './search.css'
+        './search.css',
+        './lucide.min.js'
       ]);
     })
   );

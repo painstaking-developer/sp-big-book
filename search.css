@@ -75,6 +75,11 @@
     color: var(--color-settings-title);
 }
 
+.search-icon-btn svg {
+    width: 17px;
+    height: 17px;
+}
+
 /* ── Result count + pipe ── */
 
 #search-result-count {

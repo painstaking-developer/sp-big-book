@@ -175,12 +175,10 @@ function toggleDarkMode() {
 
 function updateThemeToggle(theme) {
     const track = document.getElementById('dark-mode-track');
-    const icon = document.getElementById('theme-icon');
     if (track) {
         if (theme === 'dark') track.classList.add('active');
         else track.classList.remove('active');
     }
-    if (icon) icon.innerHTML = theme === 'dark' ? '&#9790;&#65038;' : '&#9728;&#65038;';
 }
 
 function setFont(font) {
@@ -396,6 +394,54 @@ document.addEventListener('dblclick', function (event) {
             if (_wasDragging) { e.stopPropagation(); e.preventDefault(); }
         }, true);
     });
+})();
+
+/* ── Swipe gestures for panes ── */
+(function () {
+    var EDGE      = 30;  // px from screen edge to initiate an open gesture
+    var MIN_SWIPE = 60;  // px horizontal travel required to commit
+
+    var startX, startY, gesture;
+
+    document.addEventListener('touchstart', function (e) {
+        var t = e.touches[0];
+        startX  = t.clientX;
+        startY  = t.clientY;
+        gesture = null;
+
+        var leftOpen  = document.getElementById('left-pane').classList.contains('active');
+        var rightOpen = document.getElementById('side-pane').classList.contains('active');
+
+        if (leftOpen) {
+            gesture = 'close-left';   // swipe left anywhere to close
+        } else if (rightOpen) {
+            gesture = 'close-right';  // swipe right anywhere to close
+        } else if (startX <= EDGE) {
+            gesture = 'open-left';    // edge-right swipe to open left pane
+        } else if (startX >= window.innerWidth - EDGE) {
+            gesture = 'open-right';   // edge-left swipe to open right pane
+        }
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (e) {
+        if (!gesture) return;
+        var t  = e.changedTouches[0];
+        var dx = t.clientX - startX;
+        var dy = t.clientY - startY;
+
+        // Require clearly horizontal movement
+        if (Math.abs(dy) >= Math.abs(dx)) return;
+        if (Math.abs(dx) < MIN_SWIPE) return;
+
+        if (gesture === 'open-left'  && dx > 0) { showLeftPaneNav(); openLeftPane(); }
+        if (gesture === 'open-right' && dx < 0) {
+            var notesBody = document.getElementById('pane-notes-body');
+            var tab = (notesBody && notesBody.style.display !== 'none') ? 'notes' : 'bookmarks';
+            openSidePane(tab);
+        }
+        if (gesture === 'close-left'  && dx < 0) closeLeftPane();
+        if (gesture === 'close-right' && dx > 0) closeSidePane();
+    }, { passive: true });
 })();
 
 // Expose functions used as HTML event-handler attributes

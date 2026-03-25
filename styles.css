@@ -6,7 +6,7 @@
  *   1000    page <header> (sticky at top of viewport)
  *   1500    .fab-group (floating action button)
  *   2001    .side-pane (left nav + notes/bookmarks pane, covers FAB)
- *   3000    .bookmark-add-overlay (dialog, covers everything)
+ *   3000    (reserved)
  */
 
 /* ── Color tokens ── */
@@ -856,6 +856,36 @@ hr.page-separator::before {
     font-size: 1.4em;
     width: 36px;
     height: 36px;
+}
+
+/* ── Lucide icon sizing ── */
+.left-nav-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.settings-card-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.theme-icon-dark { display: none; }
+[data-theme="dark"] .theme-icon-light { display: none; }
+[data-theme="dark"] .theme-icon-dark { display: block; }
+
+.bm-edit-link svg,
+.pane-back-btn svg {
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.about-bar-btn svg {
+    width: 13px;
+    height: 13px;
+    vertical-align: middle;
+    margin-right: 2px;
 }
 
 /* ── Shared body base ── */

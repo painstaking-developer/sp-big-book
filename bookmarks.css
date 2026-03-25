@@ -111,74 +111,6 @@ a.bm-edit-link {
 }
 
 
-/* ── Add bookmark overlay ── */
-
-.bookmark-add-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--color-bg-overlay);
-    z-index: 3000;
-    align-items: center;
-    justify-content: center;
-}
-
-.bookmark-add-overlay.active {
-    display: flex;
-}
-
-.bookmark-add-dialog {
-    background: var(--color-settings-bg);
-    border: 1px solid var(--color-settings-border);
-    border-radius: 14px;
-    padding: 22px 24px;
-    width: min(320px, 88vw);
-    box-shadow: 0 8px 32px var(--color-shadow);
-}
-
-.bookmark-add-title {
-    font-size: 0.95em;
-    font-weight: 600;
-    color: var(--color-settings-title);
-    margin-bottom: 12px;
-}
-
-.bookmark-name-input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 9px 11px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 8px;
-    background: var(--color-settings-card-bg);
-    color: var(--color-text);
-    font-family: inherit;
-    font-size: 0.9em;
-    outline: none;
-    transition: border-color 0.15s;
-}
-
-.bookmark-name-input:focus {
-    border-color: var(--color-settings-card-hover-border);
-}
-
-.bookmark-add-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-    justify-content: flex-end;
-}
-
-.notes-btn-primary {
-    background: var(--color-toggle-active);
-    color: #fff;
-    border-color: var(--color-toggle-active);
-}
-
-.notes-btn-primary:hover {
-    background: var(--color-notes-btn-hover);
-    border-color: var(--color-notes-btn-hover);
-    color: #fff;
-}
 
 /* ── FAB bookmark divider + button (slide in when a sentence is highlighted) ── */
 
@@ -237,8 +169,7 @@ a.bm-edit-link {
 /* ── Print ── */
 @media print {
     .bm-move-btns,
-    .bm-delete-wrap,
-    .bookmark-add-overlay {
+    .bm-delete-wrap {
         display: none !important;
     }
 }
