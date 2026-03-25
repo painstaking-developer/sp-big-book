@@ -174,7 +174,9 @@ function _renderList(root) {
         };
         // Don't persist yet — only saved when the user hits Save in the editor
         sheetsData.unshift(sheet);
-        window.location.hash = sheet.id + '/edit';
+        // Set hash without triggering a reload, then render directly
+        history.pushState(null, '', '#' + sheet.id + '/edit');
+        _renderEditorWithBlocks(root, sheet.id, []);
     });
     root.appendChild(newBtn);
 
