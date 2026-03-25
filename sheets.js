@@ -347,7 +347,10 @@ function _shareSheet(sheetId, btnEl) {
     const sheet = sheetsData.find(s => s.id === sheetId);
     if (!sheet) return;
 
-    const payload = JSON.stringify({ id: sheet.id, name: sheet.name, blocks: sheet.blocks });
+    const blocks = sheet.blocks.map(b =>
+        b.type === 'quote' ? { type: 'quote', elementId: b.elementId } : b
+    );
+    const payload = JSON.stringify({ id: sheet.id, name: sheet.name, blocks: blocks });
     const encoded = _toUrlSafeBase64(payload);
     const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
     const url = window.location.origin + basePath + 'shared.html#sheet/' + encoded;
@@ -912,7 +915,7 @@ function _renderSharedPage() {
     }
 }
 
-function _handleSharedSheet(root, encodedData) {
+async function _handleSharedSheet(root, encodedData) {
     let sheetData;
     try {
         const json = _fromUrlSafeBase64(encodedData);
@@ -929,7 +932,38 @@ function _handleSharedSheet(root, encodedData) {
         return;
     }
 
+    // Resolve quote texts from per-page ref files
+    sheetData.blocks = await _resolveQuoteTexts(sheetData.blocks);
+
     _renderSharedSheetViewer(root, sheetData);
+}
+
+async function _resolveQuoteTexts(blocks) {
+    // Collect unique page file names from quote refs
+    const pageFiles = new Set();
+    blocks.forEach(b => {
+        if (b.type === 'quote' && b.elementId) {
+            const match = b.elementId.match(/^(pg[^-]+)/);
+            if (match) pageFiles.add(match[1]);
+        }
+    });
+
+    // Fetch only the needed page ref files in parallel
+    const refMap = {};
+    await Promise.all([...pageFiles].map(async pf => {
+        try {
+            const resp = await fetch('refs/' + pf + '.json');
+            if (resp.ok) Object.assign(refMap, await resp.json());
+        } catch (e) { /* ref file missing or offline — fall back to embedded text */ }
+    }));
+
+    // Fill in text from ref files
+    return blocks.map(b => {
+        if (b.type === 'quote' && b.elementId) {
+            return { ...b, text: refMap[b.elementId] || '' };
+        }
+        return b;
+    });
 }
 
 function _renderSharedSheetViewer(root, sheetData) {

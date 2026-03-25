@@ -1,4 +1,4 @@
-var CACHE_NAME = 'book-cache-f1d066e681';
+var CACHE_NAME = 'book-cache-a99b949742';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
