@@ -1,4 +1,4 @@
-var CACHE_NAME = 'book-cache-6bc902530f';
+var CACHE_NAME = 'book-cache-f483cdef19';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -6,6 +6,7 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
         './',
         './index.html',
+        './sheets.html',
         './manifest.json',
         './search-index.json',
         './styles.css',
@@ -22,6 +23,8 @@ self.addEventListener('install', function(event) {
         './fuse.min.js',
         './search.js',
         './search.css',
+        './sheets.js',
+        './sheets.css',
         './lucide.min.js'
       ]);
     })

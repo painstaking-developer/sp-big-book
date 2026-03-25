@@ -1,7 +1,8 @@
 {
-  "built_at": "2026-03-25T00:45:01.174989",
+  "built_at": "2026-03-25T07:22:56.499035",
   "assets": {
-    "index.html": "438294177971",
+    "index.html": "6a1aa63fd42f",
+    "sheets.html": "f5f7685f11e9",
     "manifest.json": "b40d20ca799a",
     "search-index.json": "4f6c92a03ff2",
     "styles.css": "f4a731c7fae2",
@@ -10,7 +11,7 @@
     "image.jpg": "8c2de12a2518",
     "favicon.ico": "ae8b5c52d81f",
     "notes.css": "4157d99e1d72",
-    "notes.js": "eb3a9ed84119",
+    "notes.js": "4f88b79c5c78",
     "bookmarks.css": "d2be05a2f1b7",
     "bookmarks.js": "873242c5b356",
     "highlight.css": "3090faeb5010",
@@ -18,6 +19,8 @@
     "fuse.min.js": "e3621b53cb77",
     "search.js": "3146ca834c79",
     "search.css": "1b1a6123ae39",
+    "sheets.js": "f7f61295c0fb",
+    "sheets.css": "c70b50aa50e4",
     "lucide.min.js": "1bd32a372c02"
   }
 }

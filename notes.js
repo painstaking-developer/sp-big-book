@@ -715,6 +715,7 @@ const notesModule = {
             notes: notesById,
             bookmarks: JSON.parse(localStorage.getItem('bookmarks') || '[]'),
             highlights: JSON.parse(localStorage.getItem('highlightsData') || '{}'),
+            sheets: JSON.parse(localStorage.getItem('sheets') || '[]'),
         };
         const fileHandle = await syncDirHandle.getFileHandle('data.json', { create: true });
         const writable = await fileHandle.createWritable();
@@ -780,6 +781,7 @@ const notesModule = {
         notes: notesById,
         bookmarks: JSON.parse(localStorage.getItem('bookmarks') || '[]'),
         highlights: JSON.parse(localStorage.getItem('highlightsData') || '{}'),
+        sheets: JSON.parse(localStorage.getItem('sheets') || '[]'),
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -838,7 +840,19 @@ const notesModule = {
                 highlightCount = window.highlightsModule.mergeAndRestore(data.highlights);
             }
 
-            alert(`Imported ${noteCount} note(s), ${bookmarkCount} bookmark(s), ${highlightCount} highlight(s).`);
+            let sheetCount = 0;
+            if (data.sheets) {
+                const existing = JSON.parse(localStorage.getItem('sheets') || '[]');
+                data.sheets.forEach(sheet => {
+                    if (!existing.some(s => s.id === sheet.id)) {
+                        existing.push(sheet);
+                        sheetCount++;
+                    }
+                });
+                localStorage.setItem('sheets', JSON.stringify(existing));
+            }
+
+            alert(`Imported ${noteCount} note(s), ${bookmarkCount} bookmark(s), ${highlightCount} highlight(s), ${sheetCount} sheet(s).`);
         };
         reader.readAsText(file);
     });

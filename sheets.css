@@ -1,0 +1,334 @@
+/* ── Sheets Feature ── */
+
+/* Hide non-menu FAB buttons on sheets page */
+.sheets-page .fab-btn-search,
+.sheets-page .fab-btn-bookmark,
+.sheets-page .fab-btn-notes,
+.sheets-page .fab-notes-label,
+.sheets-page #fab-bookmark-divider,
+.sheets-page #fab-notes-divider,
+.sheets-page #hl-fab-colors,
+.sheets-page .fab-divider + .fab-btn-search {
+    display: none !important;
+}
+
+/* Also hide the divider right before search */
+.sheets-page .fab-btn-menu + .fab-divider {
+    display: none !important;
+}
+
+/* ── List view ── */
+.sheets-list {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sheets-card-title {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--color-settings-title);
+    margin-bottom: 4px;
+}
+
+/* ── Viewer header ── */
+.sheets-viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.sheets-viewer-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.sheets-viewer-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    color: var(--color-settings-icon);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.sheets-viewer-icon-btn:hover {
+    background: var(--color-settings-icon-bg);
+    color: var(--color-settings-title);
+}
+
+.sheets-viewer-delete-btn:hover {
+    color: var(--color-notes-delete);
+}
+
+.sheets-viewer-date {
+    font-size: 0.8em;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+}
+
+.sheets-viewer-content {
+    margin-top: 8px;
+}
+
+/* ── Text blocks (read mode) ── */
+.sheets-text-block {
+    font-size: 0.95em;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.sheets-text-block strong { font-weight: 700; }
+.sheets-text-block em { font-style: italic; }
+.sheets-text-block del { text-decoration: line-through; opacity: 0.7; }
+
+.sheets-text-block mark {
+    background: var(--color-bg-highlight);
+    color: inherit;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.sheets-text-block ul,
+.sheets-text-block ol {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+.sheets-text-block li { margin: 2px 0; }
+
+.sheets-text-block .note-blockquote {
+    border-left: 3px solid var(--color-text-muted);
+    padding-left: 10px;
+    margin: 4px 0;
+}
+
+/* ── Quote blocks ── */
+.sheets-quote-block {
+    background: var(--color-notes-bg);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.sheets-quote-clickable {
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.sheets-quote-clickable:hover {
+    background: var(--color-settings-card-hover-bg);
+}
+
+.sheets-quote-text {
+    font-size: 0.93em;
+    line-height: 1.55;
+    color: var(--color-text);
+    font-style: italic;
+}
+
+.sheets-quote-ref {
+    font-size: 0.78em;
+    color: var(--color-text-muted);
+    margin-top: 6px;
+}
+
+/* ── Quote in editor (with remove button) ── */
+.sheets-quote-in-editor {
+    position: relative;
+}
+
+.sheets-quote-remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-settings-card-hover-bg);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.sheets-quote-remove-btn:hover {
+    background: var(--color-notes-delete);
+    color: #fff;
+}
+
+/* ── Editor ── */
+.sheets-editor-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.sheets-title-input {
+    flex: 1;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--color-settings-title);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--color-border-light);
+    outline: none;
+    padding: 4px 0;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.sheets-title-input:focus {
+    border-bottom-color: var(--color-notes-btn);
+}
+
+.sheets-save-btn {
+    color: var(--color-notes-btn);
+}
+
+.sheets-editor-body {
+    padding-bottom: 80px;
+}
+
+.sheets-editor-block {
+    margin-bottom: 4px;
+}
+
+.sheets-text-editor {
+    min-height: 80px;
+}
+
+/* Insert quote button (between blocks) */
+.sheets-insert-quote-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px dashed var(--color-border-light);
+    border-radius: 8px;
+    background: none;
+    color: var(--color-text-muted);
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+    margin-bottom: 8px;
+}
+
+.sheets-insert-quote-btn:hover {
+    border-color: var(--color-notes-btn);
+    color: var(--color-notes-btn);
+    background: var(--color-settings-card-hover-bg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Quote-select mode — on index.html, the user browses
+   the real book to pick a sentence.  Subtle background
+   tint so they know they're not in normal reading mode.
+   ══════════════════════════════════════════════════════════ */
+
+.sheets-quote-select-mode {
+    background: #f5f0eb !important;
+}
+
+[data-theme="dark"] .sheets-quote-select-mode {
+    background: #1e1510 !important;
+}
+
+/* Make sentences look tappable */
+.sheets-quote-select-mode article span[id] {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.1s;
+}
+
+.sheets-quote-select-mode article span[id]:hover {
+    background: rgba(160, 120, 60, 0.15);
+}
+
+[data-theme="dark"] .sheets-quote-select-mode article span[id]:hover {
+    background: rgba(180, 140, 80, 0.25);
+}
+
+/* Floating banner at the bottom */
+.sheets-select-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 20px;
+    background: #3b3126;
+    color: #f5f0eb;
+    font-size: 0.88em;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] .sheets-select-banner {
+    background: #2e2318;
+    color: #d4c4aa;
+}
+
+.sheets-select-banner-text {
+    flex: 1;
+}
+
+.sheets-select-banner-cancel {
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    background: none;
+    color: inherit;
+    padding: 6px 14px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    white-space: nowrap;
+}
+
+.sheets-select-banner-cancel:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ── Confirm dialog (over the book page) ── */
+.sheets-confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-bg-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4000;
+    padding: 20px;
+}
+
+.sheets-confirm-card {
+    background: var(--color-bg-surface);
+    border-radius: 14px;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 32px var(--color-shadow);
+}
