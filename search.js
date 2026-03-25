@@ -131,10 +131,9 @@ function runSearch(query) {
         const lower = query.toLowerCase();
         hits = _searchData
             .filter(item => item.text.toLowerCase().includes(lower))
-            .slice(0, 20)
             .map(item => ({ item, exact: true }));
     } else {
-        hits = _fuseInstance.search(query, { limit: 20 }).sort((a, b) => a.item.order - b.item.order);
+        hits = _fuseInstance.search(query).sort((a, b) => a.item.order - b.item.order);
     }
     setResultCount(hits.length);
     if (hits.length === 0) {

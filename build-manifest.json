@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-03-25T00:13:13.532185",
+  "built_at": "2026-03-25T00:45:01.174989",
   "assets": {
     "index.html": "438294177971",
     "manifest.json": "b40d20ca799a",
@@ -16,7 +16,7 @@
     "highlight.css": "3090faeb5010",
     "highlight.js": "cb609cf6a019",
     "fuse.min.js": "e3621b53cb77",
-    "search.js": "25139c39f589",
+    "search.js": "3146ca834c79",
     "search.css": "1b1a6123ae39",
     "lucide.min.js": "1bd32a372c02"
   }
