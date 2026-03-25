@@ -629,13 +629,20 @@
     <div id="search-bar-inner">
         <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search">&#8592;</button>
         <input id="search-input" type="search" placeholder="Search&#8230;" autocomplete="off" oninput="handleSearchInput(event)" />
+        <span id="search-result-count" class="search-result-count"></span>
+        <span class="search-bar-pipe"></span>
+        <label class="search-mode-toggle" title="Toggle exact / fuzzy matching">
+            <input type="checkbox" id="search-exact-toggle" onchange="handleSearchInput({target: document.getElementById('search-input')})" />
+            <span class="search-mode-label">Fuzzy</span>
+            <span class="search-mode-track"><span class="search-mode-thumb"></span></span>
+            <span class="search-mode-label">Exact</span>
+        </label>
         <button class="search-icon-btn" onclick="closeSearch()" aria-label="Close search">&#10005;</button>
     </div>
 </div>
 <div id="search-results"></div>
 <div id="search-backdrop" onclick="closeSearch()"></div>
 <div class="fab-group">
-    <div id="hl-fab-colors" class="hl-fab-colors"></div>
     <button class="fab-btn fab-btn-menu" onclick="toggleLeftPaneNav()" aria-label="Menu">&#9776;</button>
     <div class="fab-divider"></div>
     <button class="fab-btn fab-btn-search" onclick="openSearch()" aria-label="Search"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13.5" y2="13.5"/></svg></button>
@@ -644,6 +651,7 @@
     <div class="fab-divider" id="fab-notes-divider"></div>
     <span id="fab-notes-label" class="fab-notes-label" onclick="handleFabNotesClick()"></span>
     <button class="fab-btn fab-btn-notes" onclick="handleFabNotesClick()" aria-label="Notes">&#10000;</button>
+    <div id="hl-fab-colors" class="hl-fab-colors"></div>
 </div>
 <div id="bookmark-add-overlay" class="bookmark-add-overlay">
     <div class="bookmark-add-dialog">

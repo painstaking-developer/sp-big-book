@@ -1015,9 +1015,6 @@ function updateFabNotesLabel(elementId) {
         return;
     }
 
-    const hasNotes = notesById[elementId] && notesById[elementId].length > 0;
-    label.textContent = hasNotes ? 'View notes' : 'Add note';
-    label.classList.add('active');
     app.emit('fab:update-expanded');
 }
 

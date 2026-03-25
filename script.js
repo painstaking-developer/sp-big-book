@@ -329,6 +329,75 @@ document.addEventListener('dblclick', function (event) {
     }
 });
 
+/* ── FAB drag-to-corner ── */
+(function () {
+    const THRESHOLD = 6;
+    let dragging = false;
+    let _wasDragging = false;
+
+    function cornerFromRect(fab) {
+        const r = fab.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const h = cx < window.innerWidth / 2 ? 'left' : 'right';
+        const v = cy < window.innerHeight / 2 ? 'top' : 'bottom';
+        return v + '-' + h;
+    }
+
+    function onStart(e) {
+        if (e.button !== undefined && e.button !== 0) return; // left button only
+        const fab = document.querySelector('.fab-group');
+        if (!fab) return;
+        const pt = e.touches ? e.touches[0] : e;
+        const startX = pt.clientX;
+        const startY = pt.clientY;
+        dragging = false;
+
+        function onMove(e) {
+            const pt = e.touches ? e.touches[0] : e;
+            const dx = pt.clientX - startX;
+            const dy = pt.clientY - startY;
+            if (!dragging) {
+                if (Math.abs(dx) < THRESHOLD && Math.abs(dy) < THRESHOLD) return;
+                dragging = true;
+                fab.classList.add('fab-dragging');
+            }
+            e.preventDefault();
+            fab.style.transform = `translate(${dx}px,${dy}px)`;
+        }
+
+        function onEnd() {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onEnd);
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onEnd);
+            if (!dragging) return;
+            const corner = cornerFromRect(fab);
+            fab.style.transform = '';
+            fab.classList.remove('fab-dragging');
+            dragging = false;
+            _wasDragging = true;
+            setTimeout(() => { _wasDragging = false; }, 0);
+            setMenuPosition(corner);
+        }
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const fab = document.querySelector('.fab-group');
+        if (!fab) return;
+        fab.addEventListener('mousedown', onStart);
+        fab.addEventListener('touchstart', onStart, { passive: true });
+        fab.addEventListener('click', function (e) {
+            if (_wasDragging) { e.stopPropagation(); e.preventDefault(); }
+        }, true);
+    });
+})();
+
 // Expose functions used as HTML event-handler attributes
 Object.assign(window, {
     installPwa,

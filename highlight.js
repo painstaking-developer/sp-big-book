@@ -96,10 +96,10 @@ function createFabHighlightButtons() {
     }, { passive: false });
     container.appendChild(clearBtn);
 
-    // Trailing divider to separate colors from the notes button
+    // Leading divider to separate notes button from colors
     const divider = document.createElement('div');
     divider.className = 'hl-fab-divider';
-    container.appendChild(divider);
+    container.prepend(divider);
 }
 
 function showFabColors() {

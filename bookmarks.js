@@ -247,10 +247,14 @@ var bookmarks = (function () {
     /* ── FAB bookmark button ── */
 
     function setCurrentHighlight(anchor) {
+        var bookmarkDiv = document.getElementById('fab-bookmark-divider');
         var btn = document.getElementById('fab-bookmark-btn');
         var notesDiv = document.getElementById('fab-notes-divider');
+        var notesBtn = document.querySelector('.fab-btn-notes');
+        if (bookmarkDiv) bookmarkDiv.classList.toggle('visible', !!anchor);
         if (btn) btn.classList.toggle('visible', !!anchor);
         if (notesDiv) notesDiv.classList.toggle('visible', !!anchor);
+        if (notesBtn) notesBtn.classList.toggle('visible', !!anchor);
     }
 
     /* ── Add dialog ── */

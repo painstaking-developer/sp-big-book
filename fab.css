@@ -22,6 +22,18 @@
     box-shadow: 0 4px 12px var(--color-shadow);
 }
 
+.fab-group.fab-dragging {
+    transition: none;
+    opacity: 1;
+    cursor: grabbing;
+    box-shadow: 0 8px 24px var(--color-shadow);
+}
+
+.fab-group.fab-dragging .fab-btn {
+    cursor: grabbing;
+    pointer-events: none;
+}
+
 .fab-btn {
     width: 44px;
     height: 44px;

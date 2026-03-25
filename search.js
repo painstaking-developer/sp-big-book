@@ -1,6 +1,7 @@
 /* search.js — Fuse.js powered fuzzy search */
 
 let _fuseInstance = null;
+let _searchData = null;
 let _searchLoaded = false;
 let _searchLoading = false;
 
@@ -10,6 +11,7 @@ async function loadSearchIndex() {
     try {
         const resp = await fetch('search-index.json');
         const data = await resp.json();
+        _searchData = data;
         _fuseInstance = new Fuse(data, {
             keys: ['text'],
             threshold: 0.1,
@@ -48,6 +50,22 @@ function closeSearch() {
     if (backdrop) backdrop.classList.remove('active');
     const input = document.getElementById('search-input');
     if (input) input.value = '';
+    setResultCount(null);
+}
+
+function setResultCount(n) {
+    const el = document.getElementById('search-result-count');
+    const pipe = el && el.nextElementSibling;
+    if (!el) return;
+    if (n === null) {
+        el.textContent = '';
+        el.classList.remove('visible');
+        if (pipe) pipe.classList.remove('visible');
+    } else {
+        el.textContent = n + '\u00a0Results';
+        el.classList.add('visible');
+        if (pipe) pipe.classList.add('visible');
+    }
 }
 
 let _searchDebounce = null;
@@ -77,6 +95,21 @@ function esc(str) {
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+function highlightExact(text, query) {
+    const lowerText = text.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    let result = '';
+    let cursor = 0;
+    let idx;
+    while ((idx = lowerText.indexOf(lowerQuery, cursor)) !== -1) {
+        if (idx > cursor) result += esc(text.slice(cursor, idx));
+        result += '<mark class="search-highlight">' + esc(text.slice(idx, idx + query.length)) + '</mark>';
+        cursor = idx + query.length;
+    }
+    if (cursor < text.length) result += esc(text.slice(cursor));
+    return result;
+}
+
 function runSearch(query) {
     const results = document.getElementById('search-results');
     const backdrop = document.getElementById('search-backdrop');
@@ -84,20 +117,34 @@ function runSearch(query) {
         results.classList.remove('active');
         results.innerHTML = '';
         if (backdrop) backdrop.classList.remove('active');
+        setResultCount(null);
         return;
     }
-    if (!_fuseInstance) {
+    if (!_searchLoaded) {
         results.innerHTML = '<div class="search-no-results">Loading\u2026</div>';
         results.classList.add('active');
         return;
     }
-    const hits = _fuseInstance.search(query, { limit: 20 });
+    const exactMode = document.getElementById('search-exact-toggle').checked;
+    let hits;
+    if (exactMode) {
+        const lower = query.toLowerCase();
+        hits = _searchData
+            .filter(item => item.text.toLowerCase().includes(lower))
+            .slice(0, 20)
+            .map(item => ({ item, exact: true }));
+    } else {
+        hits = _fuseInstance.search(query, { limit: 20 }).sort((a, b) => a.item.order - b.item.order);
+    }
+    setResultCount(hits.length);
     if (hits.length === 0) {
         results.innerHTML = '<div class="search-no-results">No results</div>';
     } else {
         results.innerHTML = hits.map(hit => {
             const item = hit.item;
-            const highlightedText = highlightMatches(item.text, hit.matches);
+            const highlightedText = hit.exact
+                ? highlightExact(item.text, query)
+                : highlightMatches(item.text, hit.matches);
             const safeChapter = esc(item.chapter);
             const safePage = esc(item.page);
             const safeId = item.id.replace(/'/g, '');

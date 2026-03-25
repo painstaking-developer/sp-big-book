@@ -25,7 +25,6 @@
     display: inline-flex;
     gap: 2px;
     align-items: center;
-    background: var(--color-bg-surface);
     padding-right: 5px;
     flex-shrink: 0;
 }
@@ -79,7 +78,6 @@
 .bm-delete-wrap {
     display: inline-flex;
     align-items: center;
-    background: var(--color-bg-surface);
     padding-left: 6px;
     flex-shrink: 0;
 }
@@ -182,7 +180,19 @@ a.bm-edit-link {
     color: #fff;
 }
 
-/* ── FAB bookmark button (slides in when a sentence is highlighted) ── */
+/* ── FAB bookmark divider + button (slide in when a sentence is highlighted) ── */
+
+#fab-bookmark-divider {
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    transition: max-width 0.2s ease, opacity 0.15s ease;
+}
+
+#fab-bookmark-divider.visible {
+    max-width: 1px;
+    opacity: 1;
+}
 
 .fab-btn-bookmark {
     overflow: hidden;
@@ -208,6 +218,19 @@ a.bm-edit-link {
 
 #fab-notes-divider.visible {
     max-width: 1px;
+    opacity: 1;
+}
+
+.fab-btn-notes {
+    overflow: hidden;
+    max-width: 0;
+    padding: 0;
+    opacity: 0;
+    transition: max-width 0.2s ease, opacity 0.15s ease;
+}
+
+.fab-btn-notes.visible {
+    max-width: 44px;
     opacity: 1;
 }
 
