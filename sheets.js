@@ -30,6 +30,7 @@ let quoteSelectMode = false;
 const _onSheetsPage = window.location.pathname.endsWith('sheets.html');
 const _onBookPage = window.location.pathname.endsWith('index.html') ||
                     window.location.pathname.endsWith('/');
+const _onSharedPage = window.location.pathname.endsWith('shared.html');
 
 /* ── Persistence ── */
 function loadSheets() {
@@ -66,6 +67,18 @@ function _parseRef(elementId) {
     if (parMatch) parts.push('Par. ' + parMatch[1]);
     if (senMatch) parts.push('Sen. ' + senMatch[1]);
     return parts.length ? parts.join(' / ') : null;
+}
+
+/* ── URL-safe Base64 encoding (UTF-8 safe) ── */
+function _toUrlSafeBase64(str) {
+    return btoa(unescape(encodeURIComponent(str)))
+        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function _fromUrlSafeBase64(b64) {
+    b64 = b64.replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    return decodeURIComponent(escape(atob(b64)));
 }
 
 /* ── Parse current hash route ── */
@@ -250,6 +263,13 @@ function _renderViewer(root, sheetId) {
     });
     actions.appendChild(editBtn);
 
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'sheets-viewer-icon-btn';
+    shareBtn.title = 'Copy link';
+    shareBtn.innerHTML = _lucideIcon('link', 18);
+    shareBtn.addEventListener('click', () => { _shareSheet(sheetId, shareBtn); });
+    actions.appendChild(shareBtn);
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'sheets-viewer-icon-btn sheets-viewer-delete-btn';
     deleteBtn.title = 'Delete';
@@ -266,10 +286,12 @@ function _renderViewer(root, sheetId) {
     titleRow.appendChild(actions);
     root.appendChild(titleRow);
 
-    // Date
+    // Dates
     const dateLine = document.createElement('div');
     dateLine.className = 'sheets-viewer-date';
-    dateLine.textContent = 'Last updated ' + (sheet.updatedDate || sheet.createdDate || '').substring(0, 10);
+    const created = (sheet.createdDate || '').substring(0, 10);
+    const updated = (sheet.updatedDate || '').substring(0, 10);
+    dateLine.textContent = 'Created ' + created + (updated && updated !== created ? ' \u00b7 Updated ' + updated : '');
     root.appendChild(dateLine);
 
     // Content
@@ -320,6 +342,28 @@ function _renderViewer(root, sheetId) {
     }
 }
 
+/* ─── Share a sheet ─── */
+function _shareSheet(sheetId, btnEl) {
+    const sheet = sheetsData.find(s => s.id === sheetId);
+    if (!sheet) return;
+
+    const payload = JSON.stringify({ id: sheet.id, name: sheet.name, blocks: sheet.blocks });
+    const encoded = _toUrlSafeBase64(payload);
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+    const url = window.location.origin + basePath + 'shared.html#sheet/' + encoded;
+
+    navigator.clipboard.writeText(url).then(() => {
+        if (btnEl) {
+            btnEl.innerHTML = _lucideIcon('check', 18);
+            btnEl.classList.add('sheets-link-copied');
+            setTimeout(() => {
+                btnEl.innerHTML = _lucideIcon('link', 18);
+                btnEl.classList.remove('sheets-link-copied');
+            }, 1500);
+        }
+    });
+}
+
 /* Render editor with pre-loaded blocks (used when returning from quote selection) */
 function _renderEditorWithBlocks(root, sheetId, blocks) {
     sheetEditorBlocks = blocks;
@@ -361,7 +405,7 @@ function _renderEditorUI(root, sheetId) {
     saveBtn.className = 'notes-btn sheets-save-btn';
     saveBtn.innerHTML = _lucideIcon('check', 14) + ' Save';
     saveBtn.addEventListener('click', () => {
-        _saveEditorBlocksFromDOM(root);
+        _readDocEditor();
         sheet.name = titleInput.value.trim() || 'Untitled Sheet';
         sheet.blocks = sheetEditorBlocks;
         sheet.updatedDate = _now();
@@ -374,11 +418,9 @@ function _renderEditorUI(root, sheetId) {
     cancelBtn.className = 'notes-btn';
     cancelBtn.textContent = 'Cancel';
     cancelBtn.addEventListener('click', () => {
-        // Check if the sheet was ever persisted (exists in localStorage)
         const persisted = JSON.parse(localStorage.getItem('sheets') || '[]');
         const wasSaved = persisted.some(s => s.id === sheetId);
         if (!wasSaved) {
-            // New sheet that was never saved — discard it
             sheetsData = sheetsData.filter(s => s.id !== sheetId);
             window.location.hash = '';
         } else {
@@ -389,14 +431,14 @@ function _renderEditorUI(root, sheetId) {
 
     root.appendChild(titleRow);
 
-    // Editor body
-    const body = document.createElement('div');
-    body.className = 'sheets-editor-body';
-    body.id = 'sheets-editor-body';
+    // Document-style editor
+    const doc = document.createElement('div');
+    doc.className = 'sheets-doc';
+    doc.id = 'sheets-doc';
 
-    _renderEditorBlocks(body, sheetId);
+    _buildDocEditor(doc, sheetId);
 
-    root.appendChild(body);
+    root.appendChild(doc);
 }
 
 /* ── Update the top bar back link based on context ── */
@@ -425,22 +467,10 @@ function _updateTopBar(view, sheetId) {
     }
 }
 
-/* ── Save editor state from DOM ── */
-function _saveEditorBlocksFromDOM(container) {
-    const editorEls = container.querySelectorAll('[data-block-index]');
-    editorEls.forEach(el => {
-        const idx = parseInt(el.getAttribute('data-block-index'));
-        if (isNaN(idx) || idx >= sheetEditorBlocks.length) return;
-        const block = sheetEditorBlocks[idx];
-        if (block.type === 'text' && el._getPlainText) {
-            block.content = el._getPlainText();
-        }
-    });
-}
+/* ── Document-style editor ── */
 
-/* ── Render editor blocks ── */
-function _renderEditorBlocks(body, sheetId) {
-    body.innerHTML = '';
+function _buildDocEditor(doc, sheetId) {
+    doc.innerHTML = '';
 
     if (sheetEditorBlocks.length === 0) {
         sheetEditorBlocks.push({ type: 'text', content: '' });
@@ -448,149 +478,204 @@ function _renderEditorBlocks(body, sheetId) {
 
     sheetEditorBlocks.forEach((block, idx) => {
         if (block.type === 'text') {
-            _renderTextBlock(body, block, idx);
+            const ed = createNoteEditor(block.content || '', null);
+            const el = ed.container;
+            el.className = 'sheets-doc-text';
+            el.setAttribute('data-block-index', idx);
+            el.setAttribute('data-placeholder', idx === 0 ? 'Start writing...' : 'Continue writing...');
+            el._getValue = ed.getValue;
+            doc.appendChild(el);
         } else if (block.type === 'quote') {
-            _renderQuoteBlockEditor(body, block, idx, sheetId);
+            const quoteBox = document.createElement('div');
+            quoteBox.className = 'sheets-doc-quote';
+            quoteBox.setAttribute('data-block-index', idx);
+            quoteBox.draggable = true;
+
+            // Drag handle
+            const dragHandle = document.createElement('span');
+            dragHandle.className = 'sheets-quote-drag-handle';
+            dragHandle.innerHTML = _lucideIcon('grip-vertical', 14);
+            dragHandle.title = 'Drag to reorder';
+            quoteBox.appendChild(dragHandle);
+
+            const quoteText = document.createElement('div');
+            quoteText.className = 'sheets-quote-text';
+            quoteText.textContent = block.text || '';
+            quoteBox.appendChild(quoteText);
+
+            if (block.elementId) {
+                const ref = _parseRef(block.elementId);
+                if (ref) {
+                    const refLine = document.createElement('div');
+                    refLine.className = 'sheets-quote-ref';
+                    refLine.textContent = ref;
+                    quoteBox.appendChild(refLine);
+                }
+            }
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'sheets-quote-remove-btn';
+            removeBtn.innerHTML = _lucideIcon('x', 14);
+            removeBtn.title = 'Remove quote';
+            removeBtn.addEventListener('click', () => {
+                _readDocEditor();
+                sheetEditorBlocks.splice(idx, 1);
+                _mergeAdjacentTextBlocks();
+                _buildDocEditor(doc, sheetId);
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons({ root: doc, attrs: { 'stroke-width': '1.75' } });
+                }
+            });
+            quoteBox.appendChild(removeBtn);
+
+            // Drag events
+            quoteBox.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', String(idx));
+                quoteBox.classList.add('sheets-dragging');
+                doc._dragSourceIdx = idx;
+            });
+            quoteBox.addEventListener('dragend', () => {
+                quoteBox.classList.remove('sheets-dragging');
+                _clearDropIndicators(doc);
+                delete doc._dragSourceIdx;
+            });
+
+            doc.appendChild(quoteBox);
         }
 
-        // Insert quote button
-        const insertBtn = document.createElement('button');
-        insertBtn.className = 'sheets-insert-quote-btn';
-        insertBtn.innerHTML = _lucideIcon('plus', 14) + ' Insert Quote';
-        const capturedIdx = idx;
-        insertBtn.addEventListener('click', () => {
-            _startQuoteSelection(sheetId, capturedIdx + 1);
-        });
-        body.appendChild(insertBtn);
+        // Insert-quote button: show after quote blocks and after the last text block
+        const isQuote = block.type === 'quote';
+        const isLastBlock = idx === sheetEditorBlocks.length - 1;
+        if (isQuote || isLastBlock) {
+            const insertRow = document.createElement('div');
+            insertRow.className = 'sheets-doc-insert-row';
+            const insertBtn = document.createElement('button');
+            insertBtn.className = 'sheets-doc-insert-btn';
+            insertBtn.innerHTML = _lucideIcon('plus', 12) + ' <span>Insert Quote</span>';
+            insertBtn.title = 'Insert book quote';
+            const capturedIdx = idx;
+            insertBtn.addEventListener('click', () => {
+                _startQuoteSelection(sheetId, capturedIdx + 1);
+            });
+            insertRow.appendChild(insertBtn);
+            doc.appendChild(insertRow);
+        }
     });
-}
 
-function _renderTextBlock(body, block, idx) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'sheets-editor-block';
-
-    const editor = document.createElement('div');
-    editor.className = 'note-editor sheets-text-editor';
-    editor.contentEditable = 'true';
-    editor.setAttribute('data-placeholder', 'Write here...');
-    editor.setAttribute('data-block-index', idx);
-
-    function getPlainText() {
-        if (editor.children.length > 0) {
-            return Array.from(editor.children)
-                .map(el => el.textContent)
-                .join('\n');
-        }
-        return editor.textContent || '';
-    }
-
-    editor._getPlainText = getPlainText;
-
-    function render() {
-        const text = getPlainText();
-        if (!text) { editor.innerHTML = ''; return; }
-
-        const sel = window.getSelection();
-        let pos = null;
-        if (sel.rangeCount && editor.contains(sel.anchorNode)) {
-            const range = sel.getRangeAt(0);
-            let lineDiv = range.startContainer;
-            while (lineDiv && lineDiv.parentNode !== editor) lineDiv = lineDiv.parentNode;
-            if (lineDiv) {
-                const lineIndex = Array.from(editor.childNodes).indexOf(lineDiv);
-                const lineRange = document.createRange();
-                lineRange.selectNodeContents(lineDiv);
-                lineRange.setEnd(range.startContainer, range.startOffset);
-                pos = { line: lineIndex, ch: lineRange.toString().length };
-            }
-        }
-
-        editor.innerHTML = formatEditorText(text);
-
-        if (pos) {
-            const newSel = window.getSelection();
-            const newRange = document.createRange();
-            const targetLine = editor.childNodes[pos.line];
-            if (targetLine) {
-                let current = 0;
-                function walk(node) {
-                    if (node.nodeType === Node.TEXT_NODE) {
-                        const end = current + node.length;
-                        if (pos.ch <= end) {
-                            newRange.setStart(node, pos.ch - current);
-                            newRange.collapse(true);
-                            return true;
-                        }
-                        current = end;
-                    } else {
-                        for (const child of node.childNodes) {
-                            if (walk(child)) return true;
-                        }
-                    }
-                    return false;
-                }
-                if (!walk(targetLine)) {
-                    newRange.setStart(targetLine, 0);
-                    newRange.collapse(true);
-                }
-                newSel.removeAllRanges();
-                newSel.addRange(newRange);
-            }
-        }
-    }
-
-    editor.addEventListener('input', render);
-    editor.addEventListener('paste', (e) => {
+    // Drag-and-drop: allow reordering quotes within the doc
+    doc.addEventListener('dragover', (e) => {
         e.preventDefault();
-        document.execCommand('insertText', false, e.clipboardData.getData('text/plain'));
+        e.dataTransfer.dropEffect = 'move';
+        const target = _findDropTarget(doc, e.clientY);
+        _showDropIndicator(doc, target);
     });
 
-    if (block.content) {
-        editor.innerHTML = formatEditorText(block.content);
-    }
+    doc.addEventListener('dragleave', (e) => {
+        if (!doc.contains(e.relatedTarget)) _clearDropIndicators(doc);
+    });
 
-    wrapper.appendChild(editor);
-    body.appendChild(wrapper);
+    doc.addEventListener('drop', (e) => {
+        e.preventDefault();
+        _clearDropIndicators(doc);
+        const fromIdx = doc._dragSourceIdx;
+        if (fromIdx === undefined) return;
+        const target = _findDropTarget(doc, e.clientY);
+        if (target === null) return;
+
+        _readDocEditor();
+
+        // target is the block index we want to insert *before*
+        // If dropping in same position or adjacent (no-op), skip
+        if (target === fromIdx || target === fromIdx + 1) return;
+
+        const moved = sheetEditorBlocks.splice(fromIdx, 1)[0];
+        const insertAt = target > fromIdx ? target - 1 : target;
+        sheetEditorBlocks.splice(insertAt, 0, moved);
+        _mergeAdjacentTextBlocks();
+        // Ensure text blocks surround quotes
+        _ensureTextBlocks();
+        _buildDocEditor(doc, sheetId);
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons({ root: doc, attrs: { 'stroke-width': '1.75' } });
+        }
+    });
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons({ root: doc, attrs: { 'stroke-width': '1.75' } });
+    }
 }
 
-function _renderQuoteBlockEditor(body, block, idx, sheetId) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'sheets-editor-block';
+/* Find which block index to drop before, based on Y position */
+function _findDropTarget(doc, clientY) {
+    const blocks = doc.querySelectorAll('[data-block-index]');
+    for (const el of blocks) {
+        const rect = el.getBoundingClientRect();
+        if (clientY < rect.top + rect.height / 2) {
+            return parseInt(el.getAttribute('data-block-index'));
+        }
+    }
+    return sheetEditorBlocks.length; // drop at end
+}
 
-    const quoteBox = document.createElement('div');
-    quoteBox.className = 'sheets-quote-block sheets-quote-in-editor';
-
-    const quoteText = document.createElement('div');
-    quoteText.className = 'sheets-quote-text';
-    quoteText.textContent = block.text || '';
-    quoteBox.appendChild(quoteText);
-
-    if (block.elementId) {
-        const ref = _parseRef(block.elementId);
-        if (ref) {
-            const refLine = document.createElement('div');
-            refLine.className = 'sheets-quote-ref';
-            refLine.textContent = ref;
-            quoteBox.appendChild(refLine);
+function _showDropIndicator(doc, targetIdx) {
+    _clearDropIndicators(doc);
+    const blocks = doc.querySelectorAll('[data-block-index]');
+    let refEl = null;
+    for (const el of blocks) {
+        if (parseInt(el.getAttribute('data-block-index')) === targetIdx) {
+            refEl = el;
+            break;
         }
     }
 
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'sheets-quote-remove-btn';
-    removeBtn.innerHTML = _lucideIcon('x', 14);
-    removeBtn.title = 'Remove quote';
-    removeBtn.addEventListener('click', () => {
-        const root = document.getElementById('sheets-root');
-        if (root) _saveEditorBlocksFromDOM(root);
-        sheetEditorBlocks.splice(idx, 1);
-        _mergeAdjacentTextBlocks();
-        const editorBody = document.getElementById('sheets-editor-body');
-        if (editorBody) _renderEditorBlocks(editorBody, sheetId);
-    });
-    quoteBox.appendChild(removeBtn);
+    const indicator = document.createElement('div');
+    indicator.className = 'sheets-drop-indicator';
+    if (refEl) {
+        doc.insertBefore(indicator, refEl);
+    } else {
+        doc.appendChild(indicator);
+    }
+}
 
-    wrapper.appendChild(quoteBox);
-    body.appendChild(wrapper);
+function _clearDropIndicators(doc) {
+    doc.querySelectorAll('.sheets-drop-indicator').forEach(el => el.remove());
+}
+
+/* Ensure text blocks exist between and around quotes */
+function _ensureTextBlocks() {
+    const result = [];
+    for (let i = 0; i < sheetEditorBlocks.length; i++) {
+        const block = sheetEditorBlocks[i];
+        if (block.type === 'quote') {
+            // Ensure a text block before if missing
+            if (result.length === 0 || result[result.length - 1].type !== 'text') {
+                result.push({ type: 'text', content: '' });
+            }
+            result.push(block);
+        } else {
+            result.push(block);
+        }
+    }
+    // Ensure a text block at the end
+    if (result.length === 0 || result[result.length - 1].type !== 'text') {
+        result.push({ type: 'text', content: '' });
+    }
+    sheetEditorBlocks = result;
+}
+
+function _readDocEditor() {
+    const doc = document.getElementById('sheets-doc');
+    if (!doc) return;
+
+    doc.querySelectorAll('[data-block-index]').forEach(el => {
+        const idx = parseInt(el.getAttribute('data-block-index'));
+        if (isNaN(idx) || idx >= sheetEditorBlocks.length) return;
+        const block = sheetEditorBlocks[idx];
+        if (block.type === 'text' && el._getValue) {
+            block.content = el._getValue();
+        }
+    });
 }
 
 function _mergeAdjacentTextBlocks() {
@@ -615,14 +700,13 @@ function _mergeAdjacentTextBlocks() {
 /* Called from the editor: save state, navigate to book */
 function _startQuoteSelection(sheetId, insertIndex) {
     // Save current editor blocks to sessionStorage
-    const root = document.getElementById('sheets-root');
-    if (root) _saveEditorBlocksFromDOM(root);
+    _readDocEditor();
 
     // Also save sheet metadata so we can reconstruct a not-yet-persisted sheet
     const sheet = sheetsData.find(s => s.id === sheetId);
     if (sheet) {
         // Capture current title from the input (may have been edited)
-        const titleInput = root ? root.querySelector('.sheets-title-input') : null;
+        const titleInput = document.querySelector('.sheets-title-input');
         const currentName = titleInput ? titleInput.value.trim() || sheet.name : sheet.name;
         sessionStorage.setItem('sheets_editor_meta', JSON.stringify({
             id: sheet.id,
@@ -651,32 +735,20 @@ function _checkQuoteSelectMode() {
     quoteSelectMode = true;
     document.body.classList.add('sheets-quote-select-mode');
 
-    // Create floating banner
-    const banner = document.createElement('div');
-    banner.id = 'sheets-select-banner';
-    banner.className = 'sheets-select-banner';
-
-    const msg = document.createElement('span');
-    msg.className = 'sheets-select-banner-text';
-    msg.textContent = 'Tap any sentence to insert as a quote';
-    banner.appendChild(msg);
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'sheets-select-banner-cancel';
-    cancelBtn.textContent = 'Cancel';
-    cancelBtn.addEventListener('click', () => {
-        _exitQuoteSelectMode(selectInfo.sheetId);
+    showBottomBanner({
+        text: 'Tap any sentence to insert as a quote',
+        buttons: [{
+            label: 'Cancel',
+            onClick: () => { _exitQuoteSelectMode(selectInfo.sheetId); }
+        }]
     });
-    banner.appendChild(cancelBtn);
-
-    document.body.appendChild(banner);
 }
 
 function _exitQuoteSelectMode(sheetId) {
     quoteSelectMode = false;
     document.body.classList.remove('sheets-quote-select-mode');
 
-    const banner = document.getElementById('sheets-select-banner');
+    const banner = document.getElementById('bottom-banner');
     if (banner) banner.remove();
 
     sessionStorage.removeItem('sheets_quote_select');
@@ -708,7 +780,7 @@ document.addEventListener('click', function (e) {
     if (!quoteSelectMode) return;
     if (!_onBookPage) return;
 
-    if (e.target.closest('#sheets-select-banner')) return;
+    if (e.target.closest('#bottom-banner')) return;
     if (e.target.closest('#side-pane') || e.target.closest('#left-pane') || e.target.closest('.fab-group')) return;
 
     let target = e.target;
@@ -777,7 +849,7 @@ function _showQuoteConfirm(elementId, text) {
         // Clean up select mode and navigate back
         quoteSelectMode = false;
         document.body.classList.remove('sheets-quote-select-mode');
-        const banner = document.getElementById('sheets-select-banner');
+        const banner = document.getElementById('bottom-banner');
         if (banner) banner.remove();
         sessionStorage.removeItem('sheets_quote_select');
 
@@ -810,6 +882,172 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+/* ══════════════════════════════════════════════════════════
+   SHARED PAGE (shared.html) — factory for shared content
+   ══════════════════════════════════════════════════════════ */
+
+function _renderSharedPage() {
+    const root = document.getElementById('shared-root');
+    if (!root) return;
+
+    const hash = window.location.hash.slice(1);
+    if (!hash) {
+        root.innerHTML = '<p class="notes-empty">No shared content found.</p>';
+        return;
+    }
+
+    const slashIdx = hash.indexOf('/');
+    if (slashIdx === -1) {
+        root.innerHTML = '<p class="notes-empty">Invalid shared link.</p>';
+        return;
+    }
+
+    const type = hash.substring(0, slashIdx);
+    const data = hash.substring(slashIdx + 1);
+
+    if (type === 'sheet') {
+        _handleSharedSheet(root, data);
+    } else {
+        root.innerHTML = '<p class="notes-empty">Unknown shared content type.</p>';
+    }
+}
+
+function _handleSharedSheet(root, encodedData) {
+    let sheetData;
+    try {
+        const json = _fromUrlSafeBase64(encodedData);
+        sheetData = JSON.parse(json);
+    } catch (e) {
+        root.innerHTML = '<p class="notes-empty">Could not decode shared sheet.</p>';
+        return;
+    }
+
+    loadSheets();
+    const existing = sheetsData.find(s => s.id === sheetData.id);
+    if (existing) {
+        window.location.href = 'sheets.html#' + existing.id;
+        return;
+    }
+
+    _renderSharedSheetViewer(root, sheetData);
+}
+
+function _renderSharedSheetViewer(root, sheetData) {
+    root.innerHTML = '';
+
+    // Title row with share button
+    const titleRow = document.createElement('div');
+    titleRow.className = 'sheets-viewer-header';
+
+    const titleEl = document.createElement('h1');
+    titleEl.className = 'about-heading';
+    titleEl.textContent = sheetData.name || 'Untitled Sheet';
+    titleRow.appendChild(titleEl);
+
+    const actions = document.createElement('div');
+    actions.className = 'sheets-viewer-actions';
+
+    const saveLabel = document.createElement('span');
+    saveLabel.className = 'sheets-shared-save-label';
+    saveLabel.innerHTML = 'Viewing shared content<br>Save to your device?';
+    actions.appendChild(saveLabel);
+
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'notes-btn sheets-shared-save-btn';
+    saveBtn.innerHTML = _lucideIcon('download', 14) + ' Save';
+    saveBtn.addEventListener('click', () => { _saveSharedSheet(sheetData); });
+    actions.appendChild(saveBtn);
+
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'sheets-viewer-icon-btn';
+    shareBtn.title = 'Copy link';
+    shareBtn.innerHTML = _lucideIcon('link', 18);
+    shareBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            shareBtn.innerHTML = _lucideIcon('check', 18);
+            shareBtn.classList.add('sheets-link-copied');
+            setTimeout(() => {
+                shareBtn.innerHTML = _lucideIcon('link', 18);
+                shareBtn.classList.remove('sheets-link-copied');
+            }, 1500);
+        });
+    });
+    actions.appendChild(shareBtn);
+
+    titleRow.appendChild(actions);
+    root.appendChild(titleRow);
+
+    // Subtitle
+    const subtitle = document.createElement('div');
+    subtitle.className = 'sheets-viewer-date';
+    subtitle.textContent = 'Shared with you';
+    root.appendChild(subtitle);
+
+    // Content
+    if (!sheetData.blocks || sheetData.blocks.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'notes-empty';
+        empty.textContent = 'This sheet is empty.';
+        root.appendChild(empty);
+    } else {
+        const content = document.createElement('div');
+        content.className = 'sheets-viewer-content';
+
+        sheetData.blocks.forEach(block => {
+            if (block.type === 'text') {
+                if (!block.content || !block.content.trim()) return;
+                const div = document.createElement('div');
+                div.className = 'sheets-text-block';
+                div.innerHTML = formatNoteText(block.content);
+                content.appendChild(div);
+            } else if (block.type === 'quote') {
+                const quoteBox = document.createElement('div');
+                quoteBox.className = 'sheets-quote-block';
+
+                const quoteText = document.createElement('div');
+                quoteText.className = 'sheets-quote-text';
+                quoteText.textContent = block.text || '';
+                quoteBox.appendChild(quoteText);
+
+                if (block.elementId) {
+                    const ref = _parseRef(block.elementId);
+                    if (ref) {
+                        const refLine = document.createElement('div');
+                        refLine.className = 'sheets-quote-ref';
+                        refLine.textContent = ref;
+                        quoteBox.appendChild(refLine);
+                    }
+                    quoteBox.classList.add('sheets-quote-clickable');
+                    quoteBox.addEventListener('click', () => {
+                        window.location.href = 'index.html#' + block.elementId;
+                    });
+                }
+
+                content.appendChild(quoteBox);
+            }
+        });
+
+        root.appendChild(content);
+    }
+}
+
+function _saveSharedSheet(sheetData) {
+    loadSheets();
+
+    const newSheet = {
+        id: _generateId(),
+        name: sheetData.name || 'Untitled Sheet',
+        createdDate: _now(),
+        updatedDate: _now(),
+        blocks: sheetData.blocks || []
+    };
+
+    sheetsData.unshift(newSheet);
+    saveSheets();
+
+    window.location.href = 'sheets.html#' + newSheet.id;
+}
+
 /* ── Hash change on sheets.html re-renders ── */
 if (_onSheetsPage) {
     window.addEventListener('hashchange', () => { _renderSheetsPage(); });
@@ -825,6 +1063,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (_onBookPage) {
         _checkQuoteSelectMode();
+    }
+
+    if (_onSharedPage) {
+        _renderSharedPage();
     }
 });
 

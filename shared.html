@@ -43,7 +43,7 @@
     <script src="search.js" defer></script>
     <script src="sheets.js" defer></script>
     <script type="module" src="script.js"></script>
-    <title>Settings &#8211; Alcoholics Anonymous</title>
+    <title>Shared &#8211; Alcoholics Anonymous</title>
 </head>
 <body>
 <!-- Side Pane (Notes + Bookmarks) -->
@@ -590,81 +590,13 @@
         </div>
     </div>
 </div>
-<div class="about-bar">
+<div class="about-bar" id="shared-top-bar">
     <a href="index.html" class="about-bar-btn"><i data-lucide="arrow-left"></i> Back to book</a>
 </div>
 <article>
-    <section id="settings-top">
-        <div class="page-content about-page settings-page">
-            <div class="settings-section">
-                <div class="settings-section-label">Appearance</div>
-                <div class="settings-zoom-card">
-                    <button class="settings-zoom-btn" onclick="adjustZoom(-10)">&#8722;</button>
-                    <div class="settings-zoom-label">
-                        <div class="settings-card-title">Zoom</div>
-                        <div class="settings-card-subtitle zoom-level-display">100%</div>
-                    </div>
-                    <button class="settings-zoom-btn" onclick="adjustZoom(10)">&#43;</button>
-                </div>
-                <div class="settings-card" onclick="toggleDarkMode()">
-                    <div class="settings-card-icon" id="theme-icon"><i data-lucide="sun" class="theme-icon-light"></i><i data-lucide="moon" class="theme-icon-dark"></i></div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Dark Mode</div>
-                        <div class="settings-card-subtitle">Switch between light and dark themes</div>
-                    </div>
-                    <div class="theme-toggle-track" id="dark-mode-track"></div>
-                </div>
-                <div class="settings-font-switch">
-                    <button class="settings-font-option settings-font-option-serif active" data-font="serif" onclick="setFont('serif')">Serif</button>
-                    <button class="settings-font-option settings-font-option-sans" data-font="sans-serif" onclick="setFont('sans-serif')">Sans Serif</button>
-                </div>
-                <div class="settings-section-label" style="margin-top: 20px;">Menu Position</div>
-                <p class="settings-description">Choose which corner to place the floating menu.</p>
-                <div class="settings-position-picker">
-                    <button class="settings-position-btn active" data-position="top-left" onclick="setMenuPosition('top-left')"><span class="settings-position-dot"></span></button>
-                    <button class="settings-position-btn" data-position="top-right" onclick="setMenuPosition('top-right')"><span class="settings-position-dot"></span></button>
-                    <button class="settings-position-btn" data-position="bottom-left" onclick="setMenuPosition('bottom-left')"><span class="settings-position-dot"></span></button>
-                    <button class="settings-position-btn" data-position="bottom-right" onclick="setMenuPosition('bottom-right')"><span class="settings-position-dot"></span></button>
-                </div>
-            </div>
-            <div class="settings-section">
-                <div class="settings-section-label">Notes</div>
-                <p class="settings-description">Notes, bookmarks, and highlights are stored locally in your browser. Use these tools to back up or transfer your data.</p>
-                <div class="settings-card" onclick="notes.exportData()">
-                    <div class="settings-card-icon"><i data-lucide="download"></i></div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Export Data</div>
-                        <div class="settings-card-subtitle">Download all notes, bookmarks, and highlights as a JSON file</div>
-                    </div>
-                </div>
-                <div class="settings-card" onclick="notes.importData()">
-                    <div class="settings-card-icon"><i data-lucide="upload"></i></div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Import Data</div>
-                        <div class="settings-card-subtitle">Load data from a previously exported file</div>
-                    </div>
-                </div>
-                <div id="sync-folder-card" class="settings-card" onclick="notes.syncToFolder()" style="display:none;">
-                    <div class="settings-card-icon"><i data-lucide="folder-sync"></i></div>
-                    <div class="settings-card-body">
-                        <div class="settings-card-title">Sync to Folder</div>
-                        <div class="settings-card-subtitle">Auto-save notes as files to a local folder</div>
-                    </div>
-                </div>
-                <div id="sync-status" class="settings-status" style="display:none;">
-                    <div class="settings-status-indicator"></div>
-                    <div class="settings-status-text">
-                        <span>Folder sync active</span>
-                        <div id="sync-folder-name" class="settings-status-folder"></div>
-                    </div>
-                    <button class="settings-status-action" onclick="notes.disconnectFolder()">Disconnect</button>
-                </div>
-                <script>
-                    if ('showDirectoryPicker' in window) {
-                        document.getElementById('sync-folder-card').style.display = '';
-                    }
-                </script>
-            </div>
+    <section>
+        <div class="page-content about-page">
+            <div id="shared-root"></div>
         </div>
     </section>
 </article>
@@ -715,6 +647,7 @@ function shareSite(e) {
         setTimeout(function() { btn.innerHTML = orig; }, 1500);
     }
 }
+document.body.classList.add('sheets-page');
 </script>
 </body>
 </html>

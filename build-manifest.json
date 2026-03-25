@@ -1,8 +1,9 @@
 {
-  "built_at": "2026-03-25T12:20:21.130038",
+  "built_at": "2026-03-25T15:53:50.898052",
   "assets": {
-    "index.html": "6a1aa63fd42f",
-    "sheets.html": "f5f7685f11e9",
+    "index.html": "371010174e22",
+    "sheets.html": "743242b74c01",
+    "shared.html": "de3ce49051f7",
     "manifest.json": "b40d20ca799a",
     "search-index.json": "4f6c92a03ff2",
     "styles.css": "f4a731c7fae2",
@@ -10,8 +11,9 @@
     "script.js": "38457b4aa040",
     "image.jpg": "8c2de12a2518",
     "favicon.ico": "ae8b5c52d81f",
-    "notes.css": "4157d99e1d72",
-    "notes.js": "4f88b79c5c78",
+    "richtext.js": "34a184701d04",
+    "notes.css": "451f05c94f76",
+    "notes.js": "1561a7218711",
     "bookmarks.css": "d2be05a2f1b7",
     "bookmarks.js": "873242c5b356",
     "highlight.css": "3090faeb5010",
@@ -19,8 +21,8 @@
     "fuse.min.js": "e3621b53cb77",
     "search.js": "3146ca834c79",
     "search.css": "1b1a6123ae39",
-    "sheets.js": "a94122fe9c74",
-    "sheets.css": "c70b50aa50e4",
+    "sheets.js": "0e4aed7e9f0d",
+    "sheets.css": "1740bf2020a0",
     "lucide.min.js": "1bd32a372c02"
   }
 }

@@ -370,3 +370,79 @@
     border-top: 1px solid var(--color-settings-border);
     margin: 20px 0;
 }
+
+/* ══════════════════════════════════════════════════════════
+   Bottom banner / toast message (general utility)
+   ══════════════════════════════════════════════════════════ */
+
+.bottom-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 20px;
+    background: #3b3126;
+    color: #f5f0eb;
+    font-size: 0.88em;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] .bottom-banner {
+    background: #2e2318;
+    color: #d4c4aa;
+}
+
+.bottom-banner-text {
+    flex: 1;
+}
+
+.bottom-banner-btn {
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    background: none;
+    color: inherit;
+    padding: 6px 14px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    white-space: nowrap;
+}
+
+.bottom-banner-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.bottom-banner-btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.15);
+}
+
+.bottom-banner-btn-primary:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* Success variant */
+.bottom-banner-success {
+    background: #2d5a3d;
+}
+
+[data-theme="dark"] .bottom-banner-success {
+    background: #1a3d28;
+}
+
+/* Error variant */
+.bottom-banner-error {
+    background: #8b2020;
+}
+
+[data-theme="dark"] .bottom-banner-error {
+    background: #5a1a1a;
+}

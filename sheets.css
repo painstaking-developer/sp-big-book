@@ -70,6 +70,14 @@
     color: var(--color-notes-delete);
 }
 
+.sheets-link-copied {
+    color: #2d7a4f !important;
+}
+
+[data-theme="dark"] .sheets-link-copied {
+    color: #5cbd85 !important;
+}
+
 .sheets-viewer-date {
     font-size: 0.8em;
     color: var(--color-text-muted);
@@ -125,11 +133,6 @@
 
 .sheets-quote-clickable {
     cursor: pointer;
-    transition: background-color 0.15s;
-}
-
-.sheets-quote-clickable:hover {
-    background: var(--color-settings-card-hover-bg);
 }
 
 .sheets-quote-text {
@@ -202,36 +205,111 @@
     color: var(--color-notes-btn);
 }
 
-.sheets-editor-body {
+/* ── Document-style editor ── */
+.sheets-doc {
     padding-bottom: 80px;
 }
 
-.sheets-editor-block {
-    margin-bottom: 4px;
+.sheets-doc-text {
+    min-height: 1.6em;
+    outline: none;
+    font-size: 0.95em;
+    line-height: 1.7;
+    color: var(--color-text);
+    font-family: inherit;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
-.sheets-text-editor {
-    min-height: 80px;
+.sheets-doc-text:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    font-style: italic;
 }
 
-/* Insert quote button (between blocks) */
-.sheets-insert-quote-btn {
+.sheets-doc-text:focus {
+    outline: none;
+}
+
+/* Rich-text inside the doc editor */
+.sheets-doc-text strong { font-weight: 700; }
+.sheets-doc-text em { font-style: italic; }
+.sheets-doc-text del { text-decoration: line-through; opacity: 0.7; }
+.sheets-doc-text mark {
+    background: var(--color-bg-highlight);
+    color: inherit;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+.sheets-doc-text .note-editor-mark {
+    color: var(--color-text-muted);
+    font-size: 0.85em;
+}
+.sheets-doc-text .note-editor-bq {
+    border-left: 3px solid var(--color-text-muted);
+    padding-left: 10px;
+}
+
+/* Quote blocks embedded in the doc editor */
+.sheets-doc-quote {
+    background: var(--color-notes-bg);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 4px 0;
+    position: relative;
+}
+
+/* ── Drag handle on quote blocks ── */
+.sheets-quote-drag-handle {
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: 6px;
-    width: 100%;
-    padding: 6px 12px;
-    border: 1px dashed var(--color-border-light);
-    border-radius: 8px;
-    background: none;
+    justify-content: center;
+    width: 20px;
+    height: 28px;
     color: var(--color-text-muted);
-    font-size: 0.8em;
-    cursor: pointer;
-    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
-    margin-bottom: 8px;
+    cursor: grab;
+    opacity: 0.5;
+    border-radius: 4px;
 }
 
-.sheets-insert-quote-btn:hover {
+.sheets-doc-quote.sheets-dragging {
+    opacity: 0.4;
+}
+
+.sheets-drop-indicator {
+    height: 3px;
+    background: var(--color-notes-btn);
+    border-radius: 2px;
+    margin: 2px 0;
+}
+
+/* Insert-quote affordance (between blocks) */
+.sheets-doc-insert-row {
+    display: flex;
+    justify-content: center;
+    padding: 2px 0;
+}
+
+.sheets-doc-insert-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border: 1px dashed var(--color-border-light);
+    border-radius: 12px;
+    background: none;
+    color: var(--color-text-muted);
+    font-size: 0.72em;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+
+.sheets-doc-insert-btn:hover {
     border-color: var(--color-notes-btn);
     color: var(--color-notes-btn);
     background: var(--color-settings-card-hover-bg);
@@ -266,49 +344,6 @@
     background: rgba(180, 140, 80, 0.25);
 }
 
-/* Floating banner at the bottom */
-.sheets-select-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 3500;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 20px;
-    background: #3b3126;
-    color: #f5f0eb;
-    font-size: 0.88em;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
-}
-
-[data-theme="dark"] .sheets-select-banner {
-    background: #2e2318;
-    color: #d4c4aa;
-}
-
-.sheets-select-banner-text {
-    flex: 1;
-}
-
-.sheets-select-banner-cancel {
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 6px;
-    background: none;
-    color: inherit;
-    padding: 6px 14px;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: background-color 0.15s;
-    white-space: nowrap;
-}
-
-.sheets-select-banner-cancel:hover {
-    background: rgba(255,255,255,0.1);
-}
-
 /* ── Confirm dialog (over the book page) ── */
 .sheets-confirm-overlay {
     position: fixed;
@@ -332,3 +367,34 @@
     width: 100%;
     box-shadow: 0 8px 32px var(--color-shadow);
 }
+
+/* ── Shared page ── */
+
+.sheets-shared-save-label {
+    font-size: 0.8em;
+    color: var(--color-text-muted);
+    text-align: right;
+    line-height: 1.3;
+    margin-right: 8px;
+}
+
+.sheets-shared-save-btn {
+    color: #2d7a4f;
+    border-color: #2d7a4f;
+}
+
+.sheets-shared-save-btn:hover {
+    color: #246b43;
+    border-color: #246b43;
+}
+
+[data-theme="dark"] .sheets-shared-save-btn {
+    color: #5cbd85;
+    border-color: #5cbd85;
+}
+
+[data-theme="dark"] .sheets-shared-save-btn:hover {
+    color: #7dd9a0;
+    border-color: #7dd9a0;
+}
+
